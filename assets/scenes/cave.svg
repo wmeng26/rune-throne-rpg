@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="cback" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#17242e"/><stop offset=".6" stop-color="#22333e"/><stop offset="1" stop-color="#2c4148"/>
+    </linearGradient>
+    <linearGradient id="crock" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3c4a52"/><stop offset="1" stop-color="#1e2830"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#cback)"/>
+  <!-- 洞口天光 -->
+  <ellipse cx="600" cy="90" rx="380" ry="120" fill="#7a99a8" opacity=".35"/>
+  <ellipse cx="600" cy="70" rx="220" ry="70" fill="#a8c4ce" opacity=".4"/>
+  <!-- 钟乳石 -->
+  <g fill="url(#crock)">
+    <path d="M180 0 L220 0 L200 150 Z"/><path d="M320 0 L352 0 L336 110 Z"/><path d="M520 0 L560 0 L540 170 Z"/>
+    <path d="M740 0 L772 0 L756 120 Z"/><path d="M900 0 L940 0 L920 180 Z"/><path d="M1060 0 L1100 0 L1080 130 Z"/>
+  </g>
+  <g fill="#2c3a44">
+    <path d="M260 0 L292 0 L276 90 Z"/><path d="M640 0 L668 0 L654 100 Z"/><path d="M980 0 L1008 0 L994 96 Z"/>
+  </g>
+  <!-- 两侧洞壁 -->
+  <path d="M-20 675 L-20 200 L120 260 L200 420 L160 675 Z" fill="url(#crock)"/>
+  <path d="M1220 675 L1220 180 L1060 240 L980 440 L1030 675 Z" fill="url(#crock)"/>
+  <g stroke="#16202a" stroke-width="5" opacity=".7" fill="none">
+    <path d="M40 340 l50 40 l-20 60"/><path d="M1120 330 l-50 50 l30 60"/>
+  </g>
+  <!-- 地下水面 -->
+  <rect y="480" width="1200" height="195" fill="#1c3440"/>
+  <rect y="476" width="1200" height="8" fill="#3c6474" opacity=".8"/>
+  <g stroke="#5a8a9a" stroke-width="3" opacity=".5" fill="none" stroke-linecap="round">
+    <path d="M200 530 h90"/><path d="M480 560 h110"/><path d="M760 540 h90"/><path d="M960 580 h100"/>
+  </g>
+  <!-- 水中倒影光柱 -->
+  <path d="M560 130 L640 130 L700 480 L500 480 Z" fill="#a8c4ce" opacity=".1"/>
+  <!-- 荧光藻点 -->
+  <g fill="#6ee8d0">
+    <circle cx="330" cy="450" r="5" opacity=".9"/><circle cx="360" cy="470" r="3.4" opacity=".7"/><circle cx="310" cy="472" r="3" opacity=".6"/>
+    <circle cx="880" cy="430" r="5" opacity=".9"/><circle cx="910" cy="452" r="3.6" opacity=".7"/><circle cx="850" cy="455" r="3" opacity=".6"/>
+    <circle cx="620" cy="500" r="4" opacity=".7"/><circle cx="700" cy="520" r="3" opacity=".55"/>
+  </g>
+  <g fill="#6ee8d0" opacity=".25">
+    <circle cx="330" cy="450" r="14"/><circle cx="880" cy="430" r="14"/>
+  </g>
+  <!-- 幽深洞道 -->
+  <ellipse cx="600" cy="560" rx="180" ry="70" fill="#0c141a"/>
+  <ellipse cx="600" cy="560" rx="130" ry="48" fill="#060a0e"/>
+  <!-- 水雾 -->
+  <ellipse cx="600" cy="620" rx="700" ry="44" fill="#3c6474" opacity=".18"/>
+</svg>

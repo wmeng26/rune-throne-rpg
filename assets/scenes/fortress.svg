@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="vsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#120a20"/><stop offset=".55" stop-color="#1e1030"/><stop offset="1" stop-color="#2a1440"/>
+    </linearGradient>
+    <linearGradient id="spire" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c1528"/><stop offset="1" stop-color="#0e0a18"/>
+    </linearGradient>
+    <radialGradient id="vglow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#b06ad6" stop-opacity=".55"/><stop offset="1" stop-color="#b06ad6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#vsky)"/>
+  <!-- 血月 -->
+  <circle cx="960" cy="150" r="90" fill="url(#vglow)"/>
+  <circle cx="960" cy="150" r="52" fill="#c46a8a"/>
+  <circle cx="948" cy="138" r="10" fill="#a44e70" opacity=".8"/>
+  <circle cx="976" cy="164" r="7" fill="#a44e70" opacity=".7"/>
+  <!-- 闪电 -->
+  <path d="M240 60 L200 160 L250 150 L190 280 L280 170 L232 178 L280 60 Z" fill="#e8d8ff" opacity=".55"/>
+  <!-- 黑岩地基 -->
+  <path d="M0 560 L200 500 L420 545 L660 490 L900 540 L1100 500 L1200 545 L1200 675 L0 675 Z" fill="#150e22"/>
+  <!-- 要塞群 -->
+  <g>
+    <!-- 主堡 -->
+    <rect x="480" y="240" width="240" height="330" fill="url(#spire)"/>
+    <path d="M470 250 L600 120 L730 250 Z" fill="#0c0816"/>
+    <rect x="480" y="228" width="240" height="16" fill="#0c0816"/>
+    <g fill="#0c0816">
+      <rect x="484" y="204" width="26" height="26"/><rect x="528" y="204" width="26" height="26"/><rect x="572" y="204" width="26" height="26"/><rect x="616" y="204" width="26" height="26"/><rect x="660" y="204" width="26" height="26"/><rect x="704" y="204" width="26" height="26"/>
+    </g>
+    <!-- 尖塔 -->
+    <path d="M430 570 L430 300 L455 200 L480 300 L480 570 Z" fill="#150f24"/>
+    <path d="M720 570 L720 300 L745 210 L770 300 L770 570 Z" fill="#150f24"/>
+    <!-- 城齿尖刺 -->
+    <g fill="#0c0816">
+      <path d="M440 240 l14 -46 l14 46 Z"/><path d="M496 240 l14 -46 l14 46 Z"/><path d="M676 240 l14 -46 l14 46 Z"/><path d="M732 240 l14 -46 l14 46 Z"/>
+    </g>
+    <!-- 紫光窗 -->
+    <g fill="#b06ad6">
+      <path d="M580 320 q20 -28 40 0 v56 h-40 Z" opacity=".9"/>
+      <path d="M580 430 q20 -28 40 0 v56 h-40 Z" opacity=".75"/>
+      <path d="M444 360 q12 -18 24 0 v40 h-24 Z" opacity=".8"/>
+      <path d="M732 360 q12 -18 24 0 v40 h-24 Z" opacity=".8"/>
+    </g>
+    <ellipse cx="600" cy="348" rx="110" ry="70" fill="url(#vglow)" opacity=".8"/>
+    <!-- 旗 -->
+    <line x1="600" y1="120" x2="600" y2="60" stroke="#0c0816" stroke-width="6"/>
+    <path d="M600 60 L656 74 L600 90 Z" fill="#3d1a5c"/>
+  </g>
+  <!-- 独石桥 -->
+  <path d="M-20 675 Q300 600 480 588 L480 640 Q300 650 -20 675 Z" fill="#1c1430"/>
+  <g stroke="#241a3e" stroke-width="6" opacity=".9">
+    <line x1="60" y1="652" x2="60" y2="675"/><line x1="160" y1="638" x2="160" y2="665"/><line x1="260" y1="624" x2="260" y2="652"/><line x1="360" y1="612" x2="360" y2="640"/>
+  </g>
+  <!-- 乌鸦群 -->
+  <g fill="#0c0816">
+    <path d="M300 180 q14 -16 28 0 q-14 -4 -28 0 Z"/>
+    <path d="M360 140 q12 -14 24 0 q-12 -4 -24 0 Z"/>
+    <path d="M820 220 q14 -16 28 0 q-14 -4 -28 0 Z"/>
+    <path d="M760 120 q12 -14 24 0 q-12 -4 -24 0 Z"/>
+    <path d="M880 260 q12 -14 24 0 q-12 -4 -24 0 Z"/>
+    <path d="M240 260 q12 -14 24 0 q-12 -4 -24 0 Z"/>
+  </g>
+  <!-- 地面雾 -->
+  <g fill="#7a4ea0">
+    <ellipse cx="600" cy="640" rx="700" ry="50" opacity=".15"/>
+    <ellipse cx="300" cy="600" rx="360" ry="30" opacity=".12"/>
+    <ellipse cx="920" cy="610" rx="400" ry="34" opacity=".12"/>
+  </g>
+</svg>

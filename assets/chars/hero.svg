@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="hbg" cx=".5" cy=".38" r=".72">
+      <stop offset="0" stop-color="#2c3448"/><stop offset=".65" stop-color="#1a2030"/><stop offset="1" stop-color="#10141f"/>
+    </radialGradient>
+    <linearGradient id="cloak" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3d6b52"/><stop offset="1" stop-color="#24402f"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dfe4ee"/><stop offset="1" stop-color="#8d96a8"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#hbg)"/>
+  <circle cx="200" cy="185" r="150" fill="none" stroke="#c9a227" stroke-width="2" opacity=".35"/>
+  <circle cx="200" cy="185" r="162" fill="none" stroke="#c9a227" stroke-width="1" opacity=".18"/>
+  <!-- 肩与披风 -->
+  <path d="M60 480 Q70 340 130 310 Q200 285 270 310 Q330 340 340 480 Z" fill="url(#cloak)"/>
+  <path d="M130 310 Q150 360 145 480 L60 480 Q70 340 130 310 Z" fill="#1c3225" opacity=".8"/>
+  <!-- 皮甲 -->
+  <path d="M140 330 Q200 305 260 330 L268 420 Q200 445 132 420 Z" fill="#4a3a28"/>
+  <path d="M140 330 Q200 305 260 330 L268 420 Q200 445 132 420 Z" fill="none" stroke="#2c2014" stroke-width="4"/>
+  <g stroke="#2c2014" stroke-width="3"><line x1="170" y1="318" x2="164" y2="432"/><line x1="200" y1="312" x2="200" y2="438"/><line x1="230" y1="318" x2="236" y2="432"/></g>
+  <circle cx="200" cy="380" r="9" fill="#c9a227" opacity=".9"/>
+  <!-- 剑柄（背后） -->
+  <g transform="rotate(24 290 330)">
+    <rect x="284" y="240" width="12" height="110" rx="4" fill="url(#steel)"/>
+    <rect x="266" y="344" width="48" height="12" rx="5" fill="#c9a227"/>
+    <circle cx="290" cy="366" r="9" fill="#7a2a2a"/>
+  </g>
+  <!-- 颈与头 -->
+  <rect x="182" y="252" width="36" height="42" fill="#e0b08a"/>
+  <ellipse cx="200" cy="200" rx="62" ry="70" fill="#e8bc96"/>
+  <!-- 头发 -->
+  <path d="M138 196 Q130 118 200 106 Q270 118 262 196 Q268 150 236 136 Q244 156 232 166 Q214 130 176 142 Q158 150 156 176 Q142 172 138 196 Z" fill="#5a3d28"/>
+  <path d="M156 176 Q150 210 162 232 Q150 196 156 176 Z" fill="#5a3d28"/>
+  <!-- 五官 -->
+  <g>
+    <path d="M168 192 q10 -8 22 0" stroke="#3a2a1c" stroke-width="4" fill="none"/>
+    <path d="M210 192 q10 -8 22 0" stroke="#3a2a1c" stroke-width="4" fill="none"/>
+    <circle cx="179" cy="202" r="5" fill="#3f6b4f"/>
+    <circle cx="221" cy="202" r="5" fill="#3f6b4f"/>
+    <path d="M192 222 q8 6 16 0" stroke="#a86a4a" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M180 238 q20 14 40 0" stroke="#c98a6a" stroke-width="3" fill="none" opacity=".7"/>
+  </g>
+  <!-- 疤痕 -->
+  <path d="M238 178 l14 20" stroke="#c08a6a" stroke-width="2.6" opacity=".9"/>
+  <!-- 披风扣 -->
+  <circle cx="152" cy="330" r="7" fill="#c9a227"/>
+  <circle cx="248" cy="330" r="7" fill="#c9a227"/>
+</svg>

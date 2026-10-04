@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="hbg" cx=".5" cy=".4" r=".72">
+      <stop offset="0" stop-color="#38402c"/><stop offset=".65" stop-color="#28301e"/><stop offset="1" stop-color="#161c10"/>
+    </radialGradient>
+    <linearGradient id="hflesh" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6a7a4a"/><stop offset="1" stop-color="#3c482a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#hbg)"/>
+  <!-- 腐液滴落 -->
+  <g fill="#8aa04a" opacity=".7">
+    <ellipse cx="110" cy="120" rx="6" ry="12"/><ellipse cx="300" cy="90" rx="5" ry="10"/>
+  </g>
+  <!-- 佝偻的躯干 -->
+  <path d="M120 480 Q112 340 150 280 L250 280 Q288 340 280 480 Z" fill="url(#hflesh)"/>
+  <!-- 躯干腐洞 -->
+  <g fill="#1c2412">
+    <ellipse cx="180" cy="380" rx="20" ry="28"/><ellipse cx="238" cy="350" rx="13" ry="19"/>
+  </g>
+  <g fill="#5a3a2a" opacity=".8">
+    <ellipse cx="182" cy="386" rx="10" ry="14"/><ellipse cx="240" cy="356" rx="7" ry="10"/>
+  </g>
+  <!-- 缠在身上的藤与根 -->
+  <g stroke="#4a5c2e" stroke-width="9" fill="none" stroke-linecap="round">
+    <path d="M126 400 Q160 372 196 398 Q232 422 272 396"/>
+    <path d="M132 330 Q170 356 210 330 Q248 306 276 330"/>
+  </g>
+  <!-- 垂头长臂（左） -->
+  <path d="M124 300 Q70 340 62 420" stroke="url(#hflesh)" stroke-width="26" fill="none" stroke-linecap="round"/>
+  <path d="M62 420 l-12 16 M62 420 l2 20 M62 420 l16 12" stroke="#3c482a" stroke-width="9" stroke-linecap="round"/>
+  <!-- 抓握长臂（右） -->
+  <path d="M278 290 Q336 330 330 400" stroke="url(#hflesh)" stroke-width="26" fill="none" stroke-linecap="round"/>
+  <path d="M330 400 l14 -8 M330 400 l18 2 M330 400 l8 18" stroke="#3c482a" stroke-width="9" stroke-linecap="round"/>
+  <!-- 低垂的头（无眼窝） -->
+  <g transform="translate(200 210) rotate(8)">
+    <path d="M-52 40 Q-56 -30 0 -40 Q56 -30 52 40 Q26 56 0 56 Q-26 56 -52 40 Z" fill="#5a683e"/>
+    <g fill="#1c2412">
+      <ellipse cx="-22" cy="8" rx="13" ry="9"/><ellipse cx="22" cy="8" rx="13" ry="9"/>
+    </g>
+    <g fill="#8aa04a" opacity=".6">
+      <path d="M-30 -14 q10 -8 20 -2"/><path d="M10 -14 q10 -6 20 0"/>
+    </g>
+    <!-- 流涎的宽口 -->
+    <path d="M-24 32 Q0 44 24 32" stroke="#1c2412" stroke-width="7" fill="none"/>
+    <path d="M6 46 q2 18 -2 30" stroke="#8aa04a" stroke-width="6" fill="none" stroke-linecap="round" opacity=".8"/>
+    <!-- 头顶残穗 -->
+    <g stroke="#8a7a3a" stroke-width="5" fill="none" stroke-linecap="round">
+      <path d="M-18 -40 l-4 -22"/><path d="M0 -42 l2 -24"/><path d="M18 -40 l6 -20"/>
+    </g>
+    <g fill="#a8943c">
+      <ellipse cx="-24" cy="-64" rx="7" ry="4" transform="rotate(-40 -24 -64)"/>
+      <ellipse cx="2" cy="-68" rx="7" ry="4" transform="rotate(6 2 -68)"/>
+      <ellipse cx="26" cy="-62" rx="7" ry="4" transform="rotate(40 26 -62)"/>
+    </g>
+  </g>
+  <!-- 腐沼地面 -->
+  <g fill="#2c3418" opacity=".9">
+    <ellipse cx="200" cy="462" rx="150" ry="16"/>
+  </g>
+  <g fill="#6a7a3a" opacity=".5">
+    <circle cx="120" cy="466" r="5"/><circle cx="280" cy="468" r="4"/><circle cx="200" cy="472" r="4"/>
+  </g>
+</svg>

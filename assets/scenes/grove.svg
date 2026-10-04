@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="gsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4c5e52"/><stop offset=".6" stop-color="#7a8a6e"/><stop offset="1" stop-color="#a8b088"/>
+    </linearGradient>
+    <linearGradient id="gground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4c5c36"/><stop offset="1" stop-color="#2e3c22"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#gsky)"/>
+  <circle cx="300" cy="150" r="40" fill="#f0e6b8" opacity=".8"/>
+  <g fill="#b8c4a8" opacity=".5">
+    <ellipse cx="700" cy="130" rx="240" ry="14"/><ellipse cx="1000" cy="200" rx="200" ry="12"/>
+  </g>
+  <!-- 林地 -->
+  <rect y="380" width="1200" height="295" fill="url(#gground)"/>
+  <!-- 远树带 -->
+  <g fill="#3c5030">
+    <ellipse cx="140" cy="360" rx="130" ry="70"/><ellipse cx="1060" cy="350" rx="150" ry="80"/>
+    <ellipse cx="480" cy="330" rx="110" ry="60"/><ellipse cx="820" cy="340" rx="120" ry="66"/>
+  </g>
+  <!-- 守穗人树林：麦穗状树冠 -->
+  <g>
+    <path d="M320 560 L320 380 Q260 360 280 300 Q240 290 260 240 Q300 220 340 250 Q330 190 380 180 Q430 190 420 250 Q460 220 500 240 Q520 290 480 300 Q500 360 440 380 L440 560 Z" fill="#4c6a3a"/>
+    <path d="M320 560 L320 380 Q260 360 280 300 Q240 290 260 240 Q300 220 340 250" fill="none" stroke="#33492a" stroke-width="6"/>
+    <path d="M820 580 L820 400 Q770 380 790 330 Q760 320 780 270 Q820 250 850 280 Q845 220 890 215 Q935 225 925 280 Q965 255 995 280 Q1010 325 975 335 Q990 385 940 400 L940 580 Z" fill="#547244"/>
+    <path d="M820 580 L820 400 Q770 380 790 330 Q760 320 780 270" fill="none" stroke="#3a5230" stroke-width="6"/>
+  </g>
+  <!-- 金色穗光 -->
+  <g fill="#e8c96a" opacity=".85">
+    <circle cx="380" cy="250" r="8"/><circle cx="420" cy="300" r="6"/><circle cx="340" cy="330" r="6"/>
+    <circle cx="890" cy="280" r="8"/><circle cx="930" cy="330" r="6"/><circle cx="850" cy="340" r="5"/>
+  </g>
+  <g fill="#e8c96a" opacity=".25">
+    <circle cx="380" cy="250" r="24"/><circle cx="890" cy="280" r="26"/>
+  </g>
+  <!-- 林间小径 -->
+  <path d="M520 675 Q560 560 600 500 L660 500 Q640 580 680 675 Z" fill="#6a6244" opacity=".8"/>
+  <g fill="#8a8460" opacity=".7">
+    <ellipse cx="580" cy="600" rx="16" ry="5"/><ellipse cx="620" cy="560" rx="13" ry="4"/><ellipse cx="612" cy="530" rx="11" ry="4"/>
+  </g>
+  <!-- 石灯笼（古祭坛一隅） -->
+  <g>
+    <rect x="160" y="500" width="26" height="70" fill="#5c5c52"/>
+    <rect x="148" y="470" width="50" height="34" rx="6" fill="#6c6c60"/>
+    <path d="M140 470 L173 440 L206 470 Z" fill="#54544a"/>
+    <rect x="163" y="478" width="20" height="18" fill="#e8c96a" opacity=".9"/>
+  </g>
+  <!-- 萤光与穗尘 -->
+  <g fill="#f0e0a0" opacity=".8">
+    <circle cx="560" cy="420" r="3"/><circle cx="640" cy="380" r="2.6"/><circle cx="700" cy="450" r="2.6"/><circle cx="480" cy="460" r="2.4"/>
+  </g>
+  <ellipse cx="600" cy="650" rx="700" ry="30" fill="#101a0e" opacity=".3"/>
+</svg>

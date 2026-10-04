@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="rbg" cx=".5" cy=".38" r=".72">
+      <stop offset="0" stop-color="#2c2c36"/><stop offset=".65" stop-color="#1c1c24"/><stop offset="1" stop-color="#101016"/>
+    </radialGradient>
+    <linearGradient id="rhood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a3a46"/><stop offset="1" stop-color="#1e1e28"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#rbg)"/>
+  <!-- 斗篷 -->
+  <path d="M64 480 Q76 356 140 324 Q200 302 260 324 Q324 356 336 480 Z" fill="url(#rhood)"/>
+  <!-- 大兜帽 -->
+  <path d="M124 258 Q104 118 200 100 Q296 118 276 258 Q268 202 238 180 Q216 164 200 164 Q184 164 162 180 Q132 202 124 258 Z" fill="#26262f"/>
+  <path d="M124 258 Q104 118 200 100 Q296 118 276 258 Q280 190 246 152 Q222 128 200 126 Q178 128 154 152 Q120 190 124 258 Z" fill="none" stroke="#454552" stroke-width="5"/>
+  <!-- 帽内漆黑 -->
+  <ellipse cx="200" cy="212" rx="54" ry="60" fill="#08080c"/>
+  <!-- 唯一发亮的眼睛 -->
+  <ellipse cx="180" cy="206" rx="12" ry="7" fill="#ffd978" opacity=".9"/>
+  <circle cx="180" cy="206" r="3" fill="#fff6d8"/>
+  <path d="M226 208 q10 -3 18 2" stroke="#5d5d6d" stroke-width="3" fill="none" opacity=".8"/>
+  <!-- 兜帽下的喙状鼻影 -->
+  <path d="M196 216 q6 10 10 0" stroke="#2c2c38" stroke-width="4" fill="none"/>
+  <!-- 肩上乌鸦 -->
+  <g transform="translate(268,300)">
+    <ellipse cx="0" cy="0" rx="26" ry="16" fill="#0c0c12"/>
+    <circle cx="18" cy="-12" r="10" fill="#0c0c12"/>
+    <path d="M26 -14 l14 4 l-14 5 Z" fill="#2c2c38"/>
+    <circle cx="21" cy="-14" r="2" fill="#ffd978"/>
+    <path d="M-14 4 q-8 12 -2 22" stroke="#0c0c12" stroke-width="5" fill="none"/>
+  </g>
+  <!-- 货箱一角 -->
+  <rect x="96" y="430" width="90" height="50" rx="4" fill="#4a3a28"/>
+  <rect x="96" y="430" width="90" height="50" rx="4" fill="none" stroke="#2c2014" stroke-width="4"/>
+  <line x1="96" y1="455" x2="186" y2="455" stroke="#2c2014" stroke-width="4"/>
+  <circle cx="141" cy="442" r="5" fill="#c9a227"/>
+  <!-- 腰间钱袋 -->
+  <path d="M150 400 q-4 30 12 40 q14 -8 12 -40 Z" fill="#6a5a42" stroke="#3c3020" stroke-width="3"/>
+  <path d="M152 398 q10 -6 20 0" stroke="#3c3020" stroke-width="3" fill="none"/>
+</svg>

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="rbg" cx=".5" cy=".42" r=".72">
+      <stop offset="0" stop-color="#3c4048"/><stop offset=".65" stop-color="#2a2e36"/><stop offset="1" stop-color="#161a20"/>
+    </radialGradient>
+    <linearGradient id="shell" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a5c48"/><stop offset="1" stop-color="#54382c"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#rbg)"/>
+  <!-- 背甲（礁石状） -->
+  <path d="M96 320 Q84 180 200 150 Q316 180 304 320 Q250 352 200 352 Q150 352 96 320 Z" fill="url(#shell)"/>
+  <g stroke="#3a261c" stroke-width="6" fill="none" opacity=".9">
+    <path d="M120 300 Q130 210 200 196"/><path d="M280 300 Q270 210 200 196"/>
+    <path d="M150 320 Q160 230 200 222"/><path d="M250 320 Q240 230 200 222"/>
+  </g>
+  <!-- 甲上苔藓与藤壶 -->
+  <g fill="#5a7a52" opacity=".8">
+    <ellipse cx="150" cy="250" rx="22" ry="10"/><ellipse cx="240" cy="280" rx="26" ry="11"/>
+  </g>
+  <g fill="#c9c4b4" opacity=".85">
+    <circle cx="190" cy="250" r="7"/><circle cx="220" cy="236" r="5"/><circle cx="130" cy="290" r="6"/>
+  </g>
+  <!-- 眼柄双眼 -->
+  <g>
+    <path d="M168 160 Q164 128 150 118" stroke="#54382c" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <path d="M232 160 Q236 128 250 118" stroke="#54382c" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <circle cx="148" cy="112" r="15" fill="#e8d060"/><circle cx="148" cy="112" r="6" fill="#1c1c14"/>
+    <circle cx="252" cy="112" r="15" fill="#e8d060"/><circle cx="252" cy="112" r="6" fill="#1c1c14"/>
+  </g>
+  <!-- 口器 -->
+  <path d="M170 190 Q200 210 230 190" stroke="#3a261c" stroke-width="8" fill="none"/>
+  <g stroke="#3a261c" stroke-width="4" fill="none">
+    <path d="M182 196 l-4 10"/><path d="M200 202 l0 10"/><path d="M218 196 l4 10"/>
+  </g>
+  <!-- 大铁钳（右） -->
+  <g transform="rotate(-24 320 330)">
+    <path d="M260 360 Q300 300 344 320 Q376 338 366 376 Q356 410 316 404 Q276 398 260 360 Z" fill="url(#shell)"/>
+    <path d="M344 322 Q330 352 316 376" stroke="#3a261c" stroke-width="6" fill="none"/>
+    <path d="M330 318 q22 -18 34 -2 q-14 12 -30 12 Z" fill="#c9ccd6" opacity=".9"/>
+  </g>
+  <!-- 小钳（左） -->
+  <g transform="rotate(20 84 340)">
+    <path d="M120 380 Q90 340 60 352 Q36 364 44 392 Q52 416 84 410 Q110 404 120 380 Z" fill="url(#shell)"/>
+    <path d="M60 350 q-16 -14 -26 -4 q10 10 24 12 Z" fill="#c9ccd6" opacity=".9"/>
+  </g>
+  <!-- 步足 -->
+  <g stroke="#54382c" stroke-width="12" fill="none" stroke-linecap="round">
+    <path d="M120 360 Q86 420 92 462"/>
+    <path d="M150 380 Q130 430 138 466"/>
+    <path d="M250 380 Q272 432 266 466"/>
+    <path d="M282 360 Q316 420 310 462"/>
+  </g>
+  <!-- 甲缝水汽 -->
+  <g fill="#7a9a9a" opacity=".35">
+    <ellipse cx="200" cy="420" rx="130" ry="18"/>
+  </g>
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="lsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e2c44"/><stop offset=".6" stop-color="#3c5068"/><stop offset="1" stop-color="#5c7086"/>
+    </linearGradient>
+    <linearGradient id="ltower" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e8e4da"/><stop offset=".5" stop-color="#c9c2b4"/><stop offset="1" stop-color="#948c7c"/>
+    </linearGradient>
+    <linearGradient id="lsea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2c4a5e"/><stop offset="1" stop-color="#162e3c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#lsky)"/>
+  <circle cx="260" cy="140" r="40" fill="#dce4ec" opacity=".7"/>
+  <g fill="#8a94a8" opacity=".5">
+    <ellipse cx="420" cy="160" rx="200" ry="14"/><ellipse cx="880" cy="120" rx="240" ry="16"/>
+  </g>
+  <rect y="360" width="1200" height="315" fill="url(#lsea)"/>
+  <g stroke="#a8c9d4" stroke-width="3" opacity=".4" fill="none" stroke-linecap="round">
+    <path d="M160 430 h100"/><path d="M480 470 h90"/><path d="M860 440 h110"/><path d="M1020 500 h80"/>
+  </g>
+  <!-- 暮色中的礁岩 -->
+  <path d="M-20 675 L-20 420 L140 380 L300 430 L360 560 L340 675 Z" fill="#3c424e"/>
+  <path d="M1040 675 L1060 520 L1160 480 L1220 520 L1220 675 Z" fill="#31373f"/>
+  <!-- 灯塔塔身（半斜） -->
+  <g transform="rotate(-4 600 675)">
+    <path d="M520 640 L560 220 L660 220 L700 640 Z" fill="url(#ltower)"/>
+    <g fill="#8a4a3a" opacity=".85">
+      <rect x="516" y="560" width="188" height="34" transform="rotate(-1 610 577)"/>
+      <rect x="528" y="430" width="176" height="30" transform="rotate(-1 616 445)"/>
+      <rect x="540" y="310" width="164" height="26" transform="rotate(-1 622 323)"/>
+    </g>
+    <rect x="548" y="180" width="124" height="46" fill="#4c5666"/>
+    <path d="M534 184 L610 128 L686 184 Z" fill="#3c4250"/>
+    <rect x="586" y="226" width="48" height="60" fill="#2c3038"/>
+    <circle cx="610" cy="203" r="26" fill="#f4d98a"/>
+    <circle cx="610" cy="203" r="44" fill="#f4d98a" opacity=".3"/>
+    <circle cx="610" cy="203" r="66" fill="#f4d98a" opacity=".12"/>
+    <rect x="560" y="580" width="40" height="60" fill="#3c3630"/>
+  </g>
+  <!-- 塔基小屋 -->
+  <path d="M760 640 L760 520 L900 520 L900 640 Z" fill="#6a6257"/>
+  <path d="M744 526 L830 470 L916 526 Z" fill="#4a443a"/>
+  <rect x="800" y="560" width="50" height="44" fill="#e8c96a" opacity=".8"/>
+  <!-- 塔光扫过海面 -->
+  <path d="M610 203 L1220 420 L1220 560 Z" fill="#f4d98a" opacity=".08"/>
+  <!-- 崖边枯草与鸥 -->
+  <g stroke="#2c3038" stroke-width="4" fill="none" stroke-linecap="round" opacity=".8">
+    <path d="M420 600 q-8 -30 6 -48"/><path d="M440 604 q4 -26 -8 -44"/><path d="M960 610 q-6 -26 8 -40"/>
+  </g>
+  <g stroke="#dce4ec" stroke-width="4" fill="none" stroke-linecap="round" opacity=".85">
+    <path d="M900 250 q12 -10 24 0 q12 -10 24 0"/><path d="M420 300 q11 -9 22 0 q11 -9 22 0"/>
+  </g>
+  <ellipse cx="600" cy="645" rx="720" ry="36" fill="#0c141c" opacity=".3"/>
+</svg>

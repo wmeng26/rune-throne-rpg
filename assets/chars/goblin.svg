@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="gbg" cx=".5" cy=".38" r=".72">
+      <stop offset="0" stop-color="#2c3624"/><stop offset=".65" stop-color="#1c2418"/><stop offset="1" stop-color="#10140c"/>
+    </radialGradient>
+    <linearGradient id="gskin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a9a4a"/><stop offset="1" stop-color="#52703a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#gbg)"/>
+  <!-- 锈剑 -->
+  <g transform="rotate(18 300 300)">
+    <rect x="294" y="170" width="12" height="150" rx="3" fill="#8a8272"/>
+    <path d="M294 170 L300 128 L306 170 Z" fill="#a89c88"/>
+    <rect x="282" y="318" width="36" height="10" rx="4" fill="#4a3a28"/>
+  </g>
+  <!-- 佝偻身躯 -->
+  <path d="M104 480 Q104 380 152 342 Q200 322 248 342 Q296 380 296 480 Z" fill="#5a6a3a"/>
+  <path d="M132 356 Q200 334 268 356 L262 428 Q200 448 138 428 Z" fill="#6a5a3a"/>
+  <g stroke="#4a3a24" stroke-width="3"><line x1="138" y1="382" x2="262" y2="378"/><line x1="138" y1="408" x2="262" y2="406"/></g>
+  <!-- 骨项链 -->
+  <g fill="#e8e4da"><circle cx="172" cy="352" r="4"/><circle cx="190" cy="348" r="4"/><circle cx="208" cy="348" r="4"/><circle cx="226" cy="352" r="4"/></g>
+  <!-- 颈 -->
+  <rect x="184" y="286" width="32" height="46" fill="#52703a"/>
+  <!-- 头 -->
+  <ellipse cx="200" cy="228" rx="62" ry="56" fill="url(#gskin)"/>
+  <!-- 大尖耳 -->
+  <path d="M138 218 L84 190 L128 250 Z" fill="url(#gskin)"/>
+  <path d="M262 218 L316 190 L272 250 Z" fill="url(#gskin)"/>
+  <path d="M138 222 L102 202 L132 240 Z" fill="#3c5228"/>
+  <path d="M262 222 L298 202 L268 240 Z" fill="#3c5228"/>
+  <!-- 乱发（莫西干） -->
+  <path d="M170 190 L184 120 L196 178 L206 108 L218 178 L230 126 L236 190 Z" fill="#2c3418"/>
+  <!-- 斜眼獠牙 -->
+  <path d="M158 216 q16 -10 34 -2" stroke="#2c3a18" stroke-width="5" fill="none"/>
+  <path d="M210 214 q16 -8 32 2" stroke="#2c3a18" stroke-width="5" fill="none"/>
+  <circle cx="176" cy="228" r="9" fill="#2c3a18"/>
+  <circle cx="176" cy="228" r="4" fill="#e8c040"/>
+  <circle cx="226" cy="228" r="9" fill="#2c3a18"/>
+  <circle cx="226" cy="228" r="4" fill="#e8c040"/>
+  <circle cx="176" cy="228" r="1.6" fill="#101408"/><circle cx="226" cy="228" r="1.6" fill="#101408"/>
+  <!-- 鼻孔与嘴 -->
+  <ellipse cx="192" cy="252" rx="4" ry="3" fill="#3c5228"/><ellipse cx="210" cy="252" rx="4" ry="3" fill="#3c5228"/>
+  <path d="M176 272 Q200 284 226 270" stroke="#2c3a18" stroke-width="4" fill="none"/>
+  <path d="M188 274 l5 10 l5 -10 Z" fill="#e8e4da"/>
+  <path d="M210 272 l5 10 l5 -10 Z" fill="#e8e4da"/>
+  <!-- 疤 -->
+  <path d="M244 196 l16 22" stroke="#3c5228" stroke-width="3"/>
+</svg>

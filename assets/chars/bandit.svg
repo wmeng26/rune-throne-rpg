@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="bbg" cx=".5" cy=".38" r=".72">
+      <stop offset="0" stop-color="#362a22"/><stop offset=".65" stop-color="#241c16"/><stop offset="1" stop-color="#14100c"/>
+    </radialGradient>
+    <linearGradient id="bleather" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5d4a34"/><stop offset="1" stop-color="#3a2e20"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#bbg)"/>
+  <!-- 战斧 -->
+  <g transform="rotate(-14 96 280)">
+    <rect x="90" y="150" width="13" height="280" rx="5" fill="#4a3a28"/>
+    <path d="M62 160 Q96 118 130 160 Q124 206 96 208 Q68 206 62 160 Z" fill="#8d94a3"/>
+    <path d="M62 160 Q96 118 130 160" fill="none" stroke="#c9ccd6" stroke-width="4"/>
+  </g>
+  <!-- 壮硕身躯 -->
+  <path d="M70 480 Q76 366 138 328 Q200 304 262 328 Q324 366 330 480 Z" fill="url(#bleather)"/>
+  <path d="M136 338 Q200 314 264 338 L268 424 Q200 446 132 424 Z" fill="#4a3a28"/>
+  <g stroke="#2c2014" stroke-width="3.4"><line x1="140" y1="366" x2="264" y2="362"/><line x1="138" y1="394" x2="266" y2="392"/></g>
+  <!-- 皮带扣 -->
+  <rect x="182" y="410" width="36" height="22" rx="4" fill="#8d94a3"/>
+  <rect x="190" y="416" width="20" height="10" rx="2" fill="#3a2e20"/>
+  <!-- 肩披黑狼皮 -->
+  <path d="M110 340 Q100 296 140 280 Q180 268 200 280 Q220 268 260 280 Q300 296 290 340 Q240 320 200 328 Q160 320 110 340 Z" fill="#2a2622"/>
+  <g stroke="#1a1714" stroke-width="4" fill="none"><path d="M130 320 q20 10 40 4"/><path d="M230 320 q-20 10 -40 4"/></g>
+  <!-- 颈 -->
+  <rect x="180" y="262" width="40" height="44" fill="#c89868"/>
+  <!-- 头 -->
+  <ellipse cx="200" cy="204" rx="60" ry="64" fill="#d8a878"/>
+  <!-- 乱发 -->
+  <path d="M142 190 Q136 112 200 100 Q264 112 258 190 Q252 148 226 136 Q232 154 220 162 Q204 132 176 144 Q156 154 152 178 Q146 182 142 190 Z" fill="#241a12"/>
+  <!-- 红头巾 -->
+  <path d="M142 168 Q200 142 258 168 L258 148 Q200 124 142 148 Z" fill="#8a3232"/>
+  <path d="M252 160 q28 10 34 36 q-22 -4 -34 -18 Z" fill="#8a3232"/>
+  <!-- 蒙面巾 -->
+  <path d="M156 222 Q200 238 244 222 L248 262 Q200 280 152 262 Z" fill="#8a7a5d"/>
+  <g stroke="#6d5f44" stroke-width="3"><line x1="162" y1="232" x2="242" y2="236"/><line x1="160" y1="246" x2="244" y2="250"/></g>
+  <!-- 眼 -->
+  <path d="M162 194 q12 -8 26 -2" stroke="#241a12" stroke-width="4.4" fill="none"/>
+  <path d="M212 192 q14 -6 26 2" stroke="#241a12" stroke-width="4.4" fill="none"/>
+  <circle cx="176" cy="200" r="4.6" fill="#3a2a1c"/>
+  <circle cx="224" cy="200" r="4.6" fill="#3a2a1c"/>
+  <!-- 眉骨疤 -->
+  <path d="M240 176 l12 14" stroke="#a87858" stroke-width="3"/>
+</svg>

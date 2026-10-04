@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="tbg2" cx=".5" cy=".36" r=".72">
+      <stop offset="0" stop-color="#1c2e44"/><stop offset=".65" stop-color="#122032"/><stop offset="1" stop-color="#0a1420"/>
+    </radialGradient>
+    <linearGradient id="trobe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a2e42"/><stop offset="1" stop-color="#16182a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#tbg2)"/>
+  <!-- 潮汐法杖（左） -->
+  <g transform="rotate(10 100 260)">
+    <rect x="94" y="110" width="12" height="300" rx="5" fill="#3a4a52"/>
+    <path d="M100 110 Q70 80 84 52 Q100 66 100 44 Q114 66 128 52 Q112 82 100 110 Z" fill="#4ac0d8" opacity=".9"/>
+    <circle cx="100" cy="86" r="14" fill="#7ae0e8"/>
+    <circle cx="100" cy="86" r="26" fill="#4ac0d8" opacity=".25"/>
+  </g>
+  <!-- 祭袍下摆（波浪边） -->
+  <path d="M110 480 Q108 340 138 292 L262 292 Q292 340 290 480 L246 480 Q246 452 228 462 Q210 470 200 456 Q190 470 172 462 Q154 452 154 480 Z" fill="url(#trobe)"/>
+  <path d="M138 292 Q200 276 262 292" stroke="#3c5a6e" stroke-width="6" fill="none"/>
+  <!-- 祭袍波纹饰 -->
+  <g stroke="#3c6a7e" stroke-width="4" fill="none" opacity=".9">
+    <path d="M136 350 q16 10 32 0 q16 -10 32 0 q16 10 32 0 q16 -10 32 0"/>
+    <path d="M142 396 q16 10 32 0 q16 -10 32 0 q16 10 32 0"/>
+    <path d="M148 440 q16 10 32 0 q16 -10 32 0"/>
+  </g>
+  <!-- 骨链 -->
+  <g fill="#c9c4b4">
+    <circle cx="176" cy="316" r="5"/><circle cx="192" cy="322" r="5"/><circle cx="208" cy="322" r="5"/><circle cx="224" cy="316" r="5"/>
+    <path d="M184 336 q16 14 32 0" stroke="#c9a227" stroke-width="4" fill="none"/>
+  </g>
+  <!-- 兜帽头 -->
+  <path d="M140 292 Q128 200 200 188 Q272 200 260 292 Q230 306 200 306 Q170 306 140 292 Z" fill="#1e2232"/>
+  <path d="M140 292 Q128 200 200 188" stroke="#3c5a6e" stroke-width="5" fill="none"/>
+  <!-- 兜帽深处的紫眼 -->
+  <ellipse cx="200" cy="248" rx="34" ry="26" fill="#0c0e18"/>
+  <circle cx="188" cy="246" r="7" fill="#a86ae8"/>
+  <circle cx="188" cy="246" r="13" fill="#a86ae8" opacity=".35"/>
+  <circle cx="212" cy="246" r="7" fill="#a86ae8"/>
+  <circle cx="212" cy="246" r="13" fill="#a86ae8" opacity=".35"/>
+  <!-- 环绕的潮水带 -->
+  <path d="M60 420 Q120 396 180 416 Q240 436 300 412 Q340 398 366 414" stroke="#4ac0d8" stroke-width="8" fill="none" opacity=".55" stroke-linecap="round"/>
+  <path d="M80 452 Q140 432 200 448 Q260 464 320 446" stroke="#4ac0d8" stroke-width="6" fill="none" opacity=".35" stroke-linecap="round"/>
+  <!-- 悬浮的水珠 -->
+  <g fill="#7ae0e8" opacity=".85">
+    <circle cx="290" cy="220" r="5"/><circle cx="312" cy="180" r="4"/><circle cx="86" cy="200" r="4"/><circle cx="304" cy="260" r="3.4"/>
+  </g>
+  <!-- 盐雾 -->
+  <g fill="#8ad8e0" opacity=".2">
+    <circle cx="120" cy="140" r="26"/><circle cx="300" cy="120" r="30"/>
+  </g>
+</svg>

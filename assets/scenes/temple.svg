@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="tsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a2340"/><stop offset=".6" stop-color="#2a3358"/><stop offset="1" stop-color="#3c4670"/>
+    </linearGradient>
+    <linearGradient id="pillar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cfd4e2"/><stop offset="1" stop-color="#8d94ac"/>
+    </linearGradient>
+    <radialGradient id="runeGlow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#ffd978" stop-opacity=".95"/><stop offset=".4" stop-color="#e8b84a" stop-opacity=".45"/><stop offset="1" stop-color="#e8b84a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="doorG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a4436"/><stop offset="1" stop-color="#2c2820"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#tsky)"/>
+  <!-- 星空 -->
+  <g fill="#e8ecff">
+    <circle cx="150" cy="80" r="2.2" opacity=".9"/><circle cx="320" cy="130" r="1.8" opacity=".7"/><circle cx="520" cy="60" r="2.4" opacity=".9"/>
+    <circle cx="760" cy="110" r="1.8" opacity=".7"/><circle cx="940" cy="70" r="2.2" opacity=".8"/><circle cx="1100" cy="150" r="1.8" opacity=".6"/>
+    <circle cx="420" cy="180" r="1.5" opacity=".6"/><circle cx="860" cy="190" r="1.5" opacity=".6"/>
+  </g>
+  <!-- 圣殿山体 -->
+  <path d="M0 500 L200 420 L420 480 L640 430 L880 490 L1080 440 L1200 490 L1200 675 L0 675 Z" fill="#262c48"/>
+  <!-- 台阶 -->
+  <g fill="#3a405e">
+    <rect x="330" y="600" width="540" height="18"/><rect x="360" y="582" width="480" height="18"/><rect x="390" y="564" width="420" height="18"/><rect x="420" y="546" width="360" height="18"/>
+  </g>
+  <!-- 圣殿立面 -->
+  <g>
+    <!-- 山花 -->
+    <path d="M400 330 L600 220 L800 330 Z" fill="#4a5070"/>
+    <path d="M415 325 L600 228 L785 325 Z" fill="#5a6184"/>
+    <circle cx="600" cy="290" r="26" fill="#1d2340"/>
+    <circle cx="600" cy="290" r="26" fill="none" stroke="#c9a227" stroke-width="3"/>
+    <circle cx="600" cy="290" r="46" fill="url(#runeGlow)" opacity=".8"/>
+    <!-- 楣梁 -->
+    <rect x="395" y="330" width="410" height="34" fill="#3c4260"/>
+    <!-- 立柱 -->
+    <g>
+      <rect x="415" y="364" width="44" height="240" fill="url(#pillar)"/>
+      <rect x="510" y="364" width="40" height="240" fill="url(#pillar)" opacity=".9"/>
+      <rect x="650" y="364" width="40" height="240" fill="url(#pillar)" opacity=".9"/>
+      <rect x="742" y="364" width="44" height="240" fill="url(#pillar)"/>
+      <g stroke="#6d7490" stroke-width="3" opacity=".7">
+        <line x1="427" y1="368" x2="427" y2="600"/><line x1="443" y1="368" x2="443" y2="600"/>
+        <line x1="755" y1="368" x2="755" y2="600"/><line x1="771" y1="368" x2="771" y2="600"/>
+      </g>
+    </g>
+    <!-- 巨门 -->
+    <rect x="530" y="400" width="140" height="200" fill="url(#doorG)"/>
+    <rect x="530" y="400" width="140" height="200" fill="none" stroke="#c9a227" stroke-width="3" opacity=".8"/>
+    <line x1="600" y1="400" x2="600" y2="600" stroke="#1d1a12" stroke-width="5"/>
+    <!-- 门上三符文 -->
+    <g font-family="Georgia,serif" font-size="34" text-anchor="middle" fill="#ffd978">
+      <circle cx="565" cy="460" r="30" fill="url(#runeGlow)" opacity=".7"/>
+      <text x="565" y="472">☼</text>
+      <circle cx="600" cy="510" r="30" fill="url(#runeGlow)" opacity=".5"/>
+      <text x="600" y="522" opacity=".8">✦</text>
+      <circle cx="635" cy="460" r="30" fill="url(#runeGlow)" opacity=".25"/>
+      <text x="635" y="472" opacity=".45">☾</text>
+    </g>
+  </g>
+  <!-- 两侧石兽灯柱 -->
+  <g>
+    <rect x="330" y="470" width="16" height="130" fill="#3c4260"/>
+    <path d="M338 470 l-14 -30 l28 0 Z" fill="#4a5070"/>
+    <circle cx="338" cy="430" r="14" fill="#ffd978" opacity=".9"/>
+    <circle cx="338" cy="430" r="30" fill="url(#runeGlow)" opacity=".6"/>
+    <rect x="854" y="470" width="16" height="130" fill="#3c4260"/>
+    <path d="M862 470 l-14 -30 l28 0 Z" fill="#4a5070"/>
+    <circle cx="862" cy="430" r="14" fill="#ffd978" opacity=".9"/>
+    <circle cx="862" cy="430" r="30" fill="url(#runeGlow)" opacity=".6"/>
+  </g>
+  <!-- 雾海 -->
+  <g fill="#aeb6d4">
+    <ellipse cx="600" cy="640" rx="700" ry="50" opacity=".16"/>
+    <ellipse cx="380" cy="610" rx="420" ry="30" opacity=".12"/>
+    <ellipse cx="860" cy="620" rx="460" ry="32" opacity=".12"/>
+  </g>
+</svg>

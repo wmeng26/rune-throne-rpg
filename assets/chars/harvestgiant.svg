@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="gbg" cx=".5" cy=".36" r=".74">
+      <stop offset="0" stop-color="#4c4a24"/><stop offset=".65" stop-color="#34331a"/><stop offset="1" stop-color="#1c1c0e"/>
+    </radialGradient>
+    <linearGradient id="gvine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6a7034"/><stop offset="1" stop-color="#3c4220"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#gbg)"/>
+  <!-- 腐香孢子 -->
+  <g fill="#b0a850" opacity=".55">
+    <circle cx="80" cy="140" r="7"/><circle cx="330" cy="120" r="8"/><circle cx="300" cy="230" r="5"/><circle cx="110" cy="260" r="5"/>
+    <circle cx="360" cy="320" r="4"/><circle cx="50" cy="330" r="4"/>
+  </g>
+  <!-- 穗冠（腐烂的金穗头） -->
+  <g transform="translate(200 130)">
+    <path d="M-60 30 Q-70 -40 0 -52 Q70 -40 60 30 Q30 52 0 52 Q-30 52 -60 30 Z" fill="#8a7c2e"/>
+    <g stroke="#4c4214" stroke-width="4" fill="none" opacity=".85">
+      <path d="M-46 -8 Q0 -34 46 -8"/><path d="M-50 18 Q0 -6 50 18"/>
+    </g>
+    <g fill="#c9b23c">
+      <ellipse cx="-34" cy="-18" rx="12" ry="7" transform="rotate(-28 -34 -18)"/>
+      <ellipse cx="0" cy="-26" rx="12" ry="7"/>
+      <ellipse cx="34" cy="-18" rx="12" ry="7" transform="rotate(28 34 -18)"/>
+      <ellipse cx="-22" cy="4" rx="10" ry="6" transform="rotate(-14 -22 4)"/>
+      <ellipse cx="22" cy="4" rx="10" ry="6" transform="rotate(14 22 4)"/>
+    </g>
+    <g fill="#4c4214" opacity=".8">
+      <ellipse cx="-12" cy="-6" rx="9" ry="5" transform="rotate(16 -12 -6)"/>
+      <ellipse cx="26" cy="-24" rx="8" ry="5" transform="rotate(40 26 -24)"/>
+      <ellipse cx="-38" cy="6" rx="8" ry="5" transform="rotate(-44 -38 6)"/>
+    </g>
+    <!-- 冠下的独眼 -->
+    <ellipse cx="0" cy="22" rx="26" ry="16" fill="#100e06"/>
+    <circle cx="0" cy="22" r="8" fill="#e8c040"/>
+    <circle cx="0" cy="22" r="3.4" fill="#100e06"/>
+  </g>
+  <!-- 巨躯（藤蔓与谷壳拼成） -->
+  <path d="M84 480 Q80 350 130 280 L270 280 Q320 350 316 480 Z" fill="url(#gvine)"/>
+  <g stroke="#2c3216" stroke-width="7" fill="none" opacity=".9">
+    <path d="M120 330 Q160 356 200 332 Q240 310 284 334"/>
+    <path d="M108 396 Q152 424 200 398 Q248 374 296 400"/>
+    <path d="M116 448 Q160 472 204 448 Q248 426 292 450"/>
+  </g>
+  <g fill="#c9b23c" opacity=".55">
+    <ellipse cx="150" cy="360" rx="14" ry="7" transform="rotate(-18 150 360)"/>
+    <ellipse cx="240" cy="390" rx="14" ry="7" transform="rotate(20 240 390)"/>
+    <ellipse cx="180" cy="430" rx="13" ry="6" transform="rotate(8 180 430)"/>
+    <ellipse cx="270" cy="440" rx="13" ry="6" transform="rotate(-24 270 440)"/>
+  </g>
+  <!-- 粗壮双臂 -->
+  <path d="M108 300 Q44 350 52 440" stroke="url(#gvine)" stroke-width="42" fill="none" stroke-linecap="round"/>
+  <path d="M52 440 l-16 14 M52 440 l0 22 M52 440 l18 10" stroke="#2c3216" stroke-width="12" stroke-linecap="round"/>
+  <path d="M292 300 Q356 350 348 440" stroke="url(#gvine)" stroke-width="42" fill="none" stroke-linecap="round"/>
+  <path d="M348 440 l16 14 M348 440 l0 22 M348 440 l-18 10" stroke="#2c3216" stroke-width="12" stroke-linecap="round"/>
+  <!-- 藤鞭（甩出） -->
+  <path d="M300 260 Q370 240 380 180" stroke="#5a6428" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <path d="M380 180 l12 -10 M380 180 l16 6" stroke="#5a6428" stroke-width="9" stroke-linecap="round"/>
+  <!-- 饕噬巨口（躯干上） -->
+  <ellipse cx="200" cy="330" rx="34" ry="20" fill="#100e06"/>
+  <path d="M170 326 Q200 348 230 326" stroke="#c9b23c" stroke-width="4" fill="none" opacity=".7"/>
+  <!-- 根须脚 -->
+  <g stroke="#3c4220" stroke-width="14" fill="none" stroke-linecap="round">
+    <path d="M140 470 Q132 440 148 420"/><path d="M200 474 Q200 444 214 426"/><path d="M262 470 Q270 442 254 422"/>
+  </g>
+</svg>

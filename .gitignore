@@ -1,0 +1,7 @@
+# 操作系统 / 编辑器
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# ZCode 本地工具产物（安全扫描历史、报告、hook 状态）
+.mimosa/

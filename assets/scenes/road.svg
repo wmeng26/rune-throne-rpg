@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="dawn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b2440"/><stop offset=".45" stop-color="#7a4a5c"/><stop offset=".75" stop-color="#d98a5a"/><stop offset="1" stop-color="#f2c078"/>
+    </linearGradient>
+    <radialGradient id="sun" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#ffe9b0" stop-opacity=".95"/><stop offset=".35" stop-color="#ffc96e" stop-opacity=".5"/><stop offset="1" stop-color="#ffc96e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#dawn)"/>
+  <circle cx="600" cy="470" r="260" fill="url(#sun)"/>
+  <circle cx="600" cy="470" r="60" fill="#fff0c0"/>
+  <!-- 云霞 -->
+  <g fill="#3a2a48" opacity=".55">
+    <ellipse cx="240" cy="150" rx="260" ry="16"/>
+    <ellipse cx="900" cy="110" rx="300" ry="14"/>
+    <ellipse cx="1050" cy="210" rx="220" ry="12"/>
+    <ellipse cx="180" cy="250" rx="200" ry="11"/>
+  </g>
+  <g fill="#ffb27a" opacity=".5">
+    <ellipse cx="500" cy="300" rx="240" ry="8"/>
+    <ellipse cx="820" cy="330" rx="200" ry="7"/>
+  </g>
+  <!-- 远山 -->
+  <path d="M0 430 L200 340 L380 420 L560 330 L760 425 L940 350 L1100 415 L1200 370 L1200 675 L0 675 Z" fill="#43304e"/>
+  <path d="M0 480 L240 400 L460 470 L700 395 L920 470 L1120 410 L1200 450 L1200 675 L0 675 Z" fill="#322344"/>
+  <!-- 中景丘林 -->
+  <path d="M0 540 Q200 480 430 530 Q660 580 900 520 Q1080 480 1200 530 L1200 675 L0 675 Z" fill="#241a33"/>
+  <g fill="#1a1329">
+    <path d="M120 545 L134 470 L148 545 Z"/><path d="M180 550 L198 455 L216 550 Z"/><path d="M980 525 L996 440 L1012 525 Z"/>
+    <path d="M1050 530 L1064 460 L1078 530 Z"/><path d="M300 545 L312 485 L324 545 Z"/>
+  </g>
+  <!-- 大道 -->
+  <path d="M430 675 Q520 560 570 510 Q600 480 590 462 L640 462 Q680 520 640 590 Q610 640 610 675 Z" fill="#5a4a44"/>
+  <path d="M430 675 Q520 560 570 510 Q600 480 590 462 L640 462 Q680 520 640 590 Q610 640 610 675 Z" fill="none" stroke="#6d5a52" stroke-width="4" opacity=".6"/>
+  <g fill="#4a3c38" opacity=".8">
+    <ellipse cx="540" cy="620" rx="26" ry="6"/><ellipse cx="590" cy="550" rx="20" ry="5"/><ellipse cx="610" cy="500" rx="15" ry="4"/>
+  </g>
+  <!-- 路碑 -->
+  <g transform="translate(680,560)">
+    <rect x="0" y="-52" width="34" height="58" rx="4" fill="#6b6470"/>
+    <rect x="-4" y="-60" width="42" height="14" rx="4" fill="#7d7684"/>
+    <path d="M6 -34 l16 0 m-16 12 l16 0" stroke="#3c3844" stroke-width="3"/>
+  </g>
+  <!-- 飞鸟 -->
+  <g stroke="#241a33" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M760 180 q12 -12 24 0 q12 -12 24 0"/>
+    <path d="M830 220 q10 -10 20 0 q10 -10 20 0"/>
+    <path d="M700 250 q8 -8 16 0 q8 -8 16 0"/>
+  </g>
+</svg>

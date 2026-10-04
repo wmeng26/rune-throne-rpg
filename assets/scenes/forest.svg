@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="fsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#16302e"/><stop offset=".55" stop-color="#122a2c"/><stop offset="1" stop-color="#0b1a1c"/>
+    </linearGradient>
+    <linearGradient id="ray" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cfe8c9" stop-opacity=".28"/><stop offset="1" stop-color="#cfe8c9" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#fsky)"/>
+  <!-- 光柱 -->
+  <g>
+    <path d="M300 0 L420 0 L520 675 L340 675 Z" fill="url(#ray)"/>
+    <path d="M700 0 L800 0 L960 675 L800 675 Z" fill="url(#ray)" opacity=".7"/>
+    <path d="M1000 0 L1060 0 L1140 675 L1040 675 Z" fill="url(#ray)" opacity=".55"/>
+  </g>
+  <!-- 最远树影 -->
+  <g fill="#16383a" opacity=".8">
+    <path d="M60 675 L80 260 L96 320 L110 210 L128 340 L142 280 L156 675 Z"/>
+    <path d="M540 675 L560 300 L576 350 L590 240 L606 360 L620 310 L634 675 Z"/>
+    <path d="M860 675 L878 280 L894 330 L908 220 L924 350 L938 300 L952 675 Z"/>
+  </g>
+  <!-- 中景树 -->
+  <g fill="#0e2426">
+    <path d="M180 675 L196 120 L214 200 L232 90 L252 230 L270 170 L288 675 Z"/>
+    <path d="M420 675 L436 180 L452 250 L470 140 L488 280 L506 230 L522 675 Z"/>
+    <path d="M950 675 L966 100 L984 190 L1002 70 L1022 220 L1040 160 L1058 675 Z"/>
+  </g>
+  <!-- 近景大树（框景） -->
+  <g fill="#08181a">
+    <path d="M-20 675 L30 40 L96 0 L150 0 L120 60 L88 120 L110 675 Z"/>
+    <path d="M1080 675 L1120 80 L1170 0 L1220 0 L1240 140 L1200 300 L1240 675 Z"/>
+    <path d="M60 240 q-60 -40 -40 -100 q40 30 52 70 Z"/>
+    <path d="M1160 300 q70 -50 60 -120 q-50 40 -70 90 Z"/>
+  </g>
+  <!-- 垂藤 -->
+  <g stroke="#08181a" stroke-width="5" fill="none" opacity=".9">
+    <path d="M70 60 q10 80 -6 160 q-8 40 4 80"/>
+    <path d="M120 90 q-6 90 10 170"/>
+    <path d="M1120 70 q-10 90 6 180 q6 36 -2 70"/>
+  </g>
+  <!-- 小径 -->
+  <path d="M470 675 Q560 560 620 480 Q660 430 640 400 L700 400 Q720 460 660 560 Q610 640 600 675 Z" fill="#1c3030"/>
+  <g fill="#122224" opacity=".8">
+    <ellipse cx="580" cy="600" rx="34" ry="8"/><ellipse cx="640" cy="520" rx="28" ry="7"/><ellipse cx="650" cy="450" rx="22" ry="6"/>
+  </g>
+  <!-- 萤光 -->
+  <g fill="#d8f0a8">
+    <circle cx="360" cy="420" r="3.4" opacity=".9"/><circle cx="420" cy="330" r="2.6" opacity=".7"/><circle cx="820" cy="380" r="3" opacity=".8"/>
+    <circle cx="900" cy="300" r="2.4" opacity=".6"/><circle cx="520" cy="250" r="2.2" opacity=".6"/><circle cx="740" cy="520" r="2.8" opacity=".7"/>
+  </g>
+  <!-- 雾带 -->
+  <g fill="#c9dcd4">
+    <ellipse cx="600" cy="520" rx="640" ry="34" opacity=".12"/>
+    <ellipse cx="420" cy="580" rx="520" ry="28" opacity=".10"/>
+    <ellipse cx="820" cy="640" rx="600" ry="26" opacity=".10"/>
+    <ellipse cx="600" cy="220" rx="700" ry="24" opacity=".08"/>
+  </g>
+</svg>

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="csky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2e4460"/><stop offset=".6" stop-color="#5a7291"/><stop offset="1" stop-color="#8fa5b8"/>
+    </linearGradient>
+    <linearGradient id="stone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d9dce2"/><stop offset="1" stop-color="#9aa2af"/>
+    </linearGradient>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3d5c8f"/><stop offset="1" stop-color="#27406b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#csky)"/>
+  <g fill="#ffffff" opacity=".5">
+    <ellipse cx="260" cy="110" rx="180" ry="20"/><ellipse cx="820" cy="80" rx="220" ry="16"/><ellipse cx="1060" cy="170" rx="160" ry="14"/>
+  </g>
+  <!-- 背后山崖 -->
+  <path d="M0 300 L160 140 L300 260 L430 180 L560 300 L1200 300 L1200 675 L0 675 Z" fill="#5d7188" opacity=".7"/>
+  <path d="M700 300 L840 120 L980 240 L1080 160 L1200 300 Z" fill="#4d6076" opacity=".8"/>
+  <!-- 城堡主体 -->
+  <g>
+    <!-- 中央主堡 -->
+    <rect x="470" y="200" width="260" height="380" fill="url(#stone)"/>
+    <path d="M450 210 L600 90 L750 210 Z" fill="url(#roof)"/>
+    <path d="M450 210 L600 90 L750 210 Z" fill="none" stroke="#1f3358" stroke-width="6"/>
+    <line x1="600" y1="90" x2="600" y2="40" stroke="#1f3358" stroke-width="6"/>
+    <path d="M600 40 L648 52 L600 66 Z" fill="#c9a227"/>
+    <!-- 城齿 -->
+    <g fill="url(#stone)" stroke="#8a93a3" stroke-width="2">
+      <rect x="470" y="188" width="30" height="26"/><rect x="516" y="188" width="30" height="26"/><rect x="562" y="188" width="30" height="26"/><rect x="608" y="188" width="30" height="26"/><rect x="654" y="188" width="30" height="26"/><rect x="700" y="188" width="30" height="26"/>
+    </g>
+    <!-- 侧塔 -->
+    <g>
+      <rect x="360" y="280" width="110" height="300" fill="url(#stone)"/>
+      <path d="M348 288 L415 190 L482 288 Z" fill="url(#roof)"/>
+      <rect x="730" y="280" width="110" height="300" fill="url(#stone)"/>
+      <path d="M718 288 L785 190 L852 288 Z" fill="url(#roof)"/>
+    </g>
+    <!-- 窗 -->
+    <g fill="#2a3a55">
+      <path d="M585 300 q15 -22 30 0 v50 h-30 Z"/><path d="M585 420 q15 -22 30 0 v50 h-30 Z"/>
+      <path d="M405 330 q12 -18 24 0 v42 h-24 Z"/><path d="M771 330 q12 -18 24 0 v42 h-24 Z"/>
+      <path d="M405 440 q12 -18 24 0 v42 h-24 Z"/><path d="M771 440 q12 -18 24 0 v42 h-24 Z"/>
+    </g>
+    <!-- 城门与吊桥 -->
+    <path d="M552 580 L552 500 Q600 460 648 500 L648 580 Z" fill="#3a2f22"/>
+    <g stroke="#241c12" stroke-width="4"><line x1="566" y1="500" x2="566" y2="580"/><line x1="600" y1="478" x2="600" y2="580"/><line x1="634" y1="500" x2="634" y2="580"/><line x1="552" y1="520" x2="648" y2="520"/><line x1="552" y1="545" x2="648" y2="545"/><line x1="552" y1="568" x2="648" y2="568"/></g>
+    <!-- 旗帜 -->
+    <g>
+      <line x1="415" y1="190" x2="415" y2="140" stroke="#1f3358" stroke-width="5"/>
+      <path d="M415 140 L462 152 L415 166 Z" fill="#c9a227"/>
+      <line x1="785" y1="190" x2="785" y2="150" stroke="#1f3358" stroke-width="5"/>
+      <path d="M785 150 L830 161 L785 173 Z" fill="#c9a227"/>
+    </g>
+  </g>
+  <!-- 城墙延伸 -->
+  <g fill="url(#stone)" stroke="#8a93a3" stroke-width="2">
+    <rect x="0" y="430" width="360" height="180"/>
+    <rect x="840" y="430" width="360" height="180"/>
+  </g>
+  <g fill="#aab2c0">
+    <rect x="30" y="412" width="26" height="22"/><rect x="80" y="412" width="26" height="22"/><rect x="130" y="412" width="26" height="22"/><rect x="180" y="412" width="26" height="22"/><rect x="230" y="412" width="26" height="22"/><rect x="280" y="412" width="26" height="22"/>
+    <rect x="870" y="412" width="26" height="22"/><rect x="920" y="412" width="26" height="22"/><rect x="970" y="412" width="26" height="22"/><rect x="1020" y="412" width="26" height="22"/><rect x="1070" y="412" width="26" height="22"/><rect x="1120" y="412" width="26" height="22"/>
+  </g>
+  <!-- 前景石阶大道 -->
+  <path d="M520 675 Q560 620 600 580 L600 580 Q640 620 680 675 Z" fill="#7d8494"/>
+  <!-- 市集摊棚 -->
+  <g>
+    <path d="M120 610 L200 610 L220 560 L100 560 Z" fill="#8a4a3a"/>
+    <path d="M120 610 L200 610 L220 560 L100 560 Z" fill="none" stroke="#5d3327" stroke-width="4"/>
+    <rect x="130" y="610" width="8" height="40" fill="#5d3327"/><rect x="190" y="610" width="8" height="40" fill="#5d3327"/>
+    <path d="M990 610 L1070 610 L1090 560 L970 560 Z" fill="#3a5d4a"/>
+    <path d="M990 610 L1070 610 L1090 560 L970 560 Z" fill="none" stroke="#27453a" stroke-width="4"/>
+    <rect x="1000" y="610" width="8" height="40" fill="#27453a"/><rect x="1060" y="610" width="8" height="40" fill="#27453a"/>
+  </g>
+  <!-- 白鸽 -->
+  <g fill="#f2f4f8">
+    <path d="M300 350 q14 -14 28 0 q-14 6 -28 0 Z"/>
+    <path d="M880 310 q12 -12 24 0 q-12 6 -24 0 Z"/>
+  </g>
+</svg>

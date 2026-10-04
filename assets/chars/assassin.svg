@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="sbg" cx=".5" cy=".38" r=".72">
+      <stop offset="0" stop-color="#241830"/><stop offset=".65" stop-color="#160e20"/><stop offset="1" stop-color="#0c0714"/>
+    </radialGradient>
+    <linearGradient id="swrap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e1a28"/><stop offset="1" stop-color="#100c18"/>
+    </linearGradient>
+    <radialGradient id="seye" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#ff8a5c"/><stop offset="1" stop-color="#ff8a5c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#sbg)"/>
+  <!-- 匕首（双持，交叉于胸前） -->
+  <g>
+    <g transform="rotate(-32 150 330)">
+      <rect x="145" y="230" width="9" height="90" rx="3" fill="#b8bfd0"/>
+      <path d="M149 230 L154 196 L159 230 Z" fill="#dfe4ee"/>
+      <rect x="136" y="318" width="27" height="8" rx="3" fill="#3a2a1c"/>
+    </g>
+    <g transform="rotate(32 250 330)">
+      <rect x="246" y="230" width="9" height="90" rx="3" fill="#b8bfd0"/>
+      <path d="M250 230 L255 196 L260 230 Z" fill="#dfe4ee"/>
+      <rect x="237" y="318" width="27" height="8" rx="3" fill="#3a2a1c"/>
+    </g>
+  </g>
+  <!-- 紧束的身形 -->
+  <path d="M92 480 Q100 372 148 336 Q200 314 252 336 Q300 372 308 480 Z" fill="url(#swrap)"/>
+  <!-- 缠布纹 -->
+  <g stroke="#2c2638" stroke-width="3" fill="none" opacity=".9">
+    <path d="M120 380 q40 14 80 0 q40 -14 80 0"/>
+    <path d="M112 420 q44 16 88 0 q44 -16 88 0"/>
+  </g>
+  <!-- 颈（缠布） -->
+  <rect x="182" y="258" width="36" height="40" fill="#181420"/>
+  <g stroke="#2c2638" stroke-width="3"><line x1="182" y1="268" x2="218" y2="268"/><line x1="182" y1="280" x2="218" y2="280"/></g>
+  <!-- 蒙面头 -->
+  <ellipse cx="200" cy="200" rx="58" ry="64" fill="url(#swrap)"/>
+  <!-- 白色骨面具：上半 -->
+  <path d="M146 196 Q146 122 200 112 Q254 122 254 196 Q254 210 240 214 L160 214 Q146 210 146 196 Z" fill="#e8e4da"/>
+  <path d="M146 196 Q146 122 200 112 Q254 122 254 196 Q254 210 240 214 L160 214 Q146 210 146 196 Z" fill="none" stroke="#b8b4a8" stroke-width="3"/>
+  <!-- 面具裂纹 -->
+  <path d="M172 132 L188 168 L178 196" stroke="#a8a498" stroke-width="2.4" fill="none"/>
+  <!-- 红眼缝 -->
+  <ellipse cx="176" cy="182" rx="14" ry="5" fill="#180c0c"/>
+  <ellipse cx="224" cy="182" rx="14" ry="5" fill="#180c0c"/>
+  <circle cx="177" cy="182" r="4.4" fill="#ff5a3c"/>
+  <circle cx="223" cy="182" r="4.4" fill="#ff5a3c"/>
+  <circle cx="177" cy="182" r="8" fill="url(#seye)" opacity=".8"/>
+  <circle cx="223" cy="182" r="8" fill="url(#seye)" opacity=".8"/>
+  <!-- 布巾下半脸 -->
+  <path d="M158 214 Q200 226 242 214 L246 246 Q200 262 154 246 Z" fill="#262230"/>
+  <g stroke="#38324a" stroke-width="3"><line x1="164" y1="222" x2="240" y2="226"/><line x1="162" y1="234" x2="242" y2="238"/></g>
+  <!-- 兜帽缘 -->
+  <path d="M132 240 Q118 122 200 104 Q282 122 268 240 Q262 176 230 148 Q214 134 200 134 Q186 134 170 148 Q138 176 132 240 Z" fill="none" stroke="#2c2638" stroke-width="6"/>
+</svg>

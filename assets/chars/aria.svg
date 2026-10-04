@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="abg" cx=".5" cy=".38" r=".72">
+      <stop offset="0" stop-color="#2a3a4a"/><stop offset=".65" stop-color="#1a2634"/><stop offset="1" stop-color="#0f1620"/>
+    </radialGradient>
+    <linearGradient id="arobe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a4a72"/><stop offset="1" stop-color="#232c4c"/>
+    </linearGradient>
+    <radialGradient id="starG" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#a8e6ff" stop-opacity=".95"/><stop offset=".5" stop-color="#6ab8e8" stop-opacity=".4"/><stop offset="1" stop-color="#6ab8e8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#abg)"/>
+  <!-- 星点 -->
+  <g fill="#cfe8ff"><circle cx="80" cy="90" r="2.2"/><circle cx="320" cy="70" r="1.8"/><circle cx="350" cy="160" r="2.4"/><circle cx="60" cy="200" r="1.8"/><circle cx="300" cy="30" r="1.6"/></g>
+  <!-- 法杖 -->
+  <g>
+    <rect x="316" y="120" width="10" height="330" rx="4" fill="#5a4632" transform="rotate(6 321 285)"/>
+    <circle cx="326" cy="108" r="26" fill="url(#starG)"/>
+    <path d="M326 86 l6 15 16 1 -12 11 4 16 -14 -9 -14 9 4 -16 -12 -11 16 -1 Z" fill="#cfeeff"/>
+  </g>
+  <!-- 长袍与肩 -->
+  <path d="M70 480 Q80 350 140 318 Q200 296 260 318 Q320 350 330 480 Z" fill="url(#arobe)"/>
+  <path d="M70 480 Q80 350 140 318 L150 330 Q100 370 92 480 Z" fill="#8d94b8" opacity=".6"/>
+  <!-- 星纹披领 -->
+  <path d="M140 318 Q200 296 260 318 L252 344 Q200 324 148 344 Z" fill="#c9a227" opacity=".85"/>
+  <g fill="#eef4ff"><circle cx="180" cy="332" r="2.6"/><circle cx="210" cy="330" r="2.6"/><circle cx="236" cy="336" r="2.2"/></g>
+  <!-- 颈与头 -->
+  <rect x="184" y="254" width="32" height="40" fill="#e8c2a2"/>
+  <ellipse cx="200" cy="202" rx="58" ry="66" fill="#f0d0b0"/>
+  <!-- 尖耳 -->
+  <path d="M142 196 l-20 -14 l6 26 Z" fill="#f0d0b0"/>
+  <path d="M258 196 l20 -14 l-6 26 Z" fill="#f0d0b0"/>
+  <!-- 银发 -->
+  <path d="M134 210 Q118 108 200 96 Q282 108 266 210 Q262 156 232 140 Q240 160 226 170 Q210 132 172 146 Q152 156 150 184 Q140 190 134 210 Z" fill="#d8dce8"/>
+  <path d="M134 200 Q112 280 128 360 Q140 380 150 366 Q134 290 146 216 Z" fill="#d8dce8"/>
+  <path d="M266 200 Q290 280 274 358 Q262 378 252 364 Q268 290 254 216 Z" fill="#d8dce8"/>
+  <!-- 额饰 -->
+  <path d="M158 156 Q200 138 242 156" stroke="#c9a227" stroke-width="4" fill="none"/>
+  <path d="M200 138 l5 10 -5 10 -5 -10 Z" fill="#a8e6ff"/>
+  <!-- 五官 -->
+  <g>
+    <path d="M170 194 q9 -7 20 0" stroke="#7a8494" stroke-width="3.4" fill="none"/>
+    <path d="M212 194 q9 -7 20 0" stroke="#7a8494" stroke-width="3.4" fill="none"/>
+    <circle cx="180" cy="203" r="4.6" fill="#4a8a6a"/>
+    <circle cx="222" cy="203" r="4.6" fill="#4a8a6a"/>
+    <circle cx="180" cy="203" r="1.6" fill="#0c1418"/><circle cx="222" cy="203" r="1.6" fill="#0c1418"/>
+    <path d="M194 224 q7 5 13 0" stroke="#c88a72" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- 护符 -->
+  <circle cx="200" cy="368" r="12" fill="#1a2438" stroke="#6ab8e8" stroke-width="3"/>
+  <path d="M200 358 l3 7 7 1 -5 5 1 7 -6 -4 -6 4 1 -7 -5 -5 7 -1 Z" fill="#a8e6ff"/>
+</svg>

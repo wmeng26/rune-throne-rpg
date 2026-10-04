@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="udeep" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e2a3a"/><stop offset=".55" stop-color="#123c52"/><stop offset="1" stop-color="#0a2230"/>
+    </linearGradient>
+    <linearGradient id="upillar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3c6a7e"/><stop offset="1" stop-color="#1c3a4c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#udeep)"/>
+  <!-- 神殿穹顶与光尘 -->
+  <g fill="#8ad8e0" opacity=".2">
+    <circle cx="240" cy="160" r="3.4"/><circle cx="420" cy="110" r="2.6"/><circle cx="660" cy="180" r="3"/><circle cx="900" cy="130" r="3.4"/><circle cx="1060" cy="220" r="2.6"/>
+    <circle cx="340" cy="260" r="2.4"/><circle cx="760" cy="280" r="2.6"/><circle cx="980" cy="330" r="2.2"/>
+  </g>
+  <!-- 大殿立柱 -->
+  <g>
+    <path d="M120 675 L140 160 L230 160 L250 675 Z" fill="url(#upillar)"/>
+    <rect x="112" y="130" width="146" height="38" fill="#2c5568"/>
+    <path d="M950 675 L970 160 L1060 160 L1080 675 Z" fill="url(#upillar)"/>
+    <rect x="942" y="130" width="146" height="38" fill="#2c5568"/>
+    <path d="M380 675 L394 240 L456 240 L470 675 Z" fill="#245062"/>
+    <path d="M730 675 L744 240 L806 240 L820 675 Z" fill="#245062"/>
+  </g>
+  <!-- 柱身刻纹（波浪纹） -->
+  <g stroke="#0e2836" stroke-width="4" fill="none" opacity=".8">
+    <path d="M150 300 q18 12 36 0 q18 -12 36 0"/><path d="M150 380 q18 12 36 0 q18 -12 36 0"/><path d="M150 460 q18 12 36 0 q18 -12 36 0"/>
+    <path d="M980 300 q18 12 36 0 q18 -12 36 0"/><path d="M980 380 q18 12 36 0 q18 -12 36 0"/><path d="M980 460 q18 12 36 0 q18 -12 36 0"/>
+  </g>
+  <!-- 大门轮廓（深处） -->
+  <path d="M520 675 L520 300 Q600 240 680 300 L680 675 Z" fill="#0a1c28"/>
+  <path d="M520 675 L520 300 Q600 240 680 300 L680 675 Z" fill="none" stroke="#2c6a80" stroke-width="6"/>
+  <circle cx="600" cy="420" r="34" fill="none" stroke="#3c8aa0" stroke-width="5"/>
+  <circle cx="600" cy="420" r="12" fill="#4ac0d8" opacity=".8"/>
+  <!-- 殿前海水（退潮后的浅洼） -->
+  <path d="M-20 675 L-20 600 Q200 570 420 596 Q600 616 820 592 Q1040 570 1220 600 L1220 675 Z" fill="#164054" opacity=".9"/>
+  <g stroke="#5ac0d4" stroke-width="3" opacity=".45" fill="none" stroke-linecap="round">
+    <path d="M180 630 h90"/><path d="M500 644 h110"/><path d="M820 626 h90"/>
+  </g>
+  <!-- 圣所蓝光 -->
+  <circle cx="600" cy="420" r="90" fill="#4ac0d8" opacity=".12"/>
+  <circle cx="600" cy="420" r="150" fill="#4ac0d8" opacity=".06"/>
+  <!-- 沉沙与贝壳 -->
+  <g fill="#3c6a7c" opacity=".8">
+    <ellipse cx="300" cy="660" rx="26" ry="6"/><ellipse cx="900" cy="664" rx="30" ry="7"/>
+  </g>
+  <ellipse cx="600" cy="660" rx="700" ry="26" fill="#04101a" opacity=".4"/>
+</svg>

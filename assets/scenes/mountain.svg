@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="msky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a3350"/><stop offset=".55" stop-color="#595070"/><stop offset="1" stop-color="#7d7490"/>
+    </linearGradient>
+    <linearGradient id="peak" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8ecf5"/><stop offset=".5" stop-color="#aeb6cc"/><stop offset="1" stop-color="#6d7490"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#msky)"/>
+  <!-- 主峰群 -->
+  <g>
+    <path d="M120 400 L380 90 L640 400 Z" fill="url(#peak)"/>
+    <path d="M380 90 L430 160 L400 175 L470 260 L380 300 Z" fill="#f4f7fc"/>
+    <path d="M480 400 L760 60 L1040 400 Z" fill="url(#peak)"/>
+    <path d="M760 60 L820 150 L780 160 L850 250 L760 290 Z" fill="#f4f7fc"/>
+    <path d="M0 430 L180 250 L400 430 Z" fill="#8a90ab"/>
+    <path d="M840 430 L1040 230 L1200 430 Z" fill="#8a90ab"/>
+  </g>
+  <!-- 云带 -->
+  <g fill="#c9c4d8" opacity=".6">
+    <ellipse cx="380" cy="200" rx="220" ry="16"/><ellipse cx="820" cy="150" rx="260" ry="18"/><ellipse cx="200" cy="300" rx="200" ry="12"/>
+  </g>
+  <!-- 隘口两侧峭壁 -->
+  <g>
+    <path d="M-20 675 L-20 200 L120 160 L240 240 L300 380 L280 675 Z" fill="#3c3a52"/>
+    <path d="M-20 200 L120 160 L240 240 L300 380 L260 675 L-20 675 Z" fill="none" stroke="#2c2a3e" stroke-width="8"/>
+    <path d="M1220 675 L1220 180 L1080 150 L950 230 L900 380 L920 675 Z" fill="#3c3a52"/>
+    <path d="M1220 180 L1080 150 L950 230 L900 380 L940 675 L1220 675 Z" fill="none" stroke="#2c2a3e" stroke-width="8"/>
+    <!-- 岩缝 -->
+    <g stroke="#2c2a3e" stroke-width="4" opacity=".8" fill="none">
+      <path d="M60 300 l40 30 l-20 50 l50 40"/>
+      <path d="M1000 280 l-40 40 l30 40 l-40 50"/>
+    </g>
+  </g>
+  <!-- 雪路 -->
+  <path d="M440 675 Q540 560 580 500 Q600 470 596 440 L656 440 Q680 520 640 590 Q610 640 610 675 Z" fill="#d8dce8"/>
+  <path d="M440 675 Q540 560 580 500 Q600 470 596 440 L656 440 Q680 520 640 590 Q610 640 610 675 Z" fill="none" stroke="#b8bfd4" stroke-width="4"/>
+  <g fill="#c2c9dd">
+    <ellipse cx="520" cy="620" rx="30" ry="7"/><ellipse cx="580" cy="540" rx="24" ry="6"/><ellipse cx="610" cy="480" rx="18" ry="5"/>
+  </g>
+  <!-- 路边旗杆（风雪中的旧路标） -->
+  <g>
+    <line x1="700" y1="470" x2="700" y2="360" stroke="#2c2a3e" stroke-width="7"/>
+    <path d="M700 360 L748 372 L700 386 Z" fill="#5a4a6e"/>
+  </g>
+  <!-- 冻毙的孤树 -->
+  <g stroke="#26243a" stroke-width="9" fill="none" stroke-linecap="round">
+    <path d="M360 640 L360 520 M360 560 L320 510 M360 540 L400 480 M320 510 L296 470 M400 480 L430 430"/>
+  </g>
+  <!-- 风雪 -->
+  <g fill="#eef1f8">
+    <circle cx="150" cy="120" r="3.4" opacity=".9"/><circle cx="300" cy="220" r="2.6" opacity=".8"/><circle cx="500" cy="150" r="3" opacity=".85"/>
+    <circle cx="700" cy="90" r="2.4" opacity=".7"/><circle cx="900" cy="200" r="3.2" opacity=".85"/><circle cx="1080" cy="130" r="2.8" opacity=".8"/>
+    <circle cx="240" cy="420" r="3" opacity=".7"/><circle cx="420" cy="330" r="2.4" opacity=".7"/><circle cx="640" cy="280" r="2.8" opacity=".7"/>
+    <circle cx="840" cy="360" r="3" opacity=".7"/><circle cx="1020" cy="300" r="2.6" opacity=".7"/><circle cx="740" cy="440" r="2.6" opacity=".6"/>
+    <circle cx="360" cy="470" r="2.4" opacity=".6"/><circle cx="940" cy="440" r="2.8" opacity=".6"/><circle cx="560" cy="360" r="2.2" opacity=".6"/>
+  </g>
+  <!-- 雾 -->
+  <ellipse cx="600" cy="600" rx="700" ry="60" fill="#c9c4d8" opacity=".18"/>
+  <ellipse cx="600" cy="500" rx="560" ry="36" fill="#c9c4d8" opacity=".14"/>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="cbg" cx=".5" cy=".38" r=".72">
+      <stop offset="0" stop-color="#3a3a46"/><stop offset=".65" stop-color="#26262f"/><stop offset="1" stop-color="#16161d"/>
+    </radialGradient>
+    <linearGradient id="crobe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#565a68"/><stop offset="1" stop-color="#33353f"/>
+    </linearGradient>
+    <radialGradient id="orbG" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#ffe9a8" stop-opacity=".95"/><stop offset=".5" stop-color="#e8c96a" stop-opacity=".4"/><stop offset="1" stop-color="#e8c96a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#cbg)"/>
+  <!-- 木杖 -->
+  <g>
+    <rect x="312" y="110" width="11" height="350" rx="5" fill="#5a4a38" transform="rotate(5 317 285)"/>
+    <circle cx="322" cy="102" r="34" fill="url(#orbG)"/>
+    <circle cx="322" cy="102" r="15" fill="#f2dfa0"/>
+    <circle cx="322" cy="102" r="15" fill="none" stroke="#c9a227" stroke-width="3"/>
+  </g>
+  <!-- 灰袍 -->
+  <path d="M62 480 Q74 356 138 322 Q200 300 262 322 Q326 356 338 480 Z" fill="url(#crobe)"/>
+  <path d="M62 480 Q74 356 138 322 L150 336 Q98 378 88 480 Z" fill="#7a7e8c" opacity=".55"/>
+  <!-- 兜帽 -->
+  <path d="M132 250 Q118 128 200 112 Q282 128 268 250 Q258 210 236 192 Q214 178 200 178 Q186 178 164 192 Q142 210 132 250 Z" fill="#454855"/>
+  <path d="M132 250 Q118 128 200 112 Q282 128 268 250 Q272 200 250 168 Q226 136 200 134 Q174 136 150 168 Q128 200 132 250 Z" fill="none" stroke="#5d6170" stroke-width="5"/>
+  <!-- 面部阴影中的脸 -->
+  <ellipse cx="200" cy="208" rx="52" ry="58" fill="#e0bc9a"/>
+  <ellipse cx="200" cy="208" rx="52" ry="58" fill="#2c2c38" opacity=".28"/>
+  <!-- 白须 -->
+  <path d="M152 232 Q150 330 176 372 Q200 392 224 372 Q250 330 248 232 Q232 268 200 270 Q168 268 152 232 Z" fill="#e8e6e0"/>
+  <path d="M152 232 Q160 250 172 254 M248 232 Q240 250 228 254" stroke="#c9c7c0" stroke-width="4" fill="none"/>
+  <path d="M186 340 q14 10 28 0" stroke="#c9c7c0" stroke-width="3" fill="none"/>
+  <!-- 白眉 -->
+  <path d="M164 192 q14 -10 30 -2" stroke="#e8e6e0" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M208 190 q16 -8 30 2" stroke="#e8e6e0" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- 锐利双眼 -->
+  <circle cx="180" cy="206" r="5" fill="#3a4a5a"/>
+  <circle cx="220" cy="206" r="5" fill="#3a4a5a"/>
+  <circle cx="180" cy="206" r="1.6" fill="#0c0c12"/><circle cx="220" cy="206" r="1.6" fill="#0c0c12"/>
+  <!-- 颈与护符 -->
+  <rect x="182" y="262" width="36" height="36" fill="#d8b088"/>
+  <circle cx="200" cy="318" r="13" fill="#1e2028" stroke="#c9a227" stroke-width="3"/>
+  <path d="M200 310 l3 6 7 1 -5 5 1 7 -6 -4 -6 4 1 -7 -5 -5 7 -1 Z" fill="#e8c96a"/>
+  <!-- 腰带书卷 -->
+  <rect x="150" y="404" width="100" height="18" rx="4" fill="#2c2e38"/>
+  <rect x="176" y="400" width="48" height="26" rx="4" fill="#8a6a48" stroke="#5a4632" stroke-width="3"/>
+  <line x1="200" y1="400" x2="200" y2="426" stroke="#5a4632" stroke-width="3"/>
+</svg>

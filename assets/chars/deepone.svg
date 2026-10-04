@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="dbgb" cx=".5" cy=".4" r=".72">
+      <stop offset="0" stop-color="#20323a"/><stop offset=".65" stop-color="#16242c"/><stop offset="1" stop-color="#0c161c"/>
+    </radialGradient>
+    <linearGradient id="dskin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5a7a6a"/><stop offset="1" stop-color="#33484a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#dbgb)"/>
+  <!-- 水迹 -->
+  <g stroke="#5a8a8a" stroke-width="4" opacity=".4" fill="none" stroke-linecap="round">
+    <path d="M80 300 q-8 26 6 44"/><path d="M320 280 q10 24 -4 42"/><path d="M120 420 q-6 20 8 34"/>
+  </g>
+  <!-- 长臂（左） -->
+  <path d="M110 260 Q60 320 70 396 Q76 434 104 448" stroke="url(#dskin)" stroke-width="30" fill="none" stroke-linecap="round"/>
+  <path d="M104 448 l-16 18 M104 448 l4 22 M104 448 l20 14" stroke="#33484a" stroke-width="10" stroke-linecap="round"/>
+  <!-- 长臂（右，抬爪） -->
+  <path d="M296 240 Q350 300 340 380" stroke="url(#dskin)" stroke-width="30" fill="none" stroke-linecap="round"/>
+  <path d="M340 380 l14 -12 M340 380 l18 4 M340 380 l10 20" stroke="#33484a" stroke-width="10" stroke-linecap="round"/>
+  <!-- 躯干（鳃胁） -->
+  <path d="M120 480 Q116 360 160 320 L240 320 Q284 360 280 480 Z" fill="url(#dskin)"/>
+  <g stroke="#22343a" stroke-width="5" fill="none" opacity=".9">
+    <path d="M150 350 q-10 20 -4 44"/><path d="M166 344 q-10 24 -4 52"/><path d="M250 350 q10 20 4 44"/><path d="M234 344 q10 24 4 52"/>
+  </g>
+  <!-- 颈与头 -->
+  <rect x="180" y="270" width="40" height="50" fill="#4a685c"/>
+  <path d="M150 270 Q148 180 200 172 Q252 180 250 270 Q224 288 200 288 Q176 288 150 270 Z" fill="url(#dskin)"/>
+  <!-- 鳃盖 -->
+  <path d="M154 226 q-12 22 -4 44 q10 4 18 0" stroke="#22343a" stroke-width="5" fill="none"/>
+  <path d="M246 226 q12 22 4 44 q-10 4 -18 0" stroke="#22343a" stroke-width="5" fill="none"/>
+  <!-- 死鱼白眼 -->
+  <g>
+    <ellipse cx="176" cy="228" rx="17" ry="13" fill="#dce4e0"/>
+    <ellipse cx="224" cy="228" rx="17" ry="13" fill="#dce4e0"/>
+    <circle cx="176" cy="228" r="4" fill="#1c2a30"/>
+    <circle cx="224" cy="228" r="4" fill="#1c2a30"/>
+  </g>
+  <!-- 宽嘴细牙 -->
+  <path d="M168 258 Q200 272 232 258" stroke="#1c2a30" stroke-width="6" fill="none"/>
+  <g fill="#dce4e0">
+    <path d="M180 261 l4 8 l4 -8 Z"/><path d="M194 264 l4 8 l4 -8 Z"/><path d="M208 264 l4 8 l4 -8 Z"/><path d="M222 261 l4 8 l4 -8 Z"/>
+  </g>
+  <!-- 头顶鳍冠 -->
+  <path d="M170 176 Q200 128 230 176 L222 172 Q200 148 178 172 Z" fill="#22343a"/>
+  <path d="M186 168 Q200 140 214 168 L206 164 Q200 154 194 164 Z" fill="#2c424a"/>
+  <!-- 咸水滴落 -->
+  <g fill="#7ab0b0" opacity=".7">
+    <ellipse cx="90" cy="466" rx="10" ry="4"/><ellipse cx="300" cy="440" rx="9" ry="4"/><ellipse cx="200" cy="470" rx="12" ry="4"/>
+  </g>
+</svg>

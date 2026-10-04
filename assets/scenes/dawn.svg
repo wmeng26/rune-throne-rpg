@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="nsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a4a7a"/><stop offset=".4" stop-color="#7a7ab0"/><stop offset=".7" stop-color="#e8a86a"/><stop offset="1" stop-color="#ffd98a"/>
+    </linearGradient>
+    <radialGradient id="nsun" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#fff4cc" stop-opacity="1"/><stop offset=".4" stop-color="#ffdf9a" stop-opacity=".6"/><stop offset="1" stop-color="#ffdf9a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#nsky)"/>
+  <circle cx="600" cy="430" r="320" fill="url(#nsun)"/>
+  <circle cx="600" cy="430" r="74" fill="#fff6d8"/>
+  <!-- 光芒 -->
+  <g stroke="#fff0b8" stroke-width="6" opacity=".5" stroke-linecap="round">
+    <line x1="600" y1="330" x2="600" y2="240"/><line x1="500" y1="352" x2="440" y2="288"/><line x1="700" y1="352" x2="760" y2="288"/>
+    <line x1="436" y1="420" x2="340" y2="404"/><line x1="764" y1="420" x2="860" y2="404"/>
+  </g>
+  <!-- 云 -->
+  <g fill="#5a5a90" opacity=".6">
+    <ellipse cx="220" cy="150" rx="240" ry="16"/><ellipse cx="980" cy="120" rx="240" ry="14"/>
+  </g>
+  <g fill="#ffb27a" opacity=".6">
+    <ellipse cx="420" cy="280" rx="200" ry="9"/><ellipse cx="800" cy="310" rx="220" ry="8"/>
+  </g>
+  <!-- 远山剪影 -->
+  <path d="M0 470 L180 380 L360 450 L540 370 L740 460 L920 390 L1100 455 L1200 410 L1200 675 L0 675 Z" fill="#4a4470"/>
+  <path d="M0 520 L260 450 L520 510 L780 445 L1020 505 L1200 460 L1200 675 L0 675 Z" fill="#3a3560"/>
+  <!-- 原野 -->
+  <path d="M0 560 Q300 520 600 555 Q900 590 1200 545 L1200 675 L0 675 Z" fill="#2c2a50"/>
+  <g fill="#242248">
+    <path d="M140 560 L154 490 L168 560 Z"/><path d="M320 570 L336 480 L352 570 Z"/><path d="M880 565 L896 485 L912 565 Z"/><path d="M1060 555 L1072 495 L1084 555 Z"/>
+  </g>
+  <!-- 途中人影（远去的英雄与同伴） -->
+  <g fill="#1a1836">
+    <g transform="translate(560,600)">
+      <circle cx="0" cy="-34" r="9"/>
+      <path d="M-10 -26 L10 -26 L14 8 L8 8 L6 -6 L-6 -6 L-8 8 L-14 8 Z"/>
+      <path d="M-10 -26 L-20 -8 L-16 -4 L-8 -18 Z"/>
+    </g>
+    <g transform="translate(620,606)">
+      <circle cx="0" cy="-30" r="8"/>
+      <path d="M-8 -23 L8 -23 L12 6 L-12 6 Z"/>
+      <path d="M-2 -30 q10 -12 20 -4 l0 8 q-12 -6 -20 -4 Z" opacity=".9"/>
+    </g>
+    <g transform="translate(510,608)">
+      <circle cx="0" cy="-26" r="7"/>
+      <path d="M-7 -20 L7 -20 L10 6 L-10 6 Z"/>
+      <path d="M-7 -14 L-16 0 L-13 3 L-5 -10 Z"/>
+    </g>
+  </g>
+  <!-- 金色尘埃 -->
+  <g fill="#ffe9a8">
+    <circle cx="300" cy="380" r="2.6" opacity=".8"/><circle cx="480" cy="300" r="2" opacity=".6"/><circle cx="720" cy="340" r="2.4" opacity=".7"/>
+    <circle cx="900" cy="380" r="2" opacity=".6"/><circle cx="400" cy="440" r="1.8" opacity=".5"/><circle cx="820" cy="450" r="2" opacity=".5"/>
+  </g>
+</svg>

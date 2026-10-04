@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="msky2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#42465e"/><stop offset=".6" stop-color="#6a6e84"/><stop offset="1" stop-color="#8a8a96"/>
+    </linearGradient>
+    <linearGradient id="mwall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a8272"/><stop offset="1" stop-color="#565040"/>
+    </linearGradient>
+    <linearGradient id="mroof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5c4a38"/><stop offset="1" stop-color="#382c1e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#msky2)"/>
+  <g fill="#9a9ab0" opacity=".5">
+    <ellipse cx="300" cy="130" rx="220" ry="14"/><ellipse cx="840" cy="90" rx="260" ry="16"/>
+  </g>
+  <!-- 缓坡草地 -->
+  <path d="M-20 675 L-20 420 Q300 380 620 410 Q940 440 1220 400 L1220 675 Z" fill="#4e5c38"/>
+  <path d="M-20 675 L-20 520 Q400 480 800 510 Q1040 528 1220 500 L1220 675 Z" fill="#3e4c2e"/>
+  <!-- 磨坊主体 -->
+  <g>
+    <path d="M440 520 L440 300 Q560 240 680 300 L680 520 Z" fill="url(#mwall)"/>
+    <path d="M420 310 L560 218 L700 310 Z" fill="url(#mroof)"/>
+    <rect x="530" y="420" width="60" height="100" fill="#33291c"/>
+    <rect x="470" y="340" width="44" height="40" fill="#e8c96a" opacity=".7"/>
+    <rect x="606" y="340" width="44" height="40" fill="#e8c96a" opacity=".55"/>
+  </g>
+  <!-- 风车翼（半停） -->
+  <g transform="translate(560 300)">
+    <line x1="0" y1="0" x2="0" y2="-150" stroke="#2c2214" stroke-width="8"/>
+    <line x1="0" y1="0" x2="128" y2="-70" stroke="#2c2214" stroke-width="8"/>
+    <line x1="0" y1="0" x2="108" y2="96" stroke="#2c2214" stroke-width="8"/>
+    <rect x="-7" y="-150" width="86" height="30" rx="6" fill="#c9b48a" transform="rotate(-6 -7 -150)"/>
+    <rect x="0" y="-84" width="82" height="28" rx="6" fill="#c9b48a" transform="rotate(52 0 -70)"/>
+    <circle r="14" fill="#4a3a24"/>
+  </g>
+  <!-- 水轮 -->
+  <g transform="translate(760 520)">
+    <circle r="86" fill="none" stroke="#4a3820" stroke-width="12"/>
+    <circle r="86" fill="none" stroke="#332616" stroke-width="4"/>
+    <g stroke="#4a3820" stroke-width="8">
+      <line x1="-86" y1="0" x2="86" y2="0"/><line x1="0" y1="-86" x2="0" y2="86"/>
+      <line x1="-61" y1="-61" x2="61" y2="61"/><line x1="-61" y1="61" x2="61" y2="-61"/>
+    </g>
+  </g>
+  <!-- 水轮下溪流 -->
+  <path d="M700 640 Q760 610 830 636 Q900 660 980 640" stroke="#3c6474" stroke-width="26" fill="none" stroke-linecap="round"/>
+  <g stroke="#7aa8b8" stroke-width="3" opacity=".6" fill="none" stroke-linecap="round">
+    <path d="M710 640 h50"/><path d="M820 646 h60"/><path d="M900 638 h44"/>
+  </g>
+  <!-- 麻袋与独轮车 -->
+  <g>
+    <ellipse cx="340" cy="600" rx="40" ry="30" fill="#9a8560"/>
+    <path d="M310 588 q30 -20 60 0" stroke="#7a6844" stroke-width="5" fill="none"/>
+    <ellipse cx="270" cy="614" rx="34" ry="26" fill="#8a7654"/>
+  </g>
+  <!-- 停转的乌鸦 -->
+  <g fill="#1c1c24">
+    <path d="M860 300 q8 -10 18 -3 q8 -9 16 0 q-12 8 -34 3 Z"/>
+    <path d="M890 322 q7 -9 16 -3 q7 -8 14 0 q-11 7 -30 3 Z"/>
+  </g>
+  <ellipse cx="600" cy="650" rx="700" ry="30" fill="#141a10" opacity=".35"/>
+</svg>

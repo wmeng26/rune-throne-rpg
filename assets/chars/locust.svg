@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="lbg" cx=".5" cy=".4" r=".72">
+      <stop offset="0" stop-color="#5c5432"/><stop offset=".65" stop-color="#443e24"/><stop offset="1" stop-color="#282414"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#lbg)"/>
+  <!-- 蚀穗螟群：王与群 -->
+  <!-- 螟王（中上，大） -->
+  <g transform="translate(200 210)">
+    <ellipse cx="0" cy="26" rx="56" ry="66" fill="#4a3c22"/>
+    <g stroke="#2c2412" stroke-width="4" fill="none" opacity=".9">
+      <path d="M-40 -20 Q0 -46 40 -20"/><path d="M-46 10 Q0 -16 46 10"/><path d="M-42 44 Q0 20 42 44"/>
+    </g>
+    <ellipse cx="-58" cy="-18" rx="34" ry="20" fill="#8a8050" opacity=".85" transform="rotate(-28 -58 -18)"/>
+    <ellipse cx="58" cy="-18" rx="34" ry="20" fill="#8a8050" opacity=".85" transform="rotate(28 58 -18)"/>
+    <g stroke="#d8cc88" stroke-width="3" fill="none" opacity=".7">
+      <path d="M-74 -30 q20 -12 34 2"/><path d="M74 -30 q-20 -12 -34 2"/>
+    </g>
+    <circle cx="-18" cy="-4" r="8" fill="#e8c040"/><circle cx="-18" cy="-4" r="3.4" fill="#1c180c"/>
+    <circle cx="18" cy="-4" r="8" fill="#e8c040"/><circle cx="18" cy="-4" r="3.4" fill="#1c180c"/>
+    <path d="M-16 22 Q0 32 16 22" stroke="#1c180c" stroke-width="5" fill="none"/>
+    <path d="M-10 -34 l-6 -18 M10 -34 l6 -18" stroke="#2c2412" stroke-width="4" stroke-linecap="round"/>
+    <!-- 王的断穗王冠 -->
+    <path d="M-30 -44 l8 -18 l10 12 l12 -20 l12 20 l10 -12 l8 18 Z" fill="#c9a227"/>
+  </g>
+  <!-- 螟蛾甲（左下） -->
+  <g transform="translate(96 360) scale(.72)">
+    <ellipse cx="0" cy="20" rx="50" ry="58" fill="#3e321c"/>
+    <ellipse cx="-52" cy="-14" rx="30" ry="17" fill="#7a7248" opacity=".85" transform="rotate(-28 -52 -14)"/>
+    <ellipse cx="52" cy="-14" rx="30" ry="17" fill="#7a7248" opacity=".85" transform="rotate(28 52 -14)"/>
+    <circle cx="-15" cy="0" r="7" fill="#d8b038"/><circle cx="-15" cy="0" r="3" fill="#1c180c"/>
+    <circle cx="15" cy="0" r="7" fill="#d8b038"/><circle cx="15" cy="0" r="3" fill="#1c180c"/>
+    <path d="M-13 18 Q0 26 13 18" stroke="#1c180c" stroke-width="5" fill="none"/>
+  </g>
+  <!-- 螟蛾乙（右下） -->
+  <g transform="translate(304 372) scale(.66)">
+    <ellipse cx="0" cy="20" rx="50" ry="58" fill="#3e321c"/>
+    <ellipse cx="-52" cy="-14" rx="30" ry="17" fill="#7a7248" opacity=".85" transform="rotate(-28 -52 -14)"/>
+    <ellipse cx="52" cy="-14" rx="30" ry="17" fill="#7a7248" opacity=".85" transform="rotate(28 52 -14)"/>
+    <circle cx="-15" cy="0" r="7" fill="#d8b038"/><circle cx="-15" cy="0" r="3" fill="#1c180c"/>
+    <circle cx="15" cy="0" r="7" fill="#d8b038"/><circle cx="15" cy="0" r="3" fill="#1c180c"/>
+    <path d="M-13 18 Q0 26 13 18" stroke="#1c180c" stroke-width="5" fill="none"/>
+  </g>
+  <!-- 飞扬的鳞粉 -->
+  <g fill="#d8cc88" opacity=".7">
+    <circle cx="130" cy="120" r="4"/><circle cx="286" cy="110" r="5"/><circle cx="330" cy="180" r="3.4"/>
+    <circle cx="70" cy="200" r="3.4"/><circle cx="240" cy="70" r="3"/><circle cx="160" cy="80" r="3.4"/>
+  </g>
+  <!-- 被啃食的麦穗（角落） -->
+  <g stroke="#6a5c2c" stroke-width="6" fill="none" stroke-linecap="round">
+    <path d="M46 470 Q52 420 46 386"/><path d="M352 470 Q346 430 354 400"/>
+  </g>
+  <g fill="#8a7a3a">
+    <ellipse cx="44" cy="392" rx="8" ry="5" transform="rotate(-30 44 392)"/><ellipse cx="52" cy="404" rx="8" ry="5" transform="rotate(20 52 404)"/>
+    <ellipse cx="356" cy="406" rx="8" ry="5" transform="rotate(30 356 406)"/><ellipse cx="348" cy="418" rx="8" ry="5" transform="rotate(-16 348 418)"/>
+  </g>
+</svg>

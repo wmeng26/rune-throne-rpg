@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <defs>
+    <linearGradient id="hall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e0818"/><stop offset=".7" stop-color="#170f28"/><stop offset="1" stop-color="#1e1334"/>
+    </linearGradient>
+    <radialGradient id="tglow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#b06ad6" stop-opacity=".5"/><stop offset="1" stop-color="#b06ad6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e0a8ff"/><stop offset="1" stop-color="#8a4ec0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#hall)"/>
+  <!-- 地面 -->
+  <path d="M0 560 L1200 560 L1200 675 L0 675 Z" fill="#120c20"/>
+  <g stroke="#241a3e" stroke-width="3" opacity=".8">
+    <line x1="150" y1="675" x2="380" y2="560"/><line x1="420" y1="675" x2="540" y2="560"/><line x1="780" y1="675" x2="660" y2="560"/><line x1="1050" y1="675" x2="820" y2="560"/>
+    <line x1="0" y1="600" x2="1200" y2="600"/><line x1="0" y1="640" x2="1200" y2="640"/>
+  </g>
+  <!-- 侧柱 -->
+  <g fill="#1a1230">
+    <rect x="60" y="60" width="70" height="500"/><rect x="190" y="140" width="52" height="420"/><rect x="958" y="140" width="52" height="420"/><rect x="1070" y="60" width="70" height="500"/>
+  </g>
+  <g fill="#241a3e" opacity=".6">
+    <rect x="76" y="80" width="10" height="470"/><rect x="1104" y="80" width="10" height="470"/>
+  </g>
+  <!-- 窗外微光 -->
+  <g fill="#3d2a66" opacity=".55">
+    <path d="M255 220 q40 -30 80 0 v180 h-80 Z"/>
+    <path d="M865 220 q40 -30 80 0 v180 h-80 Z"/>
+  </g>
+  <!-- 王座高台 -->
+  <g>
+    <path d="M420 560 L460 460 L740 460 L780 560 Z" fill="#241a3e"/>
+    <path d="M450 460 L600 380 L750 460 Z" fill="#1c1430"/>
+    <!-- 黑曜王座 -->
+    <path d="M520 455 L520 300 Q600 240 680 300 L680 455 Z" fill="#0c0816"/>
+    <path d="M540 455 L540 320 Q600 275 660 320 L660 455 Z" fill="#150e26"/>
+    <path d="M520 300 L480 200 L540 240 Z" fill="#0c0816"/>
+    <path d="M680 300 L720 200 L660 240 Z" fill="#0c0816"/>
+    <!-- 王座符文纹 -->
+    <g stroke="#b06ad6" stroke-width="3" fill="none" opacity=".85">
+      <path d="M560 330 l40 0 m-20 0 l0 90"/>
+      <path d="M600 380 q16 12 0 24 q-16 12 0 24"/>
+      <circle cx="600" cy="310" r="10"/>
+    </g>
+    <ellipse cx="600" cy="380" rx="180" ry="120" fill="url(#tglow)"/>
+  </g>
+  <!-- 紫焰盆 -->
+  <g>
+    <g transform="translate(320,520)">
+      <path d="M-26 0 L26 0 L16 26 L-16 26 Z" fill="#241a3e"/>
+      <path d="M0 -34 q14 16 6 32 q-8 -8 -6 -32" fill="url(#flame)"/>
+      <path d="M0 -46 q20 22 10 44 q-14 -10 -10 -44" fill="url(#flame)" opacity=".8"/>
+      <circle cx="0" cy="-14" r="30" fill="url(#tglow)" opacity=".7"/>
+    </g>
+    <g transform="translate(880,520)">
+      <path d="M-26 0 L26 0 L16 26 L-16 26 Z" fill="#241a3e"/>
+      <path d="M0 -34 q14 16 6 32 q-8 -8 -6 -32" fill="url(#flame)"/>
+      <path d="M0 -46 q20 22 10 44 q-14 -10 -10 -44" fill="url(#flame)" opacity=".8"/>
+      <circle cx="0" cy="-14" r="30" fill="url(#tglow)" opacity=".7"/>
+    </g>
+  </g>
+  <!-- 悬浮尘埃 -->
+  <g fill="#c9a2e8">
+    <circle cx="400" cy="260" r="2.4" opacity=".6"/><circle cx="760" cy="220" r="2" opacity=".5"/><circle cx="540" cy="160" r="2.2" opacity=".5"/>
+    <circle cx="680" cy="180" r="1.8" opacity=".4"/><circle cx="460" cy="340" r="1.8" opacity=".4"/>
+  </g>
+  <!-- 顶部垂幔 -->
+  <g fill="#1c1430">
+    <path d="M0 0 L1200 0 L1200 60 Q1050 110 900 60 Q750 120 600 60 Q450 120 300 60 Q150 110 0 60 Z"/>
+  </g>
+</svg>

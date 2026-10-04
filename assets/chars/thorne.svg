@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="tbg" cx=".5" cy=".38" r=".72">
+      <stop offset="0" stop-color="#4a3a2c"/><stop offset=".65" stop-color="#33281e"/><stop offset="1" stop-color="#1e1810"/>
+    </radialGradient>
+    <linearGradient id="tarmor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8d94a3"/><stop offset="1" stop-color="#5a6070"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#tbg)"/>
+  <!-- 战斧（背后） -->
+  <g transform="rotate(-18 90 300)">
+    <rect x="84" y="150" width="14" height="290" rx="5" fill="#5a4632"/>
+    <path d="M56 160 Q90 120 124 160 Q118 208 90 210 Q62 208 56 160 Z" fill="url(#tarmor)"/>
+    <path d="M56 160 Q90 120 124 160" fill="none" stroke="#c9ccd6" stroke-width="5"/>
+  </g>
+  <!-- 宽厚身体 -->
+  <path d="M50 480 Q54 360 120 322 Q200 296 280 322 Q346 360 350 480 Z" fill="url(#tarmor)"/>
+  <path d="M50 480 Q54 360 120 322 L134 340 Q80 380 76 480 Z" fill="#c9ccd6" opacity=".5"/>
+  <!-- 胸甲纹 -->
+  <path d="M140 330 Q200 306 260 330 L266 420 Q200 444 134 420 Z" fill="#6d7484"/>
+  <g stroke="#3c4250" stroke-width="4" fill="none">
+    <path d="M150 356 h100"/><path d="M150 384 h100"/><path d="M150 412 h100"/>
+  </g>
+  <circle cx="200" cy="370" r="12" fill="#7a2a2a" stroke="#c9a227" stroke-width="3"/>
+  <!-- 肩甲 -->
+  <path d="M96 340 Q86 296 130 286 Q152 300 148 336 Q120 330 96 340 Z" fill="#8d94a3" stroke="#3c4250" stroke-width="4"/>
+  <path d="M304 340 Q314 296 270 286 Q248 300 252 336 Q280 330 304 340 Z" fill="#8d94a3" stroke="#3c4250" stroke-width="4"/>
+  <!-- 颈 -->
+  <rect x="180" y="256" width="40" height="44" fill="#d8a878"/>
+  <!-- 头 -->
+  <ellipse cx="200" cy="200" rx="66" ry="62" fill="#dfa87c"/>
+  <!-- 头盔 -->
+  <path d="M126 190 Q120 96 200 88 Q280 96 274 190 L274 170 Q262 130 200 124 Q138 130 126 170 Z" fill="url(#tarmor)" stroke="#3c4250" stroke-width="4"/>
+  <path d="M126 176 Q200 150 274 176 L274 196 Q200 172 126 196 Z" fill="#6d7484"/>
+  <!-- 双角 -->
+  <path d="M132 150 Q96 130 92 84 Q112 96 122 84 Q124 122 148 140 Z" fill="#e8e2d4" stroke="#a8a094" stroke-width="3"/>
+  <path d="M268 150 Q304 130 308 84 Q288 96 278 84 Q276 122 252 140 Z" fill="#e8e2d4" stroke="#a8a094" stroke-width="3"/>
+  <!-- 红色大胡须（双辫） -->
+  <path d="M146 216 Q148 300 178 330 Q200 344 222 330 Q252 300 254 216 Q236 250 200 252 Q164 250 146 216 Z" fill="#a83c28"/>
+  <path d="M162 300 q-6 34 6 58 q8 -26 4 -50 Z" fill="#a83c28"/>
+  <path d="M238 300 q6 34 -6 58 q-8 -26 -4 -50 Z" fill="#a83c28"/>
+  <g stroke="#7a2418" stroke-width="3" fill="none">
+    <path d="M172 250 q-4 40 4 66"/><path d="M200 256 q0 42 0 70"/><path d="M228 250 q4 40 -4 66"/>
+  </g>
+  <circle cx="180" cy="322" r="6" fill="#c9a227"/><circle cx="220" cy="322" r="6" fill="#c9a227"/>
+  <!-- 五官（须上露出的部分） -->
+  <g>
+    <path d="M162 192 q9 -8 20 -1" stroke="#5a3420" stroke-width="4.4" fill="none"/>
+    <path d="M218 191 q10 -7 20 1" stroke="#5a3420" stroke-width="4.4" fill="none"/>
+    <circle cx="172" cy="200" r="5" fill="#4a6a8a"/>
+    <circle cx="228" cy="200" r="5" fill="#4a6a8a"/>
+    <path d="M192 214 q8 6 16 0" stroke="#a86040" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

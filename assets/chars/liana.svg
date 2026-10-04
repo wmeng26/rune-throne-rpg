@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="lbg" cx=".5" cy=".38" r=".72">
+      <stop offset="0" stop-color="#3a3a55"/><stop offset=".65" stop-color="#262640"/><stop offset="1" stop-color="#15151f"/>
+    </radialGradient>
+    <linearGradient id="ldress" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5a2a4a"/><stop offset="1" stop-color="#38182e"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#lbg)"/>
+  <!-- 披风大氅（白貂边） -->
+  <path d="M56 480 Q66 344 134 314 Q200 292 266 314 Q334 344 344 480 Z" fill="url(#ldress)"/>
+  <path d="M56 480 Q66 344 134 314 Q200 292 266 314 L272 330 Q200 310 140 330 Q78 356 70 480 Z" fill="#e8e4da" opacity=".85"/>
+  <!-- 领口宝石 -->
+  <circle cx="200" cy="330" r="11" fill="#4a8ac0" stroke="#c9a227" stroke-width="3"/>
+  <!-- 颈 -->
+  <rect x="184" y="256" width="32" height="40" fill="#ecc8a8"/>
+  <!-- 头 -->
+  <ellipse cx="200" cy="204" rx="56" ry="64" fill="#f2d4b4"/>
+  <!-- 深色盘发 -->
+  <path d="M144 210 Q136 120 200 108 Q264 120 256 210 Q252 158 226 144 Q232 162 220 170 Q206 138 172 150 Q152 160 150 186 Q146 196 144 210 Z" fill="#3a2a34"/>
+  <path d="M144 200 Q126 240 132 300 Q140 314 150 306 Q138 254 148 214 Z" fill="#3a2a34"/>
+  <path d="M256 200 Q274 240 268 300 Q260 314 250 306 Q262 254 252 214 Z" fill="#3a2a34"/>
+  <circle cx="138" cy="308" r="10" fill="#3a2a34"/><circle cx="262" cy="308" r="10" fill="#3a2a34"/>
+  <!-- 金冠 -->
+  <path d="M154 132 L166 108 L180 126 L200 96 L220 126 L234 108 L246 132 Z" fill="#e8c96a" stroke="#a8842a" stroke-width="3"/>
+  <circle cx="200" cy="112" r="5" fill="#4a8ac0"/>
+  <circle cx="166" cy="118" r="3" fill="#c05a7a"/><circle cx="234" cy="118" r="3" fill="#c05a7a"/>
+  <!-- 五官 -->
+  <g>
+    <path d="M170 194 q9 -7 20 0" stroke="#4a3444" stroke-width="3.4" fill="none"/>
+    <path d="M212 194 q9 -7 20 0" stroke="#4a3444" stroke-width="3.4" fill="none"/>
+    <circle cx="180" cy="203" r="4.6" fill="#3a6a9a"/>
+    <circle cx="222" cy="203" r="4.6" fill="#3a6a9a"/>
+    <path d="M194 224 q7 5 13 0" stroke="#c87a6a" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path d="M176 236 q24 16 48 0" stroke="#d89a8a" stroke-width="2.6" fill="none" opacity=".6"/>
+  </g>
+  <!-- 耳坠 -->
+  <circle cx="146" cy="220" r="4" fill="#e8c96a"/><circle cx="254" cy="220" r="4" fill="#e8c96a"/>
+  <!-- 权戒 -->
+  <path d="M118 400 q0 -20 16 -20 q14 0 14 18 l-6 4 q-2 -12 -10 -12 q-8 2 -8 12 Z" fill="#e8c96a" opacity=".9"/>
+</svg>

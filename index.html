@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>符文王座 · 暗影觉醒</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ===== 标题界面 ===== -->
+  <div id="title-screen" class="screen">
+    <div class="title-art">
+      <img src="assets/scenes/throne.svg" alt="">
+      <div class="title-veil"></div>
+    </div>
+    <div class="title-body">
+      <div class="game-eyebrow">A WESTERN FANTASY TEXT RPG</div>
+      <h1 class="game-title">符文王座</h1>
+      <div class="game-sub">— 暗 影 觉 醒 —</div>
+      <div class="title-btns">
+        <button id="btn-new" class="btn btn-primary">⚔ 开始新的冒险</button>
+        <button id="btn-continue" class="btn hidden">📖 继续冒险</button>
+        <button id="btn-lore" class="btn">🜛 世界设定集</button>
+      </div>
+      <div id="ending-badges" class="ending-badges"></div>
+      <div class="title-foot">自由行走于艾尔多兰 —— 你的每一步，都由文字记下。</div>
+    </div>
+  </div>
+
+  <!-- ===== 游戏界面 ===== -->
+  <div id="game-screen" class="screen hidden">
+    <header id="topbar">
+      <div class="brand">符文王座 <span class="brand-sub">暗影觉醒</span></div>
+      <div id="hud">
+        <span id="hud-name">旅者 · Lv.1</span>
+        <span class="hud-hp"><span class="bar"><span id="hud-hp-bar" class="bar-fill hp"></span></span><span id="hud-hp-text">❤ 20/20</span></span>
+        <span id="hud-sp">✦ 10/10</span>
+        <span id="hud-gold">💰 20</span>
+        <span id="hud-rep">★ 0</span>
+        <span id="hud-corr">✴ 0</span>
+      </div>
+      <div id="chapter-label" class="chapter-label"></div>
+      <div class="top-btns">
+        <button class="btn btn-mini" id="btn-bag" title="快捷键 B">🎒 背包</button>
+        <button class="btn btn-mini" id="btn-skills" title="快捷键 K">⚔ 技能</button>
+        <button class="btn btn-mini" id="btn-char" title="快捷键 C">👤 角色</button>
+        <button class="btn btn-mini" id="btn-map" title="快捷键 M">🗺 地图</button>
+        <button class="btn btn-mini" id="btn-save">💾 保存</button>
+        <button class="btn btn-mini" id="btn-lore2">🜛 设定集</button>
+        <button class="btn btn-mini" id="btn-title">⌂ 标题</button>
+      </div>
+    </header>
+
+    <main id="layout">
+      <section id="maincol">
+        <div id="log-panel" class="mood-dark">
+          <div id="log-bg"><img id="loc-bg-img" src="" alt=""></div>
+          <div id="log"></div>
+        </div>
+
+        <div id="enemy-strip" class="hidden">
+          <div id="enemy-intent" class="intent-line"></div>
+          <div id="enemy-list" class="enemy-list"></div>
+          <div id="ally-strip" class="ally-strip"></div>
+          <div id="esp-line" class="sp-line"></div>
+        </div>
+
+        <div id="cmd">
+          <div id="cmd-exits" class="cmd-row"></div>
+          <div id="cmd-actions" class="cmd-row"></div>
+        </div>
+      </section>
+
+      <aside id="sidebar">
+        <div class="card" id="loc-card">
+          <div class="card-title">当前位置</div>
+          <div id="loc-name" class="loc-name">—</div>
+          <div id="loc-ch" class="loc-ch"></div>
+          <div id="loc-exits" class="loc-exits"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">📜 当前任务</div>
+          <div id="quest-box" class="quest-box"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">队伍</div>
+          <div id="party-row" class="party-row"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">属性</div>
+          <div id="stat-rows"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- ===== 弹窗 ===== -->
+  <div id="modal-root" class="hidden">
+    <div id="modal-box">
+      <div id="modal-content"></div>
+      <div id="modal-btns"></div>
+    </div>
+  </div>
+
+  <div id="toasts"></div>
+
+  <!-- ===== 世界设定集内容模板 ===== -->
+  <template id="tpl-lore">
+    <h2 class="lore-title">🜛 世界设定集</h2>
+    <h3>世界观 · 艾尔多兰王国</h3>
+    <p>一千年前，暗影君主莫格拉斯率影裔军团席卷大陆。七位先王以性命铸成七枚<b>守护符文</b>，将其封印于影渊之下。千年后符文之力衰微——井水泛黑、乌鸦成群、大地深处传来低语。封印的裂缝，正在扩大。</p>
+    <h3>玩法 · 文字RPG</h3>
+    <ul>
+      <li><b>自由移动</b>——用指令栏的方位按钮在世界地图上行走（北/南/西/东/上下楼），来去自如。每一步与每一场遭遇，都会写进上方的冒险日志。</li>
+      <li><b>行囊 / 技能 / 角色</b>——随时点顶栏按钮（或按 <b>B / K / C</b>）打开面板。药水在行囊里使用（会自动救醒昏厥的同伴）；装备在行囊里穿上，在角色面板查看与卸下。</li>
+      <li><b>装备</b>——三个装备位：武器（攻击）、防具（减伤）、饰品（生命上限/会心等）。渡鸦有售；狼群、山匪与女王的赏赐也会留下好东西。</li>
+      <li><b>战斗</b>——回合制遭遇战：每回合先看敌人<b>意图</b>（重击/淬毒/凝盾/锁链……），再决定出手、<b>防御</b>或用药；多个敌人需要选择目标，有的敌人有护甲（魔法无视）、护盾或雾遁（物理无效）。击败敌人可得经验，升级时<b>自选一项强化</b>。</li>
+      <li><b>同伴</b>——艾莉娅、索恩与卡雅是<b>独立战斗单位</b>，各有生命与斗气（随等级成长），按「态势」（均衡/强攻/守护，战斗中可切换）自动施展技能；生命归零会昏厥，可用药剂救醒，休息点全队恢复。</li>
+      <li><b>交谈与调查</b>——每个地点都可以与NPC交谈、调查、休息。留心对话与传闻，它们是圣殿谜题与城中美局的钥匙。</li>
+      <li>部分选项需持有特定物品/声望/线索才能解锁（🔒 灰显）。部分抉择会留下看不见的印记：<b>侵蚀</b>——每点侵蚀使攻击 +1，但每场战斗开始时失去等量生命，力量与代价并存，且会改变章节的收尾。</li>
+      <li><b>死亡</b>——从最近的命运节点（章节要地/营地）重来；进度自动保存，标题界面可继续冒险。结局会记入图鉴。</li>
+    </ul>
+    <h3>主要人物</h3>
+    <ul>
+      <li><b>主角</b>——你，一名年轻的流浪剑士。</li>
+      <li><b>艾莉娅·星语</b>——半精灵符文学者，银发绿瞳，通晓古语。</li>
+      <li><b>索恩·铁须</b>——矮人守殿战士，圣殿最后的守殿人。</li>
+      <li><b>卡雅</b>——潮歌湾的渔家猎手，鱼叉与潮路的行家。</li>
+      <li><b>塞德里克</b>——老贤者，你的引路人。</li>
+      <li><b>莉安娜女王</b>——白石城的年轻统治者。</li>
+      <li><b>渡鸦</b>——兜帽下的神秘行商。</li>
+      <li><b>巴洛克</b>——白石城权臣，笑面藏刀。</li>
+      <li><b>莫格拉斯</b>——暗影君主。"王座本该属于最强者。"</li>
+    </ul>
+    <h3>章节规划 · 七印之路</h3>
+    <ul>
+      <li><b>序章 · 风雨之夜</b> —— 已收录</li>
+      <li><b>第一部 · 晨曦之印</b> —— 已收录</li>
+      <li><b>第二部 · 星辰之印</b> —— 已收录</li>
+      <li><b>第三部 · 海洋之印（潮歌湾）</b> —— 已收录</li>
+      <li><b>第四部 · 丰收之印（金穗平原）</b> —— 已收录</li>
+      <li>第五部 · 战争之印 / 第六部 · 暮钟之印 —— 规划中</li>
+      <li>终部 · 深渊之印 · 影渊决战 —— 规划中</li>
+    </ul>
+  </template>
+
+</div>
+<script src="js/world.js"></script>
+<script src="js/engine.js"></script>
+</body>
+</html>

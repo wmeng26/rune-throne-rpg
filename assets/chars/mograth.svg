@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="mbg" cx=".5" cy=".4" r=".75">
+      <stop offset="0" stop-color="#2c1838"/><stop offset=".6" stop-color="#180d26"/><stop offset="1" stop-color="#0c0714"/>
+    </radialGradient>
+    <linearGradient id="marmor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#241a34"/><stop offset="1" stop-color="#100a1c"/>
+    </linearGradient>
+    <radialGradient id="meye" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#e0a8ff"/><stop offset=".4" stop-color="#b06ad6" stop-opacity=".7"/><stop offset="1" stop-color="#b06ad6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#mbg)"/>
+  <!-- 弥散紫雾 -->
+  <ellipse cx="200" cy="300" rx="190" ry="170" fill="url(#meye)" opacity=".35"/>
+  <!-- 漆黑披风（破裂边缘） -->
+  <path d="M40 480 Q60 340 130 306 Q200 282 270 306 Q340 340 360 480 L330 480 Q320 380 290 350 L310 480 L270 480 Q268 400 250 360 L240 480 L200 470 L160 480 L150 360 Q132 400 130 480 L90 480 L110 350 Q80 380 70 480 Z" fill="#0c0616"/>
+  <!-- 黑甲躯干 -->
+  <path d="M120 340 Q200 306 280 340 L288 430 Q200 458 112 430 Z" fill="url(#marmor)"/>
+  <path d="M120 340 Q200 306 280 340 L288 430 Q200 458 112 430 Z" fill="none" stroke="#3d2a5c" stroke-width="4"/>
+  <!-- 甲片纹 -->
+  <g stroke="#3d2a5c" stroke-width="3" fill="none" opacity=".9">
+    <path d="M140 356 L200 344 L260 356"/>
+    <path d="M136 384 L200 372 L264 384"/>
+    <path d="M132 412 L200 400 L268 412"/>
+  </g>
+  <!-- 王座纹章：倒悬之冠 -->
+  <g transform="translate(200,392)" fill="#b06ad6">
+    <path d="M-18 8 L-12 -6 L-4 4 L0 -10 L4 4 L12 -6 L18 8 Z"/>
+    <circle cx="-12" cy="-8" r="2.6"/><circle cx="12" cy="-8" r="2.6"/>
+  </g>
+  <!-- 肩甲尖刺 -->
+  <path d="M112 330 Q92 300 108 262 Q136 276 142 322 Z" fill="#1a1028" stroke="#3d2a5c" stroke-width="3"/>
+  <path d="M288 330 Q308 300 292 262 Q264 276 258 322 Z" fill="#1a1028" stroke="#3d2a5c" stroke-width="3"/>
+  <!-- 颈 -->
+  <rect x="180" y="252" width="40" height="44" fill="#140c22"/>
+  <!-- 头（黑甲面容） -->
+  <ellipse cx="200" cy="196" rx="60" ry="66" fill="#181028"/>
+  <path d="M140 190 Q136 108 200 96 Q264 108 260 190 Q250 140 224 130 Q230 148 218 156 Q206 124 176 136 Q158 146 154 172 Q146 178 140 190 Z" fill="#0e0818"/>
+  <!-- 双角王冠 -->
+  <path d="M148 140 Q108 116 104 58 Q130 76 142 62 Q142 108 168 126 Z" fill="#241a38" stroke="#4d3572" stroke-width="3"/>
+  <path d="M252 140 Q292 116 296 58 Q270 76 258 62 Q258 108 232 126 Z" fill="#241a38" stroke="#4d3572" stroke-width="3"/>
+  <path d="M200 96 L212 60 L200 74 L188 60 Z" fill="#4d3572"/>
+  <!-- 燃烧紫焰之眼 -->
+  <ellipse cx="176" cy="192" rx="16" ry="10" fill="url(#meye)"/>
+  <ellipse cx="224" cy="192" rx="16" ry="10" fill="url(#meye)"/>
+  <path d="M162 190 q14 -10 28 0" stroke="#e0a8ff" stroke-width="4" fill="none" opacity=".95"/>
+  <path d="M210 190 q14 -10 28 0" stroke="#e0a8ff" stroke-width="4" fill="none" opacity=".95"/>
+  <path d="M186 226 q14 10 28 0" stroke="#7a4ea0" stroke-width="4" fill="none"/>
+  <!-- 下颌甲 -->
+  <path d="M168 240 Q200 258 232 240 L232 252 Q200 270 168 252 Z" fill="#241a38"/>
+</svg>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="480" viewBox="0 0 400 480">
+  <defs>
+    <radialGradient id="kbg" cx=".5" cy=".38" r=".72">
+      <stop offset="0" stop-color="#3c5a6a"/><stop offset=".65" stop-color="#2a4250"/><stop offset="1" stop-color="#182a34"/>
+    </radialGradient>
+    <linearGradient id="kcoat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3e7a86"/><stop offset="1" stop-color="#24505c"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="480" fill="url(#kbg)"/>
+  <!-- 鱼叉（背后斜握） -->
+  <g transform="rotate(14 300 240)">
+    <rect x="292" y="60" width="12" height="330" rx="5" fill="#4a3826"/>
+    <path d="M298 60 L274 96 L292 88 L298 110 L304 88 L322 96 Z" fill="#c9ccd6" stroke="#8a8e9a" stroke-width="3"/>
+    <rect x="282" y="96" width="32" height="14" rx="4" fill="#c9a227"/>
+  </g>
+  <!-- 披肩长发（海蓝色） -->
+  <path d="M136 200 Q120 320 138 400 L172 400 Q158 320 168 240 Z" fill="#2e5a6e"/>
+  <path d="M264 200 Q280 320 262 400 L228 400 Q242 320 232 240 Z" fill="#2e5a6e"/>
+  <!-- 短身渔装 -->
+  <path d="M120 480 Q124 372 200 344 Q276 372 280 480 Z" fill="url(#kcoat)"/>
+  <path d="M120 480 Q124 372 200 344 L212 362 Q156 392 148 480 Z" fill="#8ad8e0" opacity=".35"/>
+  <!-- 胸前系带与贝饰 -->
+  <path d="M172 356 L200 400 L228 356" stroke="#c9a227" stroke-width="5" fill="none"/>
+  <g fill="#e8dcc0"><circle cx="176" cy="392" r="6"/><circle cx="200" cy="408" r="7"/><circle cx="224" cy="392" r="6"/></g>
+  <!-- 腰带与鱼刀 -->
+  <rect x="140" y="420" width="120" height="18" rx="6" fill="#3c2c1e"/>
+  <path d="M256 424 l30 6 l-24 14 Z" fill="#c9ccd6"/>
+  <!-- 颈 -->
+  <rect x="182" y="290" width="36" height="40" fill="#d8a878"/>
+  <!-- 头 -->
+  <ellipse cx="200" cy="238" rx="60" ry="58" fill="#e0ae82"/>
+  <!-- 刘海与发顶 -->
+  <path d="M140 226 Q142 168 200 162 Q258 168 260 226 Q252 196 226 192 Q200 188 186 200 Q160 200 152 218 Q146 226 140 226 Z" fill="#2e5a6e"/>
+  <!-- 编发 -->
+  <path d="M148 214 q-10 44 2 84" stroke="#24485a" stroke-width="8" fill="none"/>
+  <!-- 渔家头巾 -->
+  <path d="M136 216 Q150 160 200 156 Q250 160 264 216 Q232 196 200 196 Q168 196 136 216 Z" fill="#c9584a"/>
+  <path d="M258 200 q26 10 30 40 q-24 -8 -34 -26 Z" fill="#c9584a"/>
+  <!-- 五官 -->
+  <g>
+    <path d="M164 232 q10 -8 22 -2" stroke="#4a3020" stroke-width="4.4" fill="none"/>
+    <path d="M214 230 q11 -7 22 1" stroke="#4a3020" stroke-width="4.4" fill="none"/>
+    <circle cx="174" cy="242" r="5.4" fill="#3a7a8a"/>
+    <circle cx="226" cy="241" r="5.4" fill="#3a7a8a"/>
+    <circle cx="176" cy="240" r="1.8" fill="#eaf6f8"/><circle cx="228" cy="239" r="1.8" fill="#eaf6f8"/>
+    <path d="M192 262 q9 7 18 0" stroke="#b86044" stroke-width="4.4" fill="none" stroke-linecap="round"/>
+    <path d="M160 250 q-5 3 -8 1" stroke="#c98a68" stroke-width="3" fill="none"/>
+    <path d="M240 250 q5 3 8 1" stroke="#c98a68" stroke-width="3" fill="none"/>
+  </g>
+  <!-- 前臂与叉柄 -->
+  <path d="M282 200 Q320 240 318 300 Q314 350 288 380" stroke="#e0ae82" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <path d="M118 210 Q92 250 96 300" stroke="#e0ae82" stroke-width="20" fill="none" stroke-linecap="round"/>
+</svg>
