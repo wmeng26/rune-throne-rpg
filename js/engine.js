@@ -32,7 +32,7 @@ const rnd = n => Math.floor(Math.random() * n);
 const sleepMs = ms => new Promise(r => { if (FAST || document.hidden) r(); else setTimeout(r, ms); });
 
 /* 可饮用的回复品：id → 回复量（战斗/行囊通用） */
-const HEALS = { potion: 10, potion_big: 25 };
+const HEALS = { potion: 10, potion_big: 25, honey: 6, roast_fish: 8 };
 
 /* ================= 同伴战斗单位 =================
  * 同伴是独立单位：生命/斗气随主角等级成长（上限由等级推导，存档只存当前值）。
@@ -82,6 +82,10 @@ function defaultState() {
     checkpoint: null, snap: null,
     visits: {}, quest: 'q_inn',
     wrongWisdom: 0, roamCd: 0, travelCd: 0,
+    time: { ticks: 4 },                        // 时间：8刻=1天，2刻=1时段；开局第1天·黄昏
+    kills: {},                                 // 击杀计数（讨伐委托用）
+    bounty: null,                              // 当前接下的委托 { id, base, day }
+    doneBounties: [],                          // 已完成的委托（不再刷新）
   };
 }
 function hasSave() { return !!localStorage.getItem(SAVE_KEY); }
@@ -92,6 +96,46 @@ function addEnding(id) {
   const list = getEndings();
   if (!list.includes(id)) { list.push(id); localStorage.setItem(ENDINGS_KEY, JSON.stringify(list)); return true; }
   return false;
+}
+
+/* ================= 时间系统 =================
+ * 8 刻 = 1 天；2 刻 = 1 个时段（清晨/白昼/黄昏/夜晚）。
+ * 移动 +1 刻；休息睡到次日清晨；部分剧情会拨动时间。
+ * 夜晚野外会换一批更凶的游荡者（见各地点 roam.byTime）。 */
+const SLOT_NAMES = ['清晨', '白昼', '黄昏', '夜晚'];
+const SLOT_KEYS = ['dawn', 'day', 'dusk', 'night'];
+function timeTicks() { return S.time && typeof S.time.ticks === 'number' ? S.time.ticks : 4; }
+function timeSlot() { return Math.floor((timeTicks() % 8) / 2); }
+function timeDay() { return Math.floor(timeTicks() / 8) + 1; }
+function timeKey() { return SLOT_KEYS[timeSlot()]; }
+function timeText() { return `第${timeDay()}天 · ${SLOT_NAMES[timeSlot()]}`; }
+function isNight() { return timeSlot() === 3; }
+function advanceTime(n = 1) {
+  if (!S) return;
+  if (!S.time) S.time = { ticks: 4 };
+  const prev = timeSlot();
+  S.time.ticks += n;
+  const now = timeSlot();
+  if (now !== prev) {
+    if (now === 3) logLine('☾ 夜幕四合。野外的雾，开始不认人了。', 'sys');
+    else if (now === 0) logLine(`☀ 天光渐亮——${timeText()}。`, 'sys');
+    else if (now === 2) logLine('黄昏把雾染成了旧金色。', 'sys');
+    updateHUD(); updateSidebar();
+  }
+}
+function sleepToDawn() {
+  if (!S) return;
+  if (!S.time) S.time = { ticks: 4 };
+  S.time.ticks = Math.ceil((timeTicks() + 1) / 8) * 8;   // 睡到次日清晨
+  logLine(`☀ 一夜好睡——${timeText()}。`, 'sys');
+  updateHUD(); updateSidebar();
+}
+function setSlot(key) {
+  if (!S) return;
+  if (!S.time) S.time = { ticks: 4 };
+  const slot = Math.max(0, SLOT_KEYS.indexOf(key));
+  S.time.ticks = Math.floor(timeTicks() / 8) * 8 + slot * 2 + 1;
+  updateHUD(); updateSidebar();
 }
 
 /* ================= 效果 / 条件 ================= */
@@ -381,6 +425,14 @@ function updateSidebar() {
     $('#quest-box').innerHTML += `<div class="side-quests">${sides.map(sq =>
       `<div class="side-quest"><b>◇ ${sq.title}</b><small>${sq.hint}</small></div>`).join('')}</div>`;
   }
+  // 委托板进度（酒馆告示接下的随机任务）
+  if (S.bounty && typeof BOUNTIES !== 'undefined') {
+    const b = BOUNTIES.find(x => x.id === S.bounty.id);
+    if (b) {
+      const prog = Math.max(0, b.type === 'kill' ? (S.kills[b.en] || 0) - (S.bounty.base || 0) : Math.min((S.items[b.item] || 0), b.n));
+      $('#quest-box').innerHTML += `<div class="side-quest"><b>◇ 委托·${b.title}</b><small>${b.type === 'kill' ? '猎杀 ' + b.n + ' 拨' : '备齐 ' + b.n + ' 份'}（进度 ${prog}/${b.n}）· 回酒馆领赏</small></div>`;
+    }
+  }
   // 队伍
   ensureTeam();
   let party = `<img src="assets/chars/hero.svg" title="${S.name} ❤${S.hp}/${S.maxHp}" alt="">`;
@@ -393,6 +445,7 @@ function updateSidebar() {
   $('#party-row').innerHTML = party;
   // 属性
   let statHtml = `
+    <div class="stat-row"><span>时辰</span><b>${timeText()}</b></div>
     <div class="stat-row"><span>等级</span><b>Lv.${S.level}（${S.exp}/${expNeed()}）</b></div>
     <div class="stat-row"><span>生命</span><b>${S.hp} / ${S.maxHp}</b></div>
     <div class="stat-row"><span>斗气</span><b>${S.sp} / ${S.spMax}</b></div>
@@ -411,6 +464,7 @@ function updateSidebar() {
 /* ================= 移动 ================= */
 async function move(id, opts = {}) {
   const from = WORLD[S.loc];
+  advanceTime(1);   // 赶路消耗时间：每段路程 +1 刻
   let flavor = null;
   if (from) for (const [, ex] of exitsOf(from)) if (ex.to === id) { flavor = ex.flavor; break; }
   S.prevLoc = S.loc;
@@ -472,16 +526,19 @@ async function enterLoc(id, opts = {}) {
   if (loc.onEnter) await loc.onEnter();
   if (S.loc !== wasLoc) return; // 事件中已转场
 
-  // 游荡遭遇
-  if (loc.roam && !opts.respawn && S.roamCd === 0 && Math.random() < loc.roam.chance) {
-    S.roamCd = 2;
-    const enId = Array.isArray(loc.roam.en) ? loc.roam.en[rnd(loc.roam.en.length)] : loc.roam.en;
-    await say([loc.roam.intro]);
-    const r = await battle(enId, { fleeTo: loc.roam.fleeTo });
-    if (r === 'win' && loc.roam.loot && !S.flags[loc.roam.loot.flag]) {
-      setFlag(loc.roam.loot.flag);
-      fx({ gold: loc.roam.loot.gold, item: loc.roam.loot.item });
-      await say([loc.roam.loot.text]);
+  // 游荡遭遇（按时段取表：夜晚常换一批更凶的东西）
+  if (loc.roam && !opts.respawn && S.roamCd === 0) {
+    const rv = (loc.roam.byTime && loc.roam.byTime[timeKey()]) ? Object.assign({}, loc.roam, loc.roam.byTime[timeKey()]) : loc.roam;
+    if (Math.random() < rv.chance) {
+      S.roamCd = 2;
+      const enId = Array.isArray(rv.en) ? rv.en[rnd(rv.en.length)] : rv.en;
+      await say([rv.intro]);
+      const r = await battle(enId, { fleeTo: rv.fleeTo });
+      if (r === 'win' && rv.loot && !S.flags[rv.loot.flag]) {
+        setFlag(rv.loot.flag);
+        fx({ gold: rv.loot.gold, item: rv.loot.item });
+        await say([rv.loot.text]);
+      }
     }
   }
   if (S.loc === wasLoc) { updateHUD(); updateSidebar(); renderExplore(); }
@@ -536,6 +593,7 @@ function renderExplore() {
       ensureTeam();
       for (const id of Object.keys(S.team)) { S.team[id].hp = allyMaxHp(id); S.team[id].sp = allySpMax(id); }
       await say(['你阖眼休息。炉火与远处的风声此起彼伏——醒来时，伤痛已被驱散，同伴们的气色也好了许多。（全队生命与斗气全满）']);
+      sleepToDawn();
       updateHUD(); updateSidebar();
     });
   }
@@ -618,7 +676,7 @@ function openSkills() {
     return any ? html : '';
   };
   openModal(`<h2 class="lore-title">⚔ 技能栏</h2>
-    ${group('主角 · ' + S.name, ['strike', 'heavy', 'whirlslash', 'taunt', 'runeb', 'tideb', 'harvestwave'])}
+    ${group('主角 · ' + S.name, ['strike', 'heavy', 'whirlslash', 'taunt', 'runeb', 'tideb', 'harvestwave', 'warhorn', 'knell'])}
     ${group('艾莉娅 · 星语', ['starfire', 'starshield', 'starheal'], true)}
     ${group('索恩 · 铁须', ['whirl', 'ironwall', 'warcry'], true)}
     ${group('卡雅', ['harpoon', 'whalelash', 'tidecircle'], true)}
@@ -844,6 +902,16 @@ async function playerPhase() {
     } });
     for (const [hid, hv] of Object.entries(HEALS)) {
       if ((S.items[hid] || 0) > 0) acts.push({ text: `${ITEMS[hid].icon} ${ITEMS[hid].name} · 回复${hv}（余 ${S.items[hid]}）`, run: () => doPotion(hid) });
+    }
+    // 濒死牺牲：仅限终部决战（en.sacrifice）——以命铸封印，直接终结战斗
+    if (C.en.sacrifice && S.hp > 0 && S.hp <= Math.max(8, Math.round(S.maxHp * 0.25))) {
+      acts.push({ text: '🕯 以命铸封印（把晨曦之痕当作祭品……终结此战）', run: async () => {
+        const ok = await choose([
+          { text: '还没到那一步。继续战斗', run: () => {} },
+          { text: '——以我之名，铸此封印。（以此命换封印，见证另一种结局）', run: () => { C.ended = 'sacrifice'; } },
+        ]);
+        return ok === 1 ? undefined : false;
+      } });
     }
     if (!C.en.noFlee) acts.push({ text: '🏃 逃离战斗', run: () => doFlee() });
     acts.push({ text: `⚖ 同伴态势：${STANCE[S.stance || 'balanced']}（切换，不耗回合）`, stance: true, run: async () => {} });
@@ -1086,6 +1154,8 @@ async function battle(enId, opts = {}) {
 
   if (result === 'win') {
     logLine('🎉 ' + (en.win || en.name + '倒下了！'), 'good');
+    S.kills = S.kills || {};
+    S.kills[enId] = (S.kills[enId] || 0) + 1;   // 讨伐委托计数
     await gainExp(en.exp || 10);
     if (en.gold) {
       S.gold += en.gold;

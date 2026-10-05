@@ -24,6 +24,9 @@ const ITEMS = {
   map:     { icon: '🗺️', name: '迷雾古图', desc: '泛黄的羊皮纸，标注着符文圣殿的方位。', kind: 'key' },
   potion:  { icon: '🧪', name: '生命药水', desc: '琥珀色的药液，恢复10点生命。', kind: 'use' },
   potion_big: { icon: '🍶', name: '大生命药水', desc: '工匠反复蒸馏的浓浆，恢复25点生命。', kind: 'use' },
+  honey:      { icon: '🍯', name: '林间蜂蜜', desc: '纪老爹蜂箱里割出来的，加一点山泉就是救命的甜。恢复6点生命。', kind: 'use' },
+  roast_fish: { icon: '🐟', name: '湖畔烤鱼', desc: '阿满用苇秆串了在火上燎过的湖鱼，外皮焦香。恢复8点生命。', kind: 'use' },
+  glassbead:  { icon: '🔘', name: '雾蓝玻璃珠', desc: '鸦巢里捡到的玻璃珠，天光下泛着雾一样的蓝。', kind: 'key' },
   herb:    { icon: '🌿', name: '月光草', desc: '叶背泛着银霜的药草，采药人玛戈正需要它。', kind: 'key' },
   watch:   { icon: '🧭', name: '学徒的怀表', desc: '表盖内侧刻着一行小字：「赠吾徒·艾德温」。', kind: 'key' },
   amulet:  { icon: '✨', name: '星光护符', desc: '濒死时会碎裂，将你从死亡边缘拉回一次。', kind: 'key' },
@@ -47,6 +50,10 @@ const ITEMS = {
   wolf_fang:    { icon: '🦷', name: '狼牙项链', desc: '头狼的獠牙磨成的护身符。会心一击率 +10%。', kind: 'equip', slot: 'accessory', crit: 0.10 },
   old_seal:     { icon: '💠', name: '守殿人印戒', desc: '铁须氏代代相传的旧戒，戒面磨得发亮。生命上限 +4。', kind: 'equip', slot: 'accessory', maxHp: 4 },
   mist_pearl:   { icon: '🔮', name: '雾泽明珠', desc: '湖水磨了百年的珍珠，贴身戴着，心绪莫名安宁。生命上限 +3。', kind: 'equip', slot: 'accessory', maxHp: 3 },
+  oldcoins:     { icon: '🪙', name: '七枚古铜币', desc: '湖心洲浅水里排成一列的旧币，绿锈斑斑——同行七人，一人一枚省下的船钱。', kind: 'key' },
+  reed_charm:   { icon: '🪈', name: '苇编哨', desc: '老船夫亲手编的苇哨，吹起来像雾散开的声音。斗气上限 +3。', kind: 'equip', slot: 'accessory', spMax: 3 },
+  logger_axe:   { icon: '🪓', name: '伐木斧', desc: '伐木场留下的厚背斧，主人逃得急，斧刃倒是新磨的。攻击 +2。', kind: 'equip', slot: 'weapon', atk: 2 },
+  lamp_crystal: { icon: '💠', name: '引火晶屑', desc: '灯柱顶端的聚光晶屑，攥在掌心，指缝里漏出细小的金光。', kind: 'key' },
   rite_blade:   { icon: '⚔️', name: '咏祭礼剑', desc: '圣殿仪仗所用的礼剑，剑身刻着颂晨的经文。攻击 +2。', kind: 'equip', slot: 'weapon', atk: 2 },
   whale_lance:  { icon: '🔱', name: '鲸骨长枪', desc: '用老鲸脊骨磨成的猎叉长枪，沉而有劲。攻击 +3。', kind: 'equip', slot: 'weapon', atk: 3 },
   tide_weave:   { icon: '🧥', name: '潮织法衣', desc: '渔家妇女以潮汐线织成的外衣，水汽难侵。受到伤害 -2。', kind: 'equip', slot: 'armor', def: 2 },
@@ -56,6 +63,16 @@ const ITEMS = {
   harvest_charm:{ icon: '🧿', name: '麦金护符', desc: '磨得发亮的麦穗金环，穗影里藏着大地的偏心。会心一击率 +8%。', kind: 'equip', slot: 'accessory', crit: 0.08 },
   tower_page:   { icon: '🗒️', name: '机关图志·残页', desc: '《观星台机关图志》的残页，记着星盘刻度的校准之法。', kind: 'key' },
   shadow_note:  { icon: '📓', name: '影蚀手记', desc: '斥候的手记：「晨曦将燃。报于上座：影主之意，先取星辰，后图晨曦。」', kind: 'key' },
+  rune5:   { icon: '🚩', name: '战争之印', desc: '七印之五，先王军阵的旗魂，暗金的光在里面猎猎如旗。', kind: 'key' },
+  rune6:   { icon: '🔔', name: '暮钟之印', desc: '七印之六，为长夜计时的钟魂，幽蓝的光随一声不存在的钟鸣缓缓荡漾。', kind: 'key' },
+  dogtag:  { icon: '🏷️', name: '沙场军牌', desc: '折断皮带上的黄铜军牌，背面刻着一个再也无人呼唤的名字。', kind: 'key' },
+  war_map: { icon: '📐', name: '布阵图残页', desc: '影蚀辎重营的军阵图残页，只画着五面战旗中的三面。', kind: 'key' },
+  war_order: { icon: '📄', name: '影蚀工令', desc: '「上座亲谕：掘通古渠，静待月晦。——影」。他们在古战场挖的不是印，是路。', kind: 'key' },
+  bell_tongue: { icon: '🔩', name: '暮钟的钟舌', desc: '钟楼大钟的铜舌，被辅祭偷了去。没有它，暮钟发不出声。', kind: 'key' },
+  /* ---- 装备（kind:'equip'，slot: weapon|armor|accessory）---- */
+  war_glaive:  { icon: '🗡️', name: '折戟长戈', desc: '碑林深处找回的老将佩戈，戈头折过又重铸。攻击 +4。', kind: 'equip', slot: 'weapon', atk: 4 },
+  war_mail:    { icon: '🛡️', name: '战殁重铠', desc: '从战将黑铠上剥下的残甲，千锤百炼。受到伤害 -4。', kind: 'equip', slot: 'armor', def: 4 },
+  jade_chime:  { icon: '🎐', name: '玉磬坠', desc: '修道院代代相传的玉磬，声音清得能压住噩梦。斗气上限 +6。', kind: 'equip', slot: 'accessory', spMax: 6 },
 };
 
 /* ---------------- 技能 ----------------
@@ -70,6 +87,8 @@ const SKILLS = {
   runeb:      { icon: '☀️', name: '符文之刃', cost: 6, kind: 'magic', power: 2.4, weapon: true, reqFlag: 'rune',   desc: '以晨曦符文附剑，圣光一击（无视护甲）' },
   tideb:      { icon: '🌊', name: '潮汐之刃', cost: 8, kind: 'magic', power: 2.7, weapon: true, reqFlag: 'rune3',  desc: '以海洋之印附剑，怒潮一击（无视护甲）' },
   harvestwave:{ icon: '🌾', name: '穗浪千重', cost: 8, kind: 'magic', power: 1.5, weapon: true, all: true, reqFlag: 'rune4', desc: '金色的麦浪横扫全场（无视护甲）' },
+  warhorn:    { icon: '📯', name: '战号之锋', cost: 10, kind: 'magic', power: 3.2, weapon: true, reqFlag: 'rune5', desc: '以战争之印附剑，万军莫当的一击（无视护甲）' },
+  knell:      { icon: '🔔', name: '暮钟长鸣', cost: 10, kind: 'magic', power: 1.7, weapon: true, all: true, reqFlag: 'rune6', desc: '暮钟的余音荡开，撼动全场（无视护甲）' },
   starfire:   { icon: '✨', name: '星火弹',   cost: 4, kind: 'magic', power: 1.5, reqFlag: 'aria',   by: '艾莉娅', desc: '星辉魔法，无视护甲' },
   starshield: { icon: '🛡', name: '星辉庇护', cost: 4, kind: 'guard', heal: 2,     reqFlag: 'aria',   by: '艾莉娅', desc: '星辉结界护住全队，受伤大减、回复2点并驱散毒素' },
   starheal:   { icon: '💚', name: '治愈星雨', cost: 6, kind: 'heal', heal: 14,     reqFlag: 'aria',   by: '艾莉娅', desc: '治愈术，回复14点生命' },
@@ -252,6 +271,58 @@ const ENEMIES = {
     ],
   },
 
+  /* ---- 第一部扩写 · 迷雾森林与圣殿 ---- */
+  mistcrows: {
+    name: '雾鸦群', char: CH + 'raven.svg',
+    exp: 9, gold: 4,
+    units: [
+      { name: '头鸦', hp: 8, dmg: [1, 2],
+        moves: [
+          { name: '挖啄', type: 'atk', weight: 2 },
+          { name: '俯衔回旋', type: 'heavy', mult: 1.5, cd: 2, hint: '高伤害！', text: '贴着雾顶兜了个圈，收翅俯冲——【俯衔回旋】！' },
+        ],
+        die: '头鸦一声哑叫，斜斜栽进了坡下的雾里。' },
+      { name: '雾鸦', hp: 6, dmg: [1, 2], moves: [{ name: '抠啄', type: 'atk' }], die: '雾鸦扑棱着逃回枝头，再也不敢下来。' },
+    ],
+    intro: '坡上的鸦群炸开，贴着雾顶盘旋而下——它们的眼睛亮得不像鸟。',
+    win: '鸦群重新拢进雾里。你脚边的枯枝上留下它们收集的亮东西：几枚硬币，一粒磨亮的玻璃珠。',
+    death: [
+      '无数翅膀盖下来，雾漫进你的口鼻。',
+      '——但晨曦之痕在你胸口烫了一下。故事还没完。',
+    ],
+  },
+  bramble: {
+    name: '荆棘蔓灵', char: CH + 'husk.svg',
+    hp: 16, dmg: [1, 3], def: 1, exp: 13, gold: 6, noFlee: true,
+    moves: [
+      { name: '荆鞭', type: 'atk', weight: 2 },
+      { name: '缠根须', type: 'stun', chance: 0.3, cd: 3, hint: '可能缠住你的脚！', text: '地面的根须悄然拱起，猛地绞住你的脚踝——【缠根须】！' },
+      { name: '抽枝凝刺', type: 'shield', amount: 4, cd: 3, hint: '正在凝出棘刺', text: '断口处噼啪抽出新一层荆棘，密密地护住核心。' },
+    ],
+    intro: '贮木场的老藤无声地拧作一团人形的荆丛，挡在工具棚前——它在替什么人，看着这地方。',
+    win: '荆丛散成满地带刺的碎叶，肥进泥土里。藤心里缠着伐木人来不及带走的厚背斧，斧刃竟是新磨的。',
+    death: [
+      '荆棘从四面八方卷来，温柔而不容拒绝，像大地收走一件借走太久的东西。',
+      '——但晨曦之痕在你胸口烫了一下。故事还没完。',
+    ],
+  },
+  sentinel: {
+    name: '被蚀的石兽', char: CH + 'harvestgiant.svg',
+    hp: 20, dmg: [2, 4], def: 1, exp: 14, gold: 8, noFlee: true,
+    rageAt: 10, rageText: '刻痕里的黑气烧穿了石皮——石兽的眼窝亮起两点紫焰，爪势骤然狂乱！',
+    moves: [
+      { name: '石爪', type: 'atk', weight: 2 },
+      { name: '重碾', type: 'heavy', mult: 1.6, cd: 2, hint: '高伤害！', text: '整个前倾，石躯带着千钧之势砸落——【重碾】！' },
+      { name: '镇庭低吼', type: 'buff', cd: 3, hint: '石兽的怒意攀升', text: '石躯深处滚出低沉的轰鸣，整座灯庭跟着共振。' },
+    ],
+    intro: '石兽的关节里迸出砂与尘——三百年不曾动过的东西，为你一个人醒了过来。此战，无处可退。',
+    win: '石兽散作碎金与石屑，纷纷扬扬，像一场迟到了三百年的落雪。碎屑里，一枚完好的晶屑兀自亮着。',
+    death: [
+      '石爪落下前，你恍惚看见它眼里掠过一丝不属于紫焰的哀意。',
+      '——但晨曦之痕在你胸口烫了一下。故事还没完。',
+    ],
+  },
+
   /* ---- 第三部 · 潮歌湾 ---- */
   deepone: {
     name: '深潜者', char: CH + 'deepone.svg',
@@ -378,6 +449,160 @@ const ENEMIES = {
       '——黑暗尽头，符文最后一次亮起。',
     ],
   },
+
+  /* ---- 第五部 · 战痕古战场 ---- */
+  warshades: {
+    name: '荒冢战影', char: CH + 'shadowknight.svg',
+    exp: 24, gold: 14,
+    units: [
+      { name: '执矛战影', hp: 22, dmg: [4, 6],
+        moves: [
+          { name: '锈矛', type: 'atk', weight: 2 },
+          { name: '战阵合击', type: 'heavy', mult: 1.6, cd: 2, hint: '高伤害！', text: '与倒下的同伴残影并肩突进——【战阵合击】！' },
+        ],
+        die: '战影散成一蓬锈色的雾。' },
+      { name: '执盾战影', hp: 26, dmg: [3, 5], def: 1,
+        moves: [
+          { name: '盾缘钝击', type: 'atk', weight: 2 },
+          { name: '举盾', type: 'shield', amount: 6, cd: 3, hint: '正在凝聚护盾', text: '锈盾上的凿痕里透出暗金的光。' },
+          { name: '盾击', type: 'heavy', mult: 1.4, cd: 2, hint: '高伤害！', text: '整面锈盾砸落——【盾击】！' },
+        ],
+        die: '锈盾哐当落地，战影跪倒成灰。' },
+    ],
+    intro: '两道披甲的影子从壕沟里立起——甲缝里没有血肉，只有一千年前没散尽的战意。',
+    win: '战影散作锈色的雾，雾里落下一小把腐蚀发黑的军饷。你替最后倒下的那具残影拢了拢衣甲。',
+    death: [
+      '锈色的雾漫过你的眼睛。荒原上，一千年的军阵朝你合围过来。',
+      '——但怀中的符文最后一次发烫。',
+    ],
+  },
+  campguard: {
+    name: '影蚀营卫', char: CH + 'shadowknight.svg',
+    hp: 40, dmg: [5, 8], def: 1, exp: 30, gold: 14, noFlee: true,
+    moves: [
+      { name: '黑刺', type: 'atk', weight: 2 },
+      { name: '影蚀重斩', type: 'heavy', mult: 1.6, cd: 2, hint: '高伤害！', text: '挥出裹挟紫雾的【影蚀重斩】！' },
+      { name: '凝盾', type: 'shield', amount: 6, cd: 4, hint: '正在凝聚护盾', text: '抬手凝出一面幽黑的盾壁。' },
+    ],
+    intro: '营地的紫焰灯齐齐一暗——巡营的影蚀营卫从帐篷的阴影里围拢过来。',
+    win: '营卫溃成黑水。辕门下的火盆里，烧剩一半的军令还在冒烟。',
+    death: [
+      '紫雾淹没你的视野。营地的号角低低地响了一声，像在点名。',
+      '——但怀中的符文最后一次发烫。',
+    ],
+  },
+  wargeneral: {
+    name: '影蚀战将 · 断矛', char: CH + 'shadowknight.svg',
+    hp: 210, dmg: [8, 12], def: 2, exp: 60, gold: 55, noFlee: true,
+    rageAt: 105, rageText: '战争之印的暗金光灼进它的兜帽——战将发出沙场点兵般的长啸，锈甲层层炸开，露出底下涌动的黑雾！它的攻势骤然狂暴！',
+    moves: [
+      { name: '断矛突刺', type: 'atk', weight: 2 },
+      { name: '万矛齐发', type: 'heavy', mult: 1.8, cd: 2, hint: '极高伤害，务必防御！', text: '荒原上所有的断矛应声震颤，齐齐朝你攒射——【万矛齐发】！' },
+      { name: '战旗壁垒', type: 'shield', amount: 9, cd: 4, hint: '正在凝聚护盾', text: '五面残旗无风自张，垂下一面铁色的光壁。' },
+      { name: '亡魂军号', type: 'stun', chance: 0.3, cd: 4, hint: '可能锁住你的行动！', text: '呜——一声不该存在的号角从地底响起——【亡魂军号】！' },
+      { name: '汲战意', type: 'drain', mult: 1.0, cd: 3, hint: '汲取生命', text: '你的战意顺着伤口被抽走，涌进它的锈甲。' },
+    ],
+    intro: '战旗台上，锈甲的巨影拄着一柄折断的长矛站起。它背后，战争之印的暗金光在旗影里明灭。',
+    win: '断矛当啷落地。战将的锈甲一片片剥落，露出里面一枚安安静静的暗金印玺——它等这一战，等了一千年。',
+    death: [
+      '锈色的雾没过你的口鼻。荒原的风里，千军万马的呼喝声由远及近。',
+      '——黑暗尽头，符文最后一次亮起。',
+    ],
+  },
+
+  /* ---- 第六部 · 暮色修道院 ---- */
+  mutes: {
+    name: '缄默修士', char: CH + 'shadowknight.svg',
+    exp: 26, gold: 15,
+    units: [
+      { name: '执杖修士', hp: 24, dmg: [4, 6],
+        moves: [
+          { name: '悔罪杖击', type: 'atk', weight: 2 },
+          { name: '缄默重杖', type: 'heavy', mult: 1.5, cd: 2, hint: '高伤害！', text: '铁头牧杖抡圆砸落——【缄默重杖】！' },
+        ],
+        die: '修士的黑袍散开，底下空无一人。' },
+      { name: '执烛修士', hp: 20, dmg: [3, 5],
+        moves: [
+          { name: '烛火鞭', type: 'atk', weight: 2 },
+          { name: '沉默祷言', type: 'stun', chance: 0.3, cd: 3, hint: '可能锁住你的行动！', text: '无声的祷词直接撞进你的颅骨——【沉默祷言】！' },
+        ],
+        die: '烛火熄灭，修士散成一缕青烟。' },
+    ],
+    intro: '晚课的阴影里立起两名黑袍修士——他们的嘴唇被黑线缝住，祷词直接撞进你的颅骨。',
+    win: '缝线崩断，黑袍落地。远处，晚课的钟声轻轻荡了一声，像叹息。',
+    death: [
+      '黑线缠上你的嘴唇，无声的祷词灌进你的耳朵。暮色修道院的钟，再也没能为你敲响。',
+      '——但怀中的符文最后一次发烫。',
+    ],
+  },
+  acolyte: {
+    name: '影蚀辅祭', char: CH + 'assassin.svg',
+    hp: 28, dmg: [4, 7], exp: 24, gold: 12,
+    moves: [
+      { name: '掠影重击', type: 'heavy', mult: 1.5, cd: 2, hint: '高伤害！', text: '黑袍鼓荡，裹着香灰的掌风拍落——【掠影重击】！' },
+      { name: '蚀骨薰香', type: 'poison', mult: 1.1, cd: 3, hint: '淬毒！', text: '打翻的香炉腾起紫烟——蚀骨的薰香呛进喉咙！' },
+      { name: '香炉砸', type: 'atk', weight: 2 },
+    ],
+    intro: '黑袍辅祭从阴影里转过身来，怀里死死抱着什么东西——铜舌在袍子里磕出一声闷响。',
+    win: '辅祭的黑袍散作烟尘，只留下一串发烫的紫脚印，朝山门外去了。',
+    death: [
+      '蚀骨的薰香灌进肺里。暮色里的晚课钟声，成了为你敲响的丧钟。',
+      '——但怀中的符文最后一次发烫。',
+    ],
+  },
+  chantress: {
+    name: '影蚀圣咏者 · 夜祷', char: CH + 'tidesage.svg',
+    hp: 230, dmg: [8, 12], def: 2, exp: 70, gold: 60, noFlee: true,
+    rageAt: 115, rageText: '暮钟之印的幽蓝光刺进她的兜帽——圣咏者的咏叹陡然拔高，整座钟楼跟着她的声音震颤！她的攻势骤然狂暴！',
+    moves: [
+      { name: '夜祷咏叹', type: 'atk', weight: 2 },
+      { name: '葬钟重鸣', type: 'heavy', mult: 1.8, cd: 2, hint: '极高伤害，务必防御！', text: '她十指张开，大钟在她头顶轰然重鸣——【葬钟重鸣】！' },
+      { name: '黑夜帷幔', type: 'shield', amount: 10, cd: 4, hint: '正在凝聚护盾', text: '圣歌层层叠起，黑纱般的帷幔裹住她的身形。' },
+      { name: '钟鸣震魂', type: 'stun', chance: 0.35, cd: 4, hint: '可能锁住你的行动！', text: '一声不谐和的钟鸣当头砸落——【钟鸣震魂】！' },
+      { name: '安魂圣歌', type: 'drain', mult: 1.1, cd: 3, hint: '汲取生命', text: '她唱起倒转的安魂曲，你的气力随着音符流进她的喉咙。' },
+    ],
+    intro: '钟楼顶层，黑袍的圣咏者悬在钟舌旁，像停驻在琴弦上的一只蛾。她没有脸，只有一道唱着圣歌的、缓缓开合的缝。',
+    win: '咏叹声碎在半空。夜祷的黑袍一层层垂落，钟舌上只留下一枚幽蓝的印玺，随一口无声的钟鸣轻轻荡着。',
+    death: [
+      '圣歌灌满你的耳朵，世界安静下来——安静得像一支只为你而唱的安魂曲。',
+      '——黑暗尽头，符文最后一次亮起。',
+    ],
+  },
+
+  /* ---- 终部 · 影渊要塞 ---- */
+  bridgeguard: {
+    name: '影渊桥头守将', char: CH + 'shadowknight.svg',
+    hp: 70, dmg: [6, 9], def: 1, exp: 45, gold: 30, noFlee: true,
+    moves: [
+      { name: '黑刃', type: 'atk', weight: 2 },
+      { name: '重锤斩', type: 'heavy', mult: 1.7, cd: 2, hint: '高伤害！', text: '黑剑抡起，像锤一样砸落——【重锤斩】！' },
+      { name: '凝盾', type: 'shield', amount: 7, cd: 4, hint: '正在凝聚护盾', text: '桥面的黑曜石应声而起，在它身前拼成盾壁。' },
+    ],
+    intro: '桥头，一名影蚀武士自阴影中立起，黑剑出鞘的声音像骨头折断。',
+    win: '守将的黑剑断成两截，它的躯体像退潮的黑水一样从铠甲里泻出。要塞的大门在你们面前轰然洞开。',
+    death: [
+      '你倒在独石桥上。雾海深处，那个游弋的巨大影子终于有了名字，也终于有了晚餐。',
+      '——影渊的风里，有人在低声咒骂，又有人在低声祈祷。两者都希望你再试一次。',
+    ],
+  },
+  mograth: {
+    name: '暗影君主 · 莫格拉斯', char: CH + 'mograth.svg',
+    hp: 260, dmg: [9, 13], def: 2, exp: 100, gold: 100, noFlee: true, sacrifice: true,
+    rageAt: 130, rageText: '莫格拉斯的铠甲缝隙里爆出紫焰——「好！很好！三百年了，终于有人配得上让我认真！」他的攻势骤然狂暴！',
+    moves: [
+      { name: '深渊斩', type: 'atk', weight: 2 },
+      { name: '王座碾压', type: 'heavy', mult: 1.9, cd: 2, hint: '极高伤害，务必防御！', text: '他单手举剑，像举起整座王座劈落——【王座碾压】！' },
+      { name: '深渊护壁', type: 'shield', amount: 10, cd: 4, hint: '正在凝聚护盾', text: '紫焰自他脚下盘旋而上，凝成一圈黑曜石般的壁障。' },
+      { name: '深渊锁链', type: 'stun', chance: 0.35, cd: 4, hint: '可能锁住你的行动！', text: '七条锁链从王座底下窜出——【深渊锁链】！' },
+      { name: '汲渊', type: 'drain', mult: 1.1, cd: 3, hint: '汲取生命', text: '你的生命顺着剑刃倒流进他的黑甲——三百年了，他渴了很久。' },
+    ],
+    intro: '黑曜王座上，莫格拉斯终于握住了他三百年不曾出鞘的剑。整座大厅的光，同时暗了下去。',
+    win: '黑甲崩解。莫格拉斯的身影在紫焰中一层层变淡——王座之上，落下了三百年来的第一缕晨光。',
+    death: [
+      '你倒在王座阶前。莫格拉斯俯视着你，眼里的紫焰没有得逞的快意，只有一种近乎悲悯的平静。',
+      '「回去吧，孩子。」他说，「把路走完，再回来。」',
+    ],
+  },
 };
 
 /* ---------------- 任务 ---------------- */
@@ -391,20 +616,27 @@ const QUESTS = {
   q_tower:  { title: '星塔之夜', hint: '今夜月晦，影蚀领主亲取星辰之印——赶到星塔顶！' },
   q_tide:   { title: '海洋之印', hint: '南下潮歌湾——第三印沉眠在海底神殿，大退潮之夜海路自现。' },
   q_harvest:{ title: '丰收之印', hint: '东行金穗平原——蝗灾与腐穗的背后，是影蚀对第四印的图谋。' },
-  q_horizon:{ title: '七印之路 · 再启程', hint: '终部「深渊之印」制作中：战痕古战场与暮色修道院的钟声。在艾尔多兰随意行走，收集未见的角落。' },
+  q_war:    { title: '战争之印', hint: '北行战痕古战场——第五印沉眠在战旗之下，影蚀的爪子已经先一步伸进了亡者的地界。' },
+  q_bell:   { title: '暮钟之印', hint: '西行暮色修道院——第六印悬在钟楼顶层。风里有钟声，时间还够。' },
+  q_abyss:  { title: '深渊之印 · 影渊', hint: '最后一印不在途中，在底下。北上影渊，走进那座黑曜石的要塞。' },
   q_done:   { title: '七印之路 · 暂歇', hint: '在艾尔多兰随意行走，收集未见的角落。' },
 };
 
 /* ---------------- 支线任务 ---------------- */
 const SIDE_QUESTS = {
   herb:   { title: '月下香草', hint: '为采药人玛戈采集3株月光草。林道、隐秘小径、黄昏营地各长着一株。' },
+  fare:   { title: '湖底的船钱', hint: '湖心洲的浅水里沉着七枚古铜币——同行七人各自省下的船钱。替老船夫把它们送回湖底，替亡者把账清了。' },
+  lamps:  { title: '复明的灯柱', hint: '石兽灯庭有三对灯柱被影蚀弄熄了。集齐三枚引火晶屑（被蚀的石兽、钟塔残基的钟腹、地宫的烛泪塔），让灯庭重新亮起来。' },
+  bees:   { title: '走失的蜂群', hint: '养蜂人纪老爹的蜂群连王带巢飞进了林子，多半在苔藓谷的老栎树洞里结了团。替他把蜂群带回去。' },
   bounty: { title: '隘口的匪首', hint: '驿镇告示：红巾匪首盘踞白霜隘口，取其首级回来领赏18金币。' },
   lost:   { title: '宵禁下的失踪', hint: '帮街角老妇寻找失踪的学徒艾德温。宵禁后的城西小巷，或许有线索。' },
   glowweeds: { title: '灯塔的荧藻', hint: '为守塔人老祈采集3株荧藻（礁滩、沉船湾、潮汐洞窟），重亮潮歌灯塔。' },
   seeds:  { title: '被偷走的谷种', hint: '穗安村的祭典谷种被偷进了老磨坊——替村长取回来。' },
+  warname:{ title: '碑林的名字', hint: '亡者碑林的老兵亡魂想找回三块沙场军牌（折戟丘、白骨哨塔、影蚀辎重营），好让碑林重新记住他们的名字。' },
+  belltongue: { title: '哑了的暮钟', hint: '守钟人修士的钟舌被影蚀辅祭偷上了钟楼——替他取回来。' },
 };
 
-/* ---------------- 结局（章节收尾，可收集） ---------------- */
+/* ---------------- 结局（章节收尾 + 终局，可收集） ---------------- */
 const ENDINGS = [
   { id: 'ending_star_guardian', icon: '🌟', name: '星辰守护者' },
   { id: 'ending_undercurrent',  icon: '🌑', name: '暗流涌动' },
@@ -412,6 +644,15 @@ const ENDINGS = [
   { id: 'ending_tide_whisper',  icon: '🐚', name: '潮声呢喃' },
   { id: 'ending_harvest_guardian', icon: '🌾', name: '大地的守望者' },
   { id: 'ending_rot_seed',      icon: '🍂', name: '腐香暗种' },
+  { id: 'ending_war_warden',    icon: '🚩', name: '战旗不倒' },
+  { id: 'ending_war_whisper',   icon: '🌫️', name: '锈色低语' },
+  { id: 'ending_bell_warden',   icon: '🔔', name: '晚祷的回声' },
+  { id: 'ending_bell_back',     icon: '🔕', name: '钟声的背面' },
+  { id: 'ending_dawn',          icon: '🌅', name: '破晓之光' },
+  { id: 'ending_watcher',       icon: '🌙', name: '守夜人之誓' },
+  { id: 'ending_sacrifice',     icon: '🕯️', name: '晨曦之殉' },
+  { id: 'ending_dusk',          icon: '🥀', name: '灰烬之约' },
+  { id: 'ending_corrupt',       icon: '👑', name: '暗影新王' },
 ];
 
 /* ============================================================
@@ -450,6 +691,141 @@ async function shopLoop(intro, rumor, ids) {
     if (i < 0 || i === opts.length - 1) return;
     await opts[i].run();
   }
+}
+
+/* ============================================================
+ * 酒馆传闻（随天数与剧情推进刷新，讲过的不再重复）
+ * 好酒下肚，天下的消息就活了：天数越多、走得越远，酒馆里的新鲜事越多。
+ * ============================================================ */
+const TAVERN_RUMORS = [
+  { id: 'road_fog', when: () => timeDay() <= 3, lines: [
+    '「南边的雾一天浓过一天。老辈人说，雾涨到第三天还不散，林子就要『换脾气』了。」',
+    '「换什么脾气？」他压低嗓子，「——吃人的脾气。」',
+  ] },
+  { id: 'creek_muddy', when: () => timeDay() >= 2, lines: [
+    '「石桥渡的老吴说，溪水半个月前就开始发浑。上游出了什么事，没人敢上去看。」',
+  ] },
+  { id: 'crows_watch', when: () => timeDay() >= 2, lines: [
+    '「鸦眠坡的乌鸦近来疯了一样，白天黑夜往东南山里飞。乌鸦认路——它们赶着去『看』什么。」',
+  ] },
+  { id: 'honey_good', when: () => timeDay() >= 2, lines: [
+    '「林间蜂场纪老爹的蜂蜜，顶顶管用：饿了掰一口，伤了敷一口。就是他家蜂群最近怪怪的。」',
+  ] },
+  { id: 'night_fog', when: () => timeDay() >= 3, lines: [
+    '「夜里别赶路！雾里的『没脸东西』白天还讲点规矩，一入夜，连火把都照不住。」',
+    '「真要夜行？记三个字：不对视。」',
+  ] },
+  { id: 'temple_gate', when: () => S.flags.heardLegend || timeDay() >= 3, lines: [
+    '「符文圣殿的大门三百年没开过。门上三枚符文：晨曦、星辰、深渊。」',
+    '「门楣刻着句老话：『吾随最后一缕光沉眠』。猜了几百年，没人猜中过。」',
+  ] },
+  { id: 'shrine_bird', when: () => S.flags.shrineBless, lines: [
+    '「林中古祠是间怪祠——荒了三百年，一尘不染。有人说是只白鹇在打扫，有人说是先王的魂。」',
+    '「依我看呐，是还有人做好事，世道就还没坏透。」',
+  ] },
+  { id: 'aria_seen', when: () => S.flags.aria, lines: [
+    '「听说有个银头发的半精灵学者在雾林里走动，见人就打听晨曦符文。」',
+    '「精灵的星辉魔法，三百年没见过了。那可是砍不穿的墙、烧不化的火。」',
+  ] },
+  { id: 'part1_dawn', when: () => S.flags.part1, lines: [
+    '「大新闻！圣殿金顶亮了！守殿人那个矮子下山买了十斤酒，逢人就说『灯点亮了』！」',
+    '「三百年头一回。要我说，世道怕是要变。」',
+  ] },
+  { id: 'part2_guard', when: () => S.flags.part2, lines: [
+    '「北边白石城在换防，卫兵抽走一半调去北境。城防空成那样，可别出事。」',
+  ] },
+  { id: 'part3_tide', when: () => S.flags.part3, lines: [
+    '「潮歌湾的老渔人说，今年潮汛不对劲——该退的时候不退，该涨的时候黑得像墨。」',
+  ] },
+  { id: 'part4_locust', when: () => S.flags.part4, lines: [
+    '「金穗平原来信，说田里见了蝗虫的苗头。丰年祭要是办不成，那是要饿死人的。」',
+  ] },
+  { id: 'part5_rollcall', when: () => S.flags.part5, lines: [
+    '「古战场夜里有人点名——当过兵的都懂，那是坟头的兵在点卯。近年头一回听见。」',
+  ] },
+  { id: 'part6_bell', when: () => S.flags.part6, lines: [
+    '「西边暮色修道院的钟哑了几百年。前几日夜里，有人听见它『当』了一声。就一声。」',
+  ] },
+];
+/* 酒馆传闻循环：who 是酒客的称呼；请一碗酒听一条，讲过的不再重复 */
+async function tavernRumors(who, cost = 2) {
+  await say([`${who}拎着酒壶凑过来，在你对面坐下，压低了嗓门。`]);
+  for (;;) {
+    const pool = TAVERN_RUMORS.filter(r => !S.events['rum_' + r.id] && r.when());
+    const opts = [
+      { text: `请${who}喝一碗，听条新鲜传闻（${cost}金币）`, req: s => s.gold >= cost, lock: '金币不足',
+        run: async () => {
+          const r = pool.length ? pool[rnd(pool.length)] : null;
+          if (!r) { await say([`「新鲜事？」${who}咂了咂酒，「都叫我讲尽了。等过两天出了新的事，我头一个告诉你。」`]); return; }
+          fx({ gold: -cost });
+          S.events['rum_' + r.id] = true;
+          await say(r.lines);
+          await say(['（传闻记下了。日子过得越久、路走得越远，酒馆里的新鲜事就越多。）']);
+        } },
+      { text: '「改日再聊。」', run: async () => {} },
+    ];
+    const i = await choose(opts);
+    if (i < 0) return;
+    await opts[i].run();
+    if (i === opts.length - 1) return;
+  }
+}
+
+/* ============================================================
+ * 委托板（酒馆墙上，每天刷新一张随机委托）
+ * 讨伐式：按击杀计数（战斗胜利自动累计）；采办式：行囊里备齐即交。
+ * ============================================================ */
+const BOUNTIES = [
+  { id: 'wolves', title: '狼患', type: 'kill', en: 'wolves', n: 2, gold: 10, minDay: 1,
+    text: '『古道与林缘狼群猖獗，已有两拨行商被劫。猎杀狼群两拨，凭狼耳领赏十枚。』——驿路商会' },
+  { id: 'crows', title: '鸦患', type: 'kill', en: 'mistcrows', n: 2, gold: 8, minDay: 1,
+    text: '『鸦眠坡的鸦群愈发放肆，抢货啄畜。猎杀雾鸦两拨，赏八枚。』——灰岭猎户会' },
+  { id: 'honey', title: '征蜜', type: 'fetch', item: 'honey', n: 2, gold: 7, minDay: 1,
+    text: '『旅店后厨征林间蜂蜜两罐，治病配方急用，价钱公道。』——黑鸦旅店后厨' },
+  { id: 'fish', title: '鲜味', type: 'fetch', item: 'roast_fish', n: 2, gold: 7, minDay: 1,
+    text: '『本店征湖畔烤鱼两条，鲜字当头，苇秆串的优先。』——黑鸦旅店掌柜' },
+  { id: 'wraith', title: '雾魅', type: 'kill', en: 'wraith', n: 1, gold: 12, minDay: 2,
+    text: '『雾里的没脸东西近日贴着官道游荡，货郎夜不敢行。驱散雾魅一尊，赏十二枚。』——驿路商会' },
+  { id: 'goblin', title: '掠袭', type: 'kill', en: 'goblin', n: 1, gold: 9, minDay: 2,
+    text: '『哥布林掠袭者劫道伤人。剿灭一伙，赏九枚。』——灰岭镇公所' },
+  { id: 'bramble', title: '荆扰', type: 'kill', en: 'bramble', n: 1, gold: 11, minDay: 2,
+    text: '『林间老藤成了精，缠了两个药农。伐木场的老规矩：蔓灵挡道，砍散者赏。』——樵夫行会' },
+];
+function bountyProg(b) {
+  if (!b || !S.bounty) return 0;
+  return b.type === 'kill'
+    ? Math.max(0, (S.kills[b.en] || 0) - (S.bounty.base || 0))
+    : Math.min((S.items[b.item] || 0), b.n);
+}
+async function bountyBoard() {
+  await say(['旅店大堂的墙上钉着一块委托木板，钉眼摞着钉眼，是几十年攒出来的厚茧。']);
+  if (S.bounty) {
+    const b = BOUNTIES.find(x => x.id === S.bounty.id);
+    if (!b) { S.bounty = null; return; }
+    const prog = bountyProg(b);
+    if (prog >= b.n) {
+      await say([`委托【${b.title}】办妥了！`]);
+      if (b.type === 'fetch') take(b.item, b.n);
+      S.doneBounties = S.doneBounties || [];
+      S.doneBounties.push(b.id);
+      S.bounty = null;
+      fx({ gold: b.gold, rep: 1 });
+      await say([`（领赏：金币 +${b.gold}，声望 +1）`, '掌柜在木板上敲了颗新钉：「明儿有新差事，常来瞧。」']);
+      return;
+    }
+    await say([`在办委托【${b.title}】：`, b.text, `（进度 ${prog}/${b.n}）`]);
+    const i = await choose([{ text: '再等等' }, { text: '不干了，撕掉委托' }]);
+    if (i === 1) { S.bounty = null; await say(['你把委托纸撕了下来。掌柜撇撇嘴：「年轻人，三分钟热度。」']); }
+    return;
+  }
+  const pool = BOUNTIES.filter(b => timeDay() >= b.minDay && !(S.doneBounties || []).includes(b.id));
+  if (!pool.length) { await say(['板上空空。掌柜两手一摊：「差事都办完了？好兆头——就是我这儿没新纸可钉喽。」']); return; }
+  const b = pool[timeDay() % pool.length];   // 按天轮换：每天来，看到的都不一样
+  await say([`今日委托【${b.title}】：`, b.text, `（报酬：${b.gold} 金币）`]);
+  const i = await choose([{ text: '揭下告示，接下委托' }, { text: '先不下手' }]);
+  if (i !== 0) { await say(['你把告示端详了两眼，又按了回去。']); return; }
+  S.bounty = { id: b.id, base: b.type === 'kill' ? (S.kills[b.en] || 0) : 0, day: timeDay() };
+  await say(['你揭下告示。掌柜在本子上记了一笔：「办妥了回来领赏。」（委托已记入侧栏，办妥即领赏）']);
 }
 
 /* ============================================================
@@ -636,8 +1012,24 @@ const WORLD = {
           }
         },
       },
+      regular: {
+        name: '常客老歪', img: null, role: '黑鸦旅店的酒鬼 · 跑过江湖的脚夫',
+        talk: async () => {
+          if (S.flags.cedricDead && !S.flags.laowaiCondolence) {
+            setFlag('laowaiCondolence');
+            await say([
+              '「昨夜里那动静，你没事？」老歪给你倒了一盅压惊酒，手有点抖，「老爷子……唉。他常坐那把椅子，镇上没人敢坐，也没人舍得搬。」',
+              '「你往后要出远门？路上有啥新鲜事，回来讲给老歪听——酒我请你，故事换酒，天经地义。」',
+            ]);
+            return;
+          }
+          await tavernRumors('老歪');
+        },
+      },
     },
-    actions: [],
+    actions: [
+      { text: '查看墙上的委托木板', run: async () => { await bountyBoard(); } },
+    ],
   },
 
   inn_cellar: {
@@ -719,6 +1111,7 @@ const WORLD = {
       ]);
       fx({ item: 'shard', flag: 'cedricDead' });
       give('map');
+      setSlot('night');   // 子夜惊变：把时间拨到深夜
       quest('q_aria');
       await say(['（获得：迷雾古图——塞德里克的遗物，标注着符文圣殿与森林的方位。）']);
       await say(['南方的官道已经打通。你可以随时从镇口出发，前往迷雾森林。']);
@@ -737,9 +1130,14 @@ const WORLD = {
     checkpoint: true,
     exits: {
       n: { to: 'grayridge_gate', label: '回灰岭镇', flavor: '你沿古道折返，黄昏时分重新望见灰岭镇的炊烟。' },
+      e: { to: 'white_spring', label: '东 · 碎石坡下', flavor: '你踏着碎石坡下到谷底。水声从坡底的雾里透出来，清凌凌的。' },
+      w: { to: 'stone_ford', label: '西 · 溪谷断桥', flavor: '你朝西面的水声走去。溪谷里，半座断桥歪在湍流上。' },
       s: { to: 'forest_cross', label: '南 · 林中岔路', flavor: '古道在荒草尽头没入林缘。雾气从树梢漫下来，晨露打湿了你的靴子。' },
     },
-    roam: { en: 'wolves', chance: 0.25, fleeTo: 'forest_cross', intro: '荒草深处传来低低的呜咽声——狼群盯上古道已经很久了。' },
+    roam: {
+      en: 'wolves', chance: 0.25, fleeTo: 'forest_cross', intro: '荒草深处传来低低的呜咽声——狼群盯上古道已经很久了。',
+      byTime: { night: { en: 'wraith', chance: 0.35, intro: '夜里的古道认不得人。雾从荒草里拧出一个没有脸的轮廓，贴着地皮漂过来。' } },
+    },
     onEnter: async () => {
       if (!ev('roadRefugee')) return;
       await say([
@@ -778,6 +1176,156 @@ const WORLD = {
         fx({ gold: 6 });
       } },
     ],
+    npcs: {
+      zhao: {
+        name: '逃难的老农赵老汉', img: null, role: '烽燧下避难的农户',
+        talk: async () => {
+          if (!S.flags.zhaoMet) {
+            setFlag('zhaoMet');
+            await say([
+              '「老汉姓赵，柳树屯的。」老农搓着皴裂的手，讪讪地笑，「占了客官的火堆，别怪罪——地里人，见了亮堂地方就挪不动窝。」',
+              '「井水黑了那年，村里人跑了一半。往南的、往北的，老汉拖家带口走到这儿，实在走不动了。」',
+              '「客官往南进林子？两句话送你：东边碎石坡下有眼白花泉，水甜，毒不死人；西边石桥渡有个姓吴的守渡人，从前是扛枪的，靠得住。」',
+            ]);
+            return;
+          }
+          if (S.flags.part1 && !S.flags.zhaoNews) {
+            setFlag('zhaoNews');
+            await say([
+              '「回来了？！」赵老汉一骨碌爬起来，指着东南山脊，「那金顶——金顶亮了！昨儿夜里老汉起夜，看见山顶上像点了一轮小太阳！」',
+              '他忽然朝你深深作了个揖，什么也没说。孩子们从铺盖后面探出头，学着他的样子，也作了个歪歪扭扭的揖。',
+            ]);
+            return;
+          }
+          await say([
+            '「锅里还有糊糊，客官不嫌弃就盛一碗。」赵老汉往火堆里添了根柴，「夜里老听见林子那边有鸦群过，黑压压的，朝一个方向飞。老辈人说，鸦群望哪儿，哪儿就出大事。」',
+          ]);
+        },
+      },
+    },
+  },
+
+  white_spring: {
+    name: '白花泉', ch: '第一部 · 晨曦之印', sub: '小节一 · 南下古道', bg: BG + 'forest.svg', mood: 'warm',
+    desc: [
+      '古道东侧的碎石坡下，藏着一眼浅泉。泉边开满不知名的白色小花，四季不谢——逃难的农户没骗人：认准开白花的泉眼，毒不死人。',
+      '泉水清得能数清底下的卵石。奇怪的是，泉边那圈白花的内侧，有一小片谁也不肯去的空地——像是有什么东西贴着地皮走过，花们都避着那里开。',
+    ],
+    brief: '开满白花的浅泉。花圈内侧留着一小片避开的空地。',
+    rest: { cost: 0, label: '在泉边打尖歇脚' },
+    exits: {
+      w: { to: 'south_road', label: '回南下古道', flavor: '你灌满水囊，踏着碎石坡回到古道上。' },
+      s: { to: 'old_quarry', label: '南 · 运石古道', flavor: '泉眼再往南，草坡下陷成一道道整齐的车辙——三百年前的运石道。' },
+    },
+    onEnter: async () => {
+      if (!ev('springVisit')) return;
+      await say([
+        '你掬起一捧泉水。凉意顺着喉咙沉下去，一路洗到肺腑里——连日的赶路与惊惶，忽然都被这口甜水压住了。呼吸沉下来，斗气在经脉里缓缓匀开。（斗气 +3）',
+        '你这才留意到花圈内侧那片空地：一列，七个脚印的形状，步子很齐。有什么东西曾贴着地皮列队走过，白花至今不肯朝那边开。',
+      ]);
+      fx({ sp: 3 });
+    },
+    actions: [
+      { text: '在泉底的卵石间摸索', when: () => !S.flags.springFind, run: async () => {
+        setFlag('springFind');
+        await say([
+          '泉底最深处压着一只锈头盔，盔沿豁了口，是烽燧上那种制式。你把它捞上来抖了抖——盔壳里滚出几枚被水磨得发亮的金币。',
+          '头盔内沿刻着一行小字：「戍卒赵四，替看火的人留。」',
+          '（金币 +4）',
+        ]);
+        fx({ gold: 4 });
+      } },
+    ],
+  },
+
+  stone_ford: {
+    name: '石桥渡', ch: '第一部 · 晨曦之印', sub: '小节一 · 南下古道', bg: BG + 'road.svg', mood: 'warm',
+    desc: [
+      '古道在这里被一条湍溪拦腰截断。原先的五孔石桥塌了三孔，桥身歪进水里，只剩靠岸的两孔还勉强站着。',
+      '溪边搭着一间窝棚，一个瘸腿汉子正在补船——左腿的裤管空荡荡地挽着结。他手边立着根磨得发亮的长篙，见你看过来，扬了扬下巴：「过溪？坐船。」',
+    ],
+    brief: '断桥与湍溪。瘸腿的守渡人正在补船。',
+    rest: { cost: 2, label: '在渡口的火堆边歇脚' },
+    exits: {
+      e: { to: 'south_road', label: '回南下古道', flavor: '你踏着碎石回到古道上。身后，船桨搅水的声音不紧不慢。' },
+      n: { to: 'fern_gully', label: '北 · 溪谷小径', flavor: '老吴说，沿溪往上走有一条采药人踩出来的小径，能省一段冤枉路。' },
+    },
+    npcs: {
+      wugou: {
+        name: '守渡人吴钩', img: null, role: '石桥渡的守渡人 · 老兵',
+        talk: async () => {
+          if (!S.flags.wugouMet) {
+            setFlag('wugouMet');
+            await say([
+              '「姓吴，单名一个钩字。」汉子把船桨搁下，「当过十二年兵，丢了条腿，剩这把子力气，就守着这个渡口。」',
+              '「桥是开春的桃花汛冲塌的。官府的告示贴了三张，修桥的银子还没影儿——不过我这儿渡人不收钱。给口饭吃、带个口信，就算船资。」',
+              '「往北去林子的客人都问同一件事：雾里到底有什么。」他往溪对岸努了努嘴，「我只能说：狼饿了一年，胆子肥了。走夜路的，火把别离手。」',
+            ]);
+            return;
+          }
+          if (S.flags.part1 && !S.flags.wugouNews) {
+            setFlag('wugouNews');
+            await say([
+              '「哟，从圣殿山下来的？」吴钩上下打量你，「今早溪对岸的老鸦全朝金顶那边飞，叫得那叫一个欢——咱这破渡口，多少年没这么热闹过了。」',
+              '他把长篙往船上一横：「替我谢谢那位点灯的。从前夜里赶路，就指望烽燧和圣殿那点亮。」',
+            ]);
+            return;
+          }
+          await say([
+            '吴钩一边补船一边跟你闲扯：「北边古战场，俺当年在那儿丢的腿。前些日子有个疯疯癫癫的货郎路过，说碑林夜里有人点名——啧，军营里的老话，坟头的兵也要点卯。」',
+            '「客人要是打北边来，替我留意一件事：溪水这半月浑得邪性，上游准出了事。」',
+          ]);
+        },
+      },
+    },
+    actions: [
+      { text: '帮忙把坍桥的条石搬上渡船', when: () => !S.flags.fordHelped, run: async () => {
+        setFlag('fordHelped');
+        fx({ rep: 1 });
+        await say([
+          '你挽起袖子，把两块浸在水里的条石搬上渡船。吴钩也不客气，指挥你垫在哪头、怎么吃力，俨然把你当了个新兵。',
+          '「不赖。」他看着你把最后一块码稳，难得笑了一下，「兵油子都说不动了，你这愣头青倒实在。——渡口的火堆你随时来，茶水管够。」',
+          '（声望 +1）',
+        ]);
+      } },
+    ],
+  },
+
+  old_quarry: {
+    name: '荒石料场', ch: '第一部 · 晨曦之印', sub: '小节一 · 南下古道', bg: BG + 'mountain.svg', mood: 'dark',
+    desc: [
+      '白花泉再往南，山体被人工剖开一大片——三百年前，圣殿的石料就是从这道剖面上采下去的。凿痕整齐得吓人，一排排码进山骨里。',
+      '料场深处搭着一间石板棚，棚前立着半座没完工的石像：先王的身形、合掌的手势，偏偏没有脸。',
+    ],
+    brief: '三百年前的圣殿采石场。半座没有脸的先王像立在棚前。',
+    exits: {
+      n: { to: 'white_spring', label: '回白花泉', flavor: '你沿着运石的旧车辙回到泉边，水声重新清亮起来。' },
+    },
+    roam: {
+      en: 'wolves', chance: 0.25, fleeTo: 'white_spring', intro: '料场的回声把你的脚步放大了——岩壁后传来低低的呜咽。',
+      byTime: { night: { en: 'wraith', chance: 0.35, intro: '夜里，那些凿痕齐齐发出风哨声。雾顺着岩缝淌下来，凝成一个没有脸的影子。' } },
+    },
+    npcs: {
+      mason: {
+        name: '老石匠莫大', img: null, role: '守着采石场的最后一位石匠',
+        talk: async () => {
+          if (!S.flags.masonLore) {
+            setFlag('masonLore');
+            await say([
+              '老人头也不抬，錾子下的石粉簌簌地落：「别踩我的放样线。」',
+              '「圣殿的石料，全打这剖面上出的。我爹的爷爷那辈儿，给七位先王刻像。刻到第七位，上头传下话来：脸，先别刻。」',
+              '「传了三代，谁也说不清为什么。到我这辈儿，我照着老样子的身形刻，脸——」錾子停了停，「不敢。总觉得刻完了，就该出事了。」',
+              '他终于抬头看你一眼：「客官要是进圣殿，替我看看第七座坛。要是坛上真有那位没有脸的……替我瞅瞅，他到底长什么样。」',
+              '「对了，」他往你手里塞了一小块白白的石屑，「捎给圣殿的守殿人。铁须家的老规矩：料场的石屑到了，就是料场还有人。」',
+            ]);
+            return;
+          }
+          await say([
+            '錾子声不紧不慢。「急什么，」老人说，「石头的活儿，以百年计。」',
+          ]);
+        },
+      },
+    },
   },
 
   /* ==================== 第一部 · 迷雾森林 & 符文圣殿 ==================== */
@@ -791,6 +1339,29 @@ const WORLD = {
     ],
     brief: '岔路口。西面林道宽阔，东面小径隐秘，北面雾色更深。',
     checkpoint: true,
+    roam: {
+      en: 'wolves', chance: 0.05, fleeTo: 'hermit_hut', intro: '岔路口的老橡树后，传来野兽踏碎枯枝的轻响。',
+      byTime: { night: { en: 'wraith', chance: 0.25, intro: '入夜后的岔路口四下皆是雾。老橡树的刻痕间，浮出两点冷光——它也在读那些名字。' } },
+    },
+    actions: [
+      { text: '细看岔路口的老橡树', when: () => !S.flags.oakMarks, run: async () => {
+        setFlag('oakMarks');
+        await say([
+          '老橡树的树皮上层层叠叠全是刀刻：名字、箭头、生肖、没寄出去的短句。「阿禾往南」「勿走夜路」「雾涨时，跟亮的东西走」……一代代赶路人在同一棵树上留下话。',
+          '一根横枝上还挂着只油布小包，布面被雨水洗得发白，字倒还清楚：「给比我更缺的人。」——里面是三枚金币。',
+          '你收下金币，把油布包原样挂了回去。总会有下一个人路过。（金币 +3）',
+        ]);
+        fx({ gold: 3 });
+      } },
+      { text: '擦净路口的木路牌', when: () => !S.flags.signClean, run: async () => {
+        setFlag('signClean');
+        await say([
+          '路牌歪在岔口，苔藓把字啃得只剩笔画。你用剑鞘刮净苔衣——',
+          '「西：林道 · 商队 · 湖。东：小径 · 近而险。西北：采药人。北：出林 · 圣殿山。」',
+          '最底下还有一行小字，刻的人手劲很轻：「林子没有坏路，只有坏天气。慢走。」',
+        ]);
+      } },
+    ],
     exits: {
       s: { to: 'grayridge_gate', label: '回灰岭镇', flavor: '你沿着来路折返，黄昏时分重新望见灰岭镇的炊烟。' },
       w: { to: 'forest_road', label: '西 · 林道', flavor: '你踏上西侧的林道。路面被车轮碾得平整，偶尔有商队的辙印。' },
@@ -811,6 +1382,7 @@ const WORLD = {
     brief: '鸦羽色的货车停在空地中央，乌鸦歪头盯着你。',
     exits: {
       e: { to: 'forest_cross', label: '回岔路口', flavor: '你沿林道折回岔路口。' },
+      n: { to: 'crow_ridge', label: '北 · 缓坡枯林', flavor: '你沿林道向北折上缓坡。头顶有翅膀擦动空气的声音，一声接一声。' },
       w: { to: 'mist_lake', label: '西 · 水汽弥漫处', flavor: '你沿林道向西。树梢间的雾越来越湿，隐约传来水波的轻响。' },
     },
     actions: [
@@ -844,6 +1416,47 @@ const WORLD = {
     },
   },
 
+  crow_ridge: {
+    name: '鸦眠坡', ch: '第一部 · 晨曦之印', sub: '小节二 · 迷雾森林', bg: BG + 'forest.svg', mood: 'dark',
+    desc: [
+      '林道在这里拱起一道光秃的缓坡，坡上立着几十棵枯死的桦树，每一根枝桠上都蹲着乌鸦。',
+      '白日里，鸦群一茬一茬起飞，全都朝着同一个方向去；入夜后，又一群一群落回来。猎户们都管这里叫「鸦眠坡」——乌鸦睡觉的地方，却总望着什么醒着的东西。',
+    ],
+    brief: '枯桦如林的缓坡，枝头蹲满进出的乌鸦。',
+    exits: {
+      s: { to: 'forest_road', label: '回林道', flavor: '你顺着坡道下到林边。鸦群在头顶盘旋了一匝，散进雾里。' },
+    },
+    roam: {
+      en: 'mistcrows', chance: 0.3, fleeTo: 'forest_road', intro: '你踩断一根枯枝——满坡的鸦齐齐压低了头，像一群听令的哨兵。',
+      byTime: { night: { en: 'wraith', chance: 0.15, intro: '坡上的鸦全睡着了。太静了——静得能听见雾走路的声音。' } },
+    },
+    onEnter: async () => {
+      if (!ev('crowRidgeVisit')) return;
+      await say([
+        '乌鸦是不肯白看热闹的东西。它们成百上千，起飞、盘旋、落回，翅膀擦着雾顶，全都朝着东南方山脊上那一点被云缝遮住的金光。',
+        '你想起那辆鸦羽色的货车。那位「渡鸦」，恐怕也一直在数着同样的东西。',
+      ]);
+    },
+    actions: [
+      { text: '爬上坡顶的枯桦眺望', when: () => !S.flags.crowClimb, run: async () => {
+        setFlag('crowClimb');
+        await say([
+          '你攀上最高的那棵枯桦。风一下子大了，鸦群从你四周掠过去，竟没有一只惊叫。',
+          '东南方向，云层裂开一线——雾海尽头的山脊上，一座金色穹顶静静反着光。鸦群成流地涌向那里，又成流地折返，像在数着什么。',
+          '「圣殿还在等人。」古图边角那行小字这么写。鸦群比人先知道。',
+        ]);
+      } },
+      { text: '掏一掏近处枝桠上的鸦巢', when: () => !S.flags.crowNest, run: async () => {
+        setFlag('crowNest');
+        await say([
+          '你挑了个低矮的旧巢，指尖伸进去——枯枝碎叶之间，闪着乌鸦们捡来的亮东西：几枚硬币，还有一粒透亮的玻璃珠，天光下泛着雾一样的蓝。',
+          '满坡的鸦看着你，一声不叫。你收起硬币，捏起玻璃珠对着光看了看——跟乌鸦讲道理，是走雾林的第一条规矩；但好东西，乌鸦也懂等人来取。（金币 +5，获得：雾蓝玻璃珠）',
+        ]);
+        fx({ gold: 5, item: 'glassbead' });
+      } },
+    ],
+  },
+
   forest_deep: {
     name: '隐秘小径', ch: '第一部 · 晨曦之印', sub: '小节二 · 迷雾森林', bg: BG + 'forest.svg', mood: 'dark',
     wild: true,
@@ -856,6 +1469,7 @@ const WORLD = {
       w: { to: 'forest_cross', label: '回岔路口', flavor: '你凭感觉向西摸索，雾气渐薄，岔路口的老橡树出现了。' },
       e: { to: 'hunter_lodge', label: '东 · 半塌的猎屋', flavor: '你向东拨开垂落的藤蔓。雾隙里露出一座半塌的木屋，门板歪斜着，像在打瞌睡。' },
       n: { to: 'dusk_camp', label: '北 · 谷地方向', flavor: '你向北穿行，坡下的谷地渐渐传来溪水声。' },
+      sw: { to: 'fern_gully', label: '西南 · 蕨语谷地', flavor: '你沿坡坎下到溪谷。蕨草高过肩膀，满谷都是悄悄话。' },
       s: { to: 'old_shrine', label: '南 · 老树根间', flavor: '你拨开垂落的藤蔓向南。老树根系之间，露出一角青灰色的飞檐。' },
     },
     actions: [
@@ -872,6 +1486,10 @@ const WORLD = {
       en: ['wolves', 'wraith'], chance: 0.45, fleeTo: 'dusk_camp',
       intro: '雾深处传来窸窣的响动——你的手背青筋暴起。',
       loot: { flag: 'wolfLoot', gold: 8, item: 'wolf_fang', text: '你在苔藓上拾获一小袋它们从上一个倒霉旅人身上劫走的金币，头狼的尸身旁还滚着一枚磨好的獠牙项链。（金币 +8，获得：狼牙项链）' },
+      byTime: {
+        day: { en: 'wolves', chance: 0.4, intro: '日头照不进林子，狼的眼睛先亮了——青灰色的兽瞳一双一双围上来。' },
+        night: { en: 'wraith', chance: 0.5, intro: '夜里的雾是活的。它贴着你的后颈呼吸，冷光在你眼前一寸寸亮起来。' },
+      },
     },
   },
 
@@ -885,6 +1503,7 @@ const WORLD = {
     brief: '沉在雾里的湖。蓑衣老者坐在艇头，长篙横膝。',
     exits: {
       e: { to: 'forest_road', label: '回林道', flavor: '你离开湖畔，雾在身后合拢，水声重新被林涛盖过。' },
+      s: { to: 'lakeside_marsh', label: '南 · 苇荡深处', flavor: '你沿湖南岸的土埂往南。芦苇渐渐高过头顶，苇荡里窸窸窣窣。' },
       n: {
         to: 'lake_islet', label: '渡湖 · 湖心洲', flavor: '老船夫一篙点开，划艇滑进雾里。水声很轻，桨声很轻，你们谁都没有说话。',
         req: s => s.flags.lakeFare, lock: '老船夫的划艇纹丝不动——湖上的规矩，要先付船钱。',
@@ -917,6 +1536,21 @@ const WORLD = {
           '「洲上有货。」他补了一句，「死人的货，活人拿走，不算偷。」',
         ]);
       } },
+      { text: '替亡者把七枚船钱送回湖底', when: () => (S.items.oldcoins || 0) > 0, run: async () => {
+        await say([
+          '你摊开手掌。老船夫的雾脸凑过来，看了很久很久——蓑衣底下透出一声极轻的、像气泡的水响。',
+          '「……省下的，终究是要还的。」他伸出长篙，篙头轻轻一拨——七枚古铜币依次落水，一枚，一枚，涟漪一圈追着一圈，荡到看不见的湖心才停。',
+          '「同行七人，账清了。」老船夫直起腰，把一枚苇编的小哨塞进你手里，「替死人办事，活人不能白跑。这哨子是老汉自己编的——雾再大，它响一声，路就让开三尺。」',
+          '（获得：苇编哨 · 斗气上限+3，声望 +1）',
+        ]);
+        take('oldcoins');
+        fx({ item: 'reed_charm', rep: 1 });
+        finishSide('fare');
+        setFlag('farePaid');
+        await say([
+          '回程时你回头望了一眼——湖心的雾裂开了一线，极淡的天光落下去，在水面上铺了一条窄窄的、亮亮的路。',
+        ]);
+      } },
     ],
   },
 
@@ -942,7 +1576,111 @@ const WORLD = {
         '艾莉娅把石冢上的船板扶正，轻声念了句精灵的祷词：「先行一步的人，愿你们欠下的船钱，已有人替你们付了。」',
         '回程的艇上，老船夫的篙点得比来时轻快——像是一桩心事了了。',
       ]);
+      await say([
+        '起身时你瞥见浅水：水底的石床上，七枚古铜币排成整齐的一列，绿锈斑斑——一人一枚，是这七个同行人各自省下的船钱。他们攒了一路，却没能赶上付账。',
+        '老船夫的规矩在你耳边响：「死人的货，活人拿走，不算偷。」——可这几枚看起来不像货，倒像七句没来得及出口的话。',
+      ]);
+      sideQuest('fare');
     },
+    actions: [
+      { text: '涉水拾起那七枚古铜币', when: () => S.sideQuests.fare === 'active' && !S.flags.coinsTaken, run: async () => {
+        setFlag('coinsTaken');
+        fx({ item: 'oldcoins' });
+        await say([
+          '水凉得咬骨头。你一枚一枚把它们捡起来——最后那一枚上刻着个「末」字，是队里最小的那个。',
+          '（获得：七枚古铜币。老船夫说过，湖里的账，总得有人替他们清。）',
+        ]);
+      } },
+    ],
+  },
+
+  lakeside_marsh: {
+    name: '湖畔沼泽', ch: '第一部 · 晨曦之印', sub: '小节二 · 迷雾森林', bg: BG + 'forest.svg', mood: 'dark',
+    desc: [
+      '雾泽湖的水从南岸漫出来，泡成一片芦苇沼泽。苇秆高过人头，风一过，整片苇荡便压低了嗓子窃窃私语。',
+      '水洼之间横着伐木人搭的旧栈道，朽得厉害，踩一步晃三晃。苇荡深处，一个戴斗笠的小小身影蹲在水边，一动不动。',
+    ],
+    brief: '芦苇沼泽与朽栈道。苇荡深处蹲着个小小的斗笠身影。',
+    exits: {
+      n: { to: 'mist_lake', label: '回雾泽湖畔', flavor: '你沿栈道回到开阔的湖畔。苇荡的私语被抛在身后。' },
+      s: { to: 'fern_gully', label: '南 · 蕨语谷地', flavor: '栈道到了尽头，你踩着苇根间的土埂往南。蕨草渐渐高过芦苇。' },
+    },
+    roam: {
+      en: 'wraith', chance: 0.3, fleeTo: 'mist_lake', intro: '栈道忽然一沉——苇荡里的雾拧出一个没有脸的轮廓，就贴在水面上。',
+      byTime: { night: { en: 'wraith', chance: 0.45, intro: '入夜后，苇荡里的私语有了词。雾里那些没脸的，今晚全贴着水面等他乡客。' } },
+    },
+    npcs: {
+      aman: {
+        name: '渔童阿满', img: null, role: '蹲在苇荡里钓鱼的小孩',
+        talk: async () => {
+          if ((S.items.glassbead || 0) > 0 && !S.flags.amanTrade) {
+            setFlag('amanTrade');
+            await say([
+              '「哇——」阿满的眼睛一下子瞪圆了，「雾蓝珠子！爷爷说，雾里走的湖要有一颗湖心的珠子引路……给我换吧换吧，我用顶顶好的东西换！」',
+            ]);
+            take('glassbead');
+            give('roast_fish', 2);
+            await say([
+              '他把玻璃珠揣进怀里，从鱼篓里掏出两条用苇秆串好的烤鱼塞给你：「火上燎了一早上的！爷爷吃了都说好！」',
+              '（获得：湖畔烤鱼 ×2）',
+            ]);
+            return;
+          }
+          if (S.flags.farePaid && !S.flags.amanFish) {
+            setFlag('amanFish');
+            give('roast_fish', 1);
+            await say([
+              '「怪了怪了，」阿满压低声音，神秘兮兮的，「今早湖心的雾裂了一道，鱼全疯了似地上钩——爷爷说，湖底的账清了，鱼就肯还人情了。」',
+              '他献宝似的举起鱼篓，扔给你一条顶肥的：「客气啥！湖请客！」（获得：湖畔烤鱼 ×1）',
+            ]);
+            return;
+          }
+          await say([
+            '「嘘——」阿满头也不回，手指竖在唇边，「你把我的老鳜吓跑了。它可有名了，整片湖就它成精，钓了十年，一回都没上来过。」',
+            '「苇荡里少走深处，」他忽然压低声音，「雾贴着水的地方，有没脸的。爷爷说它们不害人，就是爱跟着……跟着跟着，就把你的影子跟丢了。」',
+          ]);
+        },
+      },
+    },
+    actions: [
+      { text: '在苇丛里捡拾野鸭蛋', when: () => !S.flags.reedEggs, run: async () => {
+        setFlag('reedEggs');
+        await say([
+          '你沿着栈道边缘拨开苇丛，在一处干苇垛里摸到一窝野鸭蛋，还温着。你留下两枚，取走三枚，剥壳生吃，腥甜顶饿。（生命 +2）',
+          '阿满远远看见，直朝你比大拇指：会留蛋的，是懂水的人。',
+        ]);
+        fx({ hp: 2 });
+      } },
+    ],
+  },
+
+  fern_gully: {
+    name: '蕨语谷', ch: '第一部 · 晨曦之印', sub: '小节二 · 迷雾森林', bg: BG + 'forest.svg', mood: 'dark',
+    desc: [
+      '溪谷在这里收窄，两侧的坡上长满齐肩的蕨草。风从谷口灌进来，蕨叶彼此摩挲，发出一阵阵像说悄悄话的窸窣声。',
+      '老辈人说，这谷里的低语是迷路人的怨气在找话搭——听清一个字的，就再也走不出去了。',
+    ],
+    brief: '蕨草夹道的溪谷。风一过，满谷都是悄悄话。',
+    exits: {
+      n: { to: 'lakeside_marsh', label: '北 · 湖畔沼泽', flavor: '你循着水汽向北。蕨草渐渐矮下去，芦苇高起来。' },
+      ne: { to: 'forest_deep', label: '东北 · 隐秘小径', flavor: '你攀上东侧的坡坎。苔藓吸走脚步声的浓雾小径，就在坡上。' },
+      sw: { to: 'stone_ford', label: '西南 · 石桥渡', flavor: '你沿溪而下。水声渐大，断桥的轮廓出现在谷口。' },
+    },
+    roam: {
+      en: ['wolves', 'wraith'], chance: 0.3, fleeTo: 'stone_ford', intro: '满谷的窸窣声忽然停了——蕨草深处，有什么东西替它们开了口。',
+      byTime: { night: { en: 'wraith', chance: 0.4, intro: '入夜的蕨语谷不再说悄悄话——它开始点名。被点到的是你。' } },
+    },
+    actions: [
+      { text: '静下心听谷中的低语', when: () => !S.flags.fernListen, run: async () => {
+        setFlag('fernListen');
+        await say([
+          '你闭上眼，把呼吸放到最缓。窸窣声一层层退去，退到最底下，果然有一缕极细的、像哭又像唱的调子。',
+          '「……回家……锅还温着……」',
+          '你把斗篷裹紧了些。怨气不可怕，可怕的是它们记得的东西太暖。你朝声音的方向低了低头，替它们把这句话收下了。（斗气 +2）',
+        ]);
+        fx({ sp: 2 });
+      } },
+    ],
   },
 
   old_shrine: {
@@ -955,6 +1693,7 @@ const WORLD = {
     brief: '被老树根系环抱的小石祠。祠内一尘不染，供箱擦得发亮。',
     exits: {
       n: { to: 'forest_deep', label: '回隐秘小径', flavor: '你退出祠门，把歪斜的门扇掩好。雾林的声音重新围拢过来。' },
+      w: { to: 'mossy_dell', label: '西 · 软苔谷地', flavor: '你绕过老树根系向西。脚下的腐叶渐渐变成厚得没踝的软苔。' },
     },
     actions: [
       { text: '研读祠中碑文', when: () => !S.flags.shrineLore, run: async () => {
@@ -988,6 +1727,7 @@ const WORLD = {
     brief: '半塌的猎屋。桌上扣着半碗发霉的粥，壁炉冷了很久。',
     exits: {
       w: { to: 'forest_deep', label: '回隐秘小径', flavor: '你退出猎屋，藤蔓在身后合拢，重新把小屋藏进雾里。' },
+      n: { to: 'watchtower_stand', label: '北 · 林缘高地', flavor: '你沿猎径向北。林缘的高地上，一座高脚木塔的影子支在雾里。' },
     },
     onEnter: async () => {
       if (!ev('lodgeSearch')) return;
@@ -1002,6 +1742,44 @@ const WORLD = {
         '你把日记放回箱中，替他们掩好屋门。愿他们已经走到了想去的地方。',
       ]);
     },
+    actions: [
+      { text: '查看墙上风干的兽皮', when: () => !S.flags.lodgeHide, run: async () => {
+        setFlag('lodgeHide');
+        await say([
+          '兽皮硝得很用心，皮子内侧用炭条画着记号：三道弯是狼窝，圆圈是泉眼，叉是「没脸的东西」出没的树界。',
+          '最大那张熊皮的内侧，压着一个小小的油纸包——盐渍的肉干，硬得能敲鼓，香气却还在。猎户家的规矩：房门留给下一个走夜路的人，吃的也是。',
+          '你掰下一条慢慢嚼。血里回暖。（生命 +4）',
+        ]);
+        fx({ hp: 4 });
+      } },
+    ],
+  },
+
+  watchtower_stand: {
+    name: '高脚瞭望塔', ch: '第一部 · 晨曦之印', sub: '小节二 · 迷雾森林', bg: BG + 'forest.svg', mood: 'dark',
+    desc: [
+      '猎户们在林缘的高地上架起的一座高脚木塔：四根独柱撑起一间小屋，梯子抽在半空——防的不是野兽，是会学人开门的野兽。',
+      '塔顶的瞭望口正对着东北方向的山脊。塔柱上留着几道新鲜的抓痕，深可入木。',
+    ],
+    brief: '猎户的高脚木塔。梯子抽在半空，柱上有爪痕。',
+    exits: {
+      s: { to: 'hunter_lodge', label: '回废弃猎屋', flavor: '你放下梯子回到猎屋前，又把梯子照原样抽回半空。' },
+    },
+    roam: {
+      en: 'wolves', chance: 0.25, fleeTo: 'hunter_lodge', intro: '塔影底下，青灰色的兽瞳一双一双亮了起来。',
+      byTime: { night: { en: 'wraith', chance: 0.35, intro: '夜里，塔柱上的爪痕泛着幽光。雾从林缘漫上来，没有风，却全朝一个方向倒。' } },
+    },
+    actions: [
+      { text: '攀上瞭望塔顶', when: () => !S.flags.towerView, run: async () => {
+        setFlag('towerView');
+        await say([
+          '你攀着独柱上的木钉翻进塔屋。视线一下子越过了雾海——',
+          '东北方向，金色穹顶在云缝里反着光；穹顶更北，一道雪线横贯天际。雪线之下，天际隐隐透着一线烟色——按古图的方位，那是「白石城」的方向。',
+          '瞭望口的木缝里塞着猎户的应急皮囊，你抖出几枚金币。（金币 +4）',
+        ]);
+        fx({ gold: 4 });
+      } },
+    ],
   },
 
   hermit_hut: {
@@ -1014,8 +1792,20 @@ const WORLD = {
     checkpoint: true,
     exits: {
       se: { to: 'forest_cross', label: '回岔路口', flavor: '你道过谢，沿篱笆外的小径折回岔路口。' },
+      w: { to: 'bee_clearing', label: '西 · 林间蜂场', flavor: '你沿篱笆后的小径向西。嗡嗡的蜂声穿过树隙迎面而来。' },
     },
     rest: { cost: 3, label: '在灶边歇一晚' },
+    actions: [
+      { text: '帮玛戈翻晒药草', when: () => !S.flags.margoTip, run: async () => {
+        setFlag('margoTip');
+        await say([
+          '你把屋檐下受潮的药草搬到篱笆上摊开。玛戈指挥若定：「当归铺底层，月光草挂高头——别挨着荤腥，串了味我听得出来。」',
+          '活干完，她往你手里塞了一把炒过的白花：「白花泉的水，古道东边、碎石坡下头。斗气乏了就去喝一口——那泉水养气，比药水便宜。」',
+          '（斗气 +2。玛戈说的泉眼，就在南下古道东侧。）',
+        ]);
+        fx({ sp: 2 });
+      } },
+    ],
     npcs: {
       margo: {
         name: '采药人玛戈', img: null, role: '雾林边缘最后的采药人',
@@ -1047,6 +1837,110 @@ const WORLD = {
     },
   },
 
+  bee_clearing: {
+    name: '林间蜂场', ch: '第一部 · 晨曦之印', sub: '小节二 · 迷雾森林', bg: BG + 'forest.svg', mood: 'warm',
+    desc: [
+      '采药人小屋以西是一片洒满碎金的林间空地：十几只木蜂箱错落在老橡树下，蜂声嗡嗡的，像一锅温着的小米粥。',
+      '蜂场却显出一种奇怪的冷清——大半蜂箱的巢门空着，蛛网结在了门口。只剩两只箱子还热闹。',
+    ],
+    brief: '老橡树下的蜂场。大半蜂箱空了，蜂声稀稀拉拉。',
+    exits: {
+      e: { to: 'hermit_hut', label: '回采药人小屋', flavor: '你循着药草香回到玛戈的篱笆院。' },
+      s: { to: 'mossy_dell', label: '南 · 软苔谷地', flavor: '蜂场的南缘往下沉，一片软苔谷地摊在雾里，绿得发亮。' },
+    },
+    npcs: {
+      ji: {
+        name: '养蜂人纪老爹', img: null, role: '雾林里最后一个养蜂人',
+        talk: async () => {
+          if (S.sideQuests.bees === 'active' && S.flags.beeSwarm) {
+            await say([
+              '「嗡嗡的——听见没！」纪老爹迎出老远，你头顶上乌泱泱跟着一大团蜂，像一朵会飞的云。',
+              '「王台！王台回来了！」他手脚麻利地开箱、上脾、诱王，蜜蜂顺顺当当涌进空箱，「好孩子，它们肯跟你走，是你身上没带汗腥气。」',
+            ]);
+            fx({ gold: 4, rep: 1 });
+            give('honey', 3);
+            finishSide('bees');
+            await say([
+              '他敲开一只封好的蜜脾，割了三块用荷叶包上：「拿着，林子里顶顶管用的甜。饿了掰一口，伤了敷一口。」',
+              '（报酬：金币 +4，林间蜂蜜 ×3，声望 +1）',
+            ]);
+            return;
+          }
+          if (S.sideQuests.bees === 'active') {
+            await say(['「蜂群还没回来？」纪老爹往南边努努嘴，「软苔谷地的老栎树，树洞又深又暖——它们八成在那儿结了团。记住，用手掏是要挨蜇的。」']);
+            return;
+          }
+          if (S.sideQuests.bees === 'done') {
+            await say(['「蜂群归了箱，蜜就断了不了。」纪老爹美滋滋地割着蜜，「客官路过就有口甜的——比药水便宜，比金币贴心。」']);
+            return;
+          }
+          await say([
+            '「瘪了，全瘪了。」纪老爹拍着空蜂箱，心疼得直咂嘴，「前儿夜里一场怪雾过坡，蜂群连王带巢飞了个精光——老蜂性子倔，认死理，八成在南边软苔谷地的老栎树洞里结了团。」',
+            '「客官替我跑一趟？把蜂群引回来，蜂蜜管你够——老婆子玛戈的咳药，还指着这口蜜呢。」',
+          ]);
+          sideQuest('bees');
+        },
+      },
+    },
+    actions: [
+      { text: '查看还热闹的两只蜂箱', when: () => !S.flags.hiveSeen, run: async () => {
+        setFlag('hiveSeen');
+        await say([
+          '你凑近那两只还热闹的蜂箱。巢门口的守卫蜂进进出出，腿上全挂着一粒粒灰绿色的花粉——不是花蜜的颜色。',
+          '纪老爹凑过来看了一眼，脸色变了：「这是雾苔的花粉。南边谷地里，开的是不该开的花……」',
+        ]);
+      } },
+    ],
+  },
+
+  mossy_dell: {
+    name: '苔藓谷', ch: '第一部 · 晨曦之印', sub: '小节二 · 迷雾森林', bg: BG + 'forest.svg', mood: 'warm',
+    desc: [
+      '谷地往下沉成一泓软苔的洼地，苔藓厚得能没过脚踝。雾到了这里像被吸进绒布里，连声音都跟着软了下来。',
+      '洼地正中蹲着一株中空的老栎树，树洞黑黢黢的，却传出嗡嗡的、像念经一样的蜂鸣。一只白鹇鸟正在苔藓上跳来跳去，对谁都不怕。',
+    ],
+    brief: '软苔覆盖的谷洼。老栎树洞里嗡嗡作响，白鹇鸟跳来跳去。',
+    rest: { cost: 0, label: '在软苔上小憩' },
+    exits: {
+      n: { to: 'bee_clearing', label: '北 · 林间蜂场', flavor: '你踩着软苔上坡，蜂声在身后渐渐稀落。' },
+      e: { to: 'old_shrine', label: '东 · 老树根间', flavor: '你拨开垂藤向东。老树根系之间，露出一角青灰色的飞檐。' },
+    },
+    onEnter: async () => {
+      if (!ev('dellVisit')) return;
+      await say([
+        '白鹇鸟歪头打量你，忽然抖开一身白羽，在苔藓上扑腾起一场小小的雪。',
+        S.flags.shrineBless ? '你想起林中古祠供箱边那串小小的爪印——就是它。这满谷的软苔、那间一尘不染的古祠，原来都是这位「扫地白鹇」的活计。' : '它跳两步，回头看你一眼，像在等你跟上。',
+      ]);
+    },
+    actions: [
+      { text: '把蜂群从老栎树洞里请出来', when: () => S.sideQuests.bees === 'active' && !S.flags.beeSwarm, run: async () => {
+        const i = await choose([
+          { text: '用蘸湿的布巾捂住口鼻，慢慢收拢蜂团' },
+          { text: '徒手直接掏——省事！' },
+        ]);
+        if (i === 1) {
+          await say(['你把手伸进树洞。蜂群「轰」地炸了锅——鼻尖、手背、耳朵后面，火辣辣地肿了一圈。（生命 -2）']);
+          fx({ hp: -2 });
+        } else {
+          await say(['你照纪老爹教过的法子，湿布掩住口鼻，掌心托着蜂脾，一点一点把蜂团拢进布兜里。蜂群只是嗡嗡地抗议，没下死口。']);
+        }
+        setFlag('beeSwarm');
+        await say([
+          '蜂王认得回家的路。你转身往北走，头顶上那朵「云」便不远不近地跟着——雾林里的旅人要是抬头看见，怕是要吓出一身汗。',
+        ]);
+      } },
+      { text: '跟着白鹇鸟走一段', when: () => !S.flags.birdFollow, run: async () => {
+        setFlag('birdFollow');
+        await say([
+          '白鹇鸟在前面蹦蹦跳跳，把你领到谷地边缘一丛齐腰的蕨草前，用喙笃笃地敲了两下石头。',
+          '蕨草底下藏着一口上釉的小陶罐，罐口的蜡封完好。你撬开来——是林蜜，陈年的，琥珀色的，香得整片谷地都是甜的。',
+          '不知是谁存下的，也不知存了多少年。（获得：林间蜂蜜 ×2）',
+        ]);
+        give('honey', 2);
+      } },
+    ],
+  },
+
   dusk_camp: {
     name: '黄昏营地', ch: '第一部 · 晨曦之印', sub: '小节二 · 迷雾森林', bg: BG + 'forest.svg', mood: 'dark',
     desc: ['背风的岩坡下，一圈烧剩的篝火。这里是穿越雾林前最后的落脚点。'],
@@ -1054,8 +1948,9 @@ const WORLD = {
     checkpoint: true,
     exits: {
       s: { to: 'forest_cross', label: '回岔路口', flavor: '你踏上来路，向南折回岔路口。' },
+      e: { to: 'logger_camp', label: '东 · 谷地伐木场', flavor: '你朝谷地东侧穿行。溪水声里混进一种陌生的响动——像工具被风吹得轻晃。' },
       n: {
-        to: 'temple_foot', label: '北 · 符文圣殿', flavor: '你们连夜拔营，沿古图指引的山脊线跋涉两日。第三天清晨，云层裂开一道缝——远处山腰之上，一座金色穹顶静静反着光。',
+        to: 'pilgrim_path', label: '北 · 朝圣古道', flavor: '你们连夜拔营。雾林尽头，一条被草鞋磨得温润的石板路，顺着山势静静爬向上方的金顶。',
         req: s => s.flags.aria, lock: '雾林深处溪声渐近……（先留意周围的动静）',
       },
     },
@@ -1110,8 +2005,149 @@ const WORLD = {
       setFlag('aria');
       quest('q_temple');
       partyJoin('aria');
-      await say(['✦ 艾莉娅·星语加入了队伍！她是独立的战斗单位，将在战斗中按「态势」自主施展星辉魔法：星火弹 / 星辉庇护 / 治愈星雨。']);
+      await say([
+        '✦ 艾莉娅·星语加入了队伍！她是独立的战斗单位，将在战斗中按「态势」自主施展星辉魔法：星火弹 / 星辉庇护 / 治愈星雨。',
+        '当晚轮到你守火。艾莉娅靠着行囊睡去，雾在谷口站了一整夜，像也在等天亮。',
+      ]);
+      sleepToDawn();   // 救援与夜谈耗去半夜，一觉到天明
     },
+  },
+
+  logger_camp: {
+    name: '湮没的伐木场', ch: '第一部 · 晨曦之印', sub: '小节二 · 迷雾森林', bg: BG + 'forest.svg', mood: 'dark',
+    desc: [
+      '谷地东侧是一片伐木人废弃的营地：贮木架塌了一半，锯台上的圆锯锈成了一朵褐色的花，一斧没砍完的橡树桩上，密密麻麻全是记数的刻痕。',
+      '逃跑的痕迹很新，收拾的痕迹没有——工具散了一地，像是人们砍到一半，忽然听见了什么，扔下一切就走了。',
+    ],
+    brief: '废弃的伐木场。橡树桩上刻满记数，工具散了一地。',
+    exits: {
+      w: { to: 'dusk_camp', label: '回黄昏营地', flavor: '你离开伐木场。身后，贮木架在雾里吱呀响了一声，又静了。' },
+      ne: { to: 'berry_thicket', label: '东北 · 向阳果坡', flavor: '你朝东北的向阳坡穿行。空气里渐渐浮起一股熟透的甜香。' },
+    },
+    onEnter: async () => {
+      if (S.flags.loggerClear) return;   // 战败可重试
+      await say([
+        '你刚踏进营地，散落一地的工具忽然轻轻震颤起来——不是风。',
+        '贮木场四周的老藤无声地立了起来，拧作一团人形的荆丛，缓缓挡在工具棚前。雾林里的东西各守各的规矩：这一团，守的是这片伐木场。',
+      ]);
+      const r = await battle('bramble');
+      if (r !== 'win') return;
+      setFlag('loggerClear');
+      await say([
+        '荆丛散作满地带刺的碎叶。藤心里缠着一柄厚背斧——斧刃新磨过，主人逃得再急，也没舍得把它扔远。',
+        '（获得：伐木斧 · 攻击+2）',
+      ]);
+      give('logger_axe');
+      fx({ gold: 6 });
+      await say([
+        '藤丛底下还压着伐木人没带走的钱袋，你抖了抖，倒出六枚金币。（金币 +6）',
+        '工具棚的棚顶塌了半边。借着隙进来的天光，你看见棚柱上钉着一块记工板。',
+      ]);
+    },
+    actions: [
+      { text: '翻看棚柱上的记工板', when: () => !S.flags.loggerLog, run: async () => {
+        setFlag('loggerLog');
+        await say([
+          '记工板上是管工的粉笔字，一笔一划记着工数。最后一行的字迹深得几乎划破木板：',
+          '「都散了吧。雾一天浓过一天，夜里『没脸的』站在锯台上看我们干活。工钱我压在藤丛底下了，谁逃难路过，拿去当盘缠。这山，就当咱们从没伐过。」',
+          '你把记工板翻过去扣好。有些人逃走的时候，把善意留在了原地。',
+        ]);
+      } },
+    ],
+  },
+
+  berry_thicket: {
+    name: '浆果坡', ch: '第一部 · 晨曦之印', sub: '小节二 · 迷雾森林', bg: BG + 'forest.svg', mood: 'warm',
+    desc: [
+      '伐木场以东的向阳坡上，灌木丛密得插不进手，枝头挂满熟透的浆果，红得发紫，甜香老远就闻得到。',
+      '灌木丛里错落钉着一排小木牌，是猎户们的记号：浆果管够，但每样只许摘三成——「给鸟留冬，给人留来年」。',
+    ],
+    brief: '向阳的浆果坡。木牌上的老规矩：只摘三成。',
+    exits: {
+      w: { to: 'logger_camp', label: '回伐木场', flavor: '你揣着浆果折回伐木场，甜香一路跟着你。' },
+      s: { to: 'watchtower_stand', label: '南 · 高脚瞭望塔', flavor: '你拨开灌木下坡。猎户的高脚木塔立在林缘的高地上。' },
+    },
+    actions: [
+      { text: '照老规矩摘三成浆果', when: () => !S.flags.berryPick, run: async () => {
+        setFlag('berryPick');
+        await say([
+          '你挑熟透的摘了一小捧，数着不超过枝头的三成。浆果酸甜的汁水一下子把赶路的乏气冲散了。（生命 +3）',
+          '一只花栗鼠蹲在木牌上看着你，胡须一抖一抖，像在验收你守没守规矩。',
+        ]);
+        fx({ hp: 3 });
+      } },
+    ],
+  },
+
+  pilgrim_path: {
+    name: '朝圣古道', ch: '第一部 · 晨曦之印', sub: '小节三 · 符文圣殿', bg: BG + 'road.svg', mood: 'warm',
+    wild: true,
+    desc: [
+      '出了雾林，一条被千万双草鞋磨得温润的石板路顺着山势爬升。路旁每隔一里便有一座小小的神龛，龛里的长明灯大多灭了，龛沿的凹槽里积满香灰。',
+      '三百年前，朝圣的人就是踩着这条路，一路诵着那句古谚上山的。路边的断碑上还认得出半句：「……尔当于何处寻吾」。',
+    ],
+    brief: '被草鞋磨温的石板朝圣路。路旁的神龛大多熄了灯。',
+    roam: {
+      en: 'wolves', chance: 0.05, fleeTo: 'dusk_camp', intro: '石板路的荒草间，掠过几道青灰的影子。',
+      byTime: { night: { en: 'wraith', chance: 0.25, intro: '夜里的朝圣路上，神龛的灯一盏一盏自己亮了——不是为你照路。雾里浮出没脸的香客，也想上山。' } },
+    },
+    exits: {
+      s: { to: 'dusk_camp', label: '回黄昏营地', flavor: '你退回雾林边缘的营地。石板路在身后安静地爬向山上。' },
+      n: { to: 'temple_foot', label: '北 · 圣殿石阶', flavor: '石板路在千级石阶脚下到了头。雾海之上，圣殿的金顶越来越近。' },
+    },
+    npcs: {
+      tangjiu: {
+        name: '断腿的香客唐九', img: null, role: '朝圣路上摔断了腿的老香客',
+        talk: async () => {
+          if (!S.flags.tangjiuMet) {
+            setFlag('tangjiuMet');
+            await say([
+              '神龛边靠着个五十来岁的汉子，左腿绑着歪歪扭扭的夹板，脸色疼得发白，见了你却先笑：「别慌，活人。摔的，不是遇的。」',
+              '「唐九，跑香客的头儿。三十六里朝圣路，老子走了二十七年——今年这趟，栽在最后三里上。」他自嘲地咧咧嘴，「腿是小事，误了日子才是大事：今儿不上山，就得再等一年。」',
+              '他看了看你行囊里的药水瓶，眼神在那点光上停了一瞬，又挪开了。',
+            ]);
+          }
+          const i = await choose([
+            { text: '递给他一瓶生命药水', req: s => (s.items.potion || 0) > 0, lock: '没有生命药水' },
+            { text: '替他把夹板重新绑紧些' },
+            { text: '打听上山的路' },
+          ]);
+          if (i === 0) {
+            take('potion');
+            fx({ rep: 1 });
+            setFlag('tangjiuHelped');
+            await say([
+              '药水下肚，唐九疼得龇牙咧嘴的额头眼见着舒展开来。「好药！」他活动了活动腿，忽然正色，「恩公，谢礼我拿不出，就送你一句老香客的话——」',
+              '「山上灯庭的灯，熄了三对，是叫黑心的东西弄熄的。可灯芯的晶屑不灭，灯就死不了：石兽身上、钟肚子里、地宫的烛泪里，总有留着的。」',
+              '「灯亮着，路就是活的。」他郑重地朝你拱了拱手。（声望 +1）',
+            ]);
+          } else if (i === 1) {
+            setFlag('tangjiuSplint');
+            await say([
+              '你把他歪掉的夹板拆开，用绑带一层层勒紧。唐九疼得直抽凉气，嘴里却不停：「手法不错，军中的？还是猎户家的？」',
+              '「这腿啊，绑得再紧也得歇半月。」他望着山上的金顶，忽然笑了，「没事，圣殿等得了三百年，不差我这半月。倒是你们——上山的路从灯庭里穿，看见熄了的灯，就晓得这山里进过什么脏东西。」',
+            ]);
+          } else {
+            await say([
+              '「路就一条，好走得很。」唐九朝北面一指，「石板路到头是千级石阶，石阶尽头是灯庭——七对石兽灯柱，一路把你送到大门跟前。」',
+              '「门上三枚符文，按错了会被门『请』出去。进殿先见守殿人，铁须家的矮人，嗓门大，心肠热。三重试炼过了，晨曦才肯认你。」',
+              '「去吧。替老子也看一眼——三百年了，那盏灯还亮不亮。」',
+            ]);
+          }
+        },
+      },
+    },
+    actions: [
+      { text: '把神龛的长明灯重新点上', when: () => !S.flags.shrineLamp, run: async () => {
+        setFlag('shrineLamp');
+        await say([
+          '你拨开神龛里的积灰，就着火折子把长明灯重新点上。豆大的一点火光跳了跳，稳稳地立住了。',
+          '三百年没人做的功课，今天续上了。唐九在旁边看着，忽然背过身去，抬手抹了把脸。',
+          '「……我妈从前上山，就在这座龛前添的灯。」他瓮声瓮气地说。（斗气 +2）',
+        ]);
+        fx({ sp: 2 });
+      } },
+    ],
   },
 
   temple_foot: {
@@ -1123,14 +2159,168 @@ const WORLD = {
     ],
     brief: '千级石阶尽头，金色穹顶静静反着光。',
     checkpoint: true,
+    actions: [
+      { text: '在石阶中段回望雾海', when: () => !S.flags.stepsLook, run: async () => {
+        setFlag('stepsLook');
+        await say([
+          '你停在石阶中段，转身回望——雾海在脚下铺到天边，来路已经看不见了：灰岭镇、古道、白花泉、雾林，都收在一片白茫茫底下。',
+          '只有东北方向的山脊透出一线雪色。艾莉娅在你身后轻声说：「翻过那道山脊，就是霜脊山。星辰之印……在更北边的白石城里等着。」',
+          '你们都不说话。两个人的影子被石兽灯柱里的金光拉得很长，一直铺到来路的方向。',
+        ]);
+      } },
+    ],
     exits: {
-      s: { to: 'dusk_camp', label: '下山 · 回营地', flavor: '你踏着石阶而下，雾海重新漫过脚踝。' },
-      n: { to: 'temple_gate', label: '登上 · 圣殿大门', flavor: '你拾级而上。石兽灯柱里的金光在你经过时次第亮起，像列队致意。' },
+      s: { to: 'pilgrim_path', label: '下山 · 朝圣古道', flavor: '你踏着石阶而下。千级石阶脚下，朝圣古道安静地伸向雾林。' },
+      w: { to: 'orchard_terrace', label: '西 · 果园梯田', flavor: '你绕过石阶西侧。层层的石垒梯田上，果树的枝桠挂满熟透的果子。' },
+      n: { to: 'lamp_court', label: '登上 · 石兽灯庭', flavor: '你拾级而上。千级石阶的尽头，两列石兽灯柱的金光在雾里明明灭灭，像沉睡的心跳。' },
       se: {
         to: 'spur_fork', label: '东北 · 北下山道', flavor: '你们翻过山脊北侧，沿着下山道向霜脊山北麓走去。',
         req: s => s.flags.part1, lock: '先完成圣殿中的试炼',
       },
     },
+  },
+
+  lamp_court: {
+    name: '石兽灯庭', ch: '第一部 · 晨曦之印', sub: '小节三 · 符文圣殿', bg: BG + 'temple.svg', mood: 'holy',
+    desc: [
+      '最后一段石阶尽头是一座宽阔的灯庭：七对石兽灯柱分列两旁，兽背上驮着灯盏，一路排向圣殿正门。',
+      '大多灯柱里还有金光在明灭。唯独东侧三对暗着——灯柱上多了几道不该存在的刻痕，一只细长的「眼睛」，被硬生生刻进石兽的额头。',
+    ],
+    brief: '七对石兽灯柱的灯庭。东侧三对暗着，柱身有「睁眼」刻痕。',
+    checkpoint: true,
+    exits: {
+      s: { to: 'temple_foot', label: '退回石阶', flavor: '你退回石阶平台。灯庭的金光在你背后连成两列，一直亮进雾里。' },
+      w: { to: 'guest_hall', label: '西 · 低矮石屋', flavor: '你绕到灯庭西侧。一排低矮的石屋伏在坡下，最东头一间，门口的小龛竟供着新香。' },
+      n: { to: 'temple_gate', label: '走向圣殿大门', flavor: '你穿过灯庭。两列金光与你同行，在你身后次第合拢。' },
+    },
+    onEnter: async () => {
+      if (!ev('lampIntro')) return;
+      await say([
+        '熄灭的灯盏里积着灰，灰里掺着黑色的粉末。艾莉娅捻起一点，凑近闻了闻，眉头拧紧：「有人给灯『下过药』。这不像是毁坏——更像是，不容许这里亮着。」',
+        '「灯芯的聚光晶屑被撬走了，」她指着兽背上的空槽，「一支灯柱一颗。想让它们复明……得找齐三颗晶屑。」',
+      ]);
+      sideQuest('lamps');
+      await say(['✦ 支线接取：复明的灯柱——找齐三枚引火晶屑，让熄灭的灯柱重新亮起来。']);
+    },
+    actions: [
+      { text: '按住刻着「睁眼」的灯柱', when: () => !S.flags.sentDown, run: async () => {
+        await say([
+          '你把掌心贴上那道刻痕。石头是冷的，冷得不像晒了三百年太阳的东西。',
+          '刻痕深处渗出一线黑气，顺着石纹爬满整根灯柱——石兽的关节里迸出砂与尘。它低下头，看着你。',
+        ]);
+        const r = await battle('sentinel');
+        if (r !== 'win') return;
+        setFlag('sentDown');
+        await say([
+          '石兽散作碎金与石屑，纷纷扬扬，像一场迟到了三百年的落雪。雪里，一枚完好的聚光晶屑兀自亮着。',
+          '艾莉娅接住晶屑，对着光看：「被蚀的部分随它碎干净了。这一颗……还能用。」',
+          '（获得：引火晶屑 · 其一，金币 +8）',
+        ]);
+        fx({ item: 'lamp_crystal', gold: 8 });
+      } },
+      { text: '把三枚引火晶屑嵌回灯柱顶端', when: () => S.sideQuests.lamps === 'active' && (S.items.lamp_crystal || 0) >= 3 && !S.flags.lampsLit, run: async () => {
+        await say([
+          '你踩着石兽的背，把三枚晶屑逐一嵌回空槽。晶屑触到灯盏的一瞬，三百年不曾断过的灯油「轰」地醒了过来——',
+          '三对熄灭的灯柱次第复明，金光连成完整的一列。整座灯庭像深深吸了一口气。',
+        ]);
+        take('lamp_crystal', 3);
+        fx({ maxHp: 3, rep: 1 });
+        finishSide('lamps');
+        setFlag('lampsLit');
+        await say([
+          '最后一只石兽的眼窝里，金光极轻地闪了一下——像致意，也像卸下了什么。',
+          '索恩抱着巨斧看了半晌，闷声道：「铁须氏点了一辈子的灯。小子，这一手，替俺们全家谢过你了。」',
+          '（生命上限 +3，声望 +1）',
+        ]);
+      } },
+    ],
+  },
+
+  orchard_terrace: {
+    name: '荒废的果园梯田', ch: '第一部 · 晨曦之印', sub: '小节三 · 符文圣殿', bg: BG + 'temple.svg', mood: 'warm',
+    desc: [
+      '圣殿石阶西侧的山坡上，一层层石垒的梯田顺着山势铺下来，栽满果树——僧侣们的果园，荒了三百年，树却没人管地活着，枝头挂满果子。',
+      '梯田正中立着一个戴斗笠的稻草人，破袈裟当衣，木勺当手。你分明记得，刚才经过时，它背对着你——现在，它正对着你来的方向。',
+    ],
+    brief: '石垒梯田上的荒废果园。稻草人不知何时换了方向。',
+    exits: {
+      e: { to: 'temple_foot', label: '回圣殿石阶', flavor: '你穿过梯田回到石阶。身后果叶沙沙，像谁在数你的脚步。' },
+    },
+    roam: { en: 'bramble', chance: 0.3, fleeTo: 'temple_foot', intro: '梯田边的老藤悄然立了起来——连果园的篱，也长了三百年的心眼。' },
+    actions: [
+      { text: '从果树上摘些果子', when: () => !S.flags.orchardPick, run: async () => {
+        setFlag('orchardPick');
+        await say([
+          '果子没人摘，熟透了落，落了烂，烂了肥田，来年结得更盛——三百年的循环。你挑了两个最饱满的，坐在田埂上吃完，甜得眯起眼。（生命 +3）',
+          '藤蔓在你身后轻轻收回了刚探出的一半。',
+        ]);
+        fx({ hp: 3 });
+      } },
+      { text: '端详那个稻草人', when: () => !S.flags.scarecrowSeen, run: async () => {
+        setFlag('scarecrowSeen');
+        await say([
+          '你绕着稻草人走了一圈。破袈裟、木勺手、歪斗笠，都寻常——直到你看见它胸口挂着的小木牌。',
+          '木牌上是老僧的字：「果园无主，果熟自落；落者归僧，余者归鸟。鸟啄不尽的，归过路人。」',
+          '你朝它拱了拱手，摘果子便摘得心安理得起来。',
+        ]);
+      } },
+    ],
+  },
+
+  guest_hall: {
+    name: '香客寮遗址', ch: '第一部 · 晨曦之印', sub: '小节三 · 符文圣殿', bg: BG + 'temple.svg', mood: 'holy',
+    desc: [
+      '灯庭西侧有一排低矮的石屋，是旧时接待朝圣者的香客寮。屋顶塌了大半，唯独最东头一间收拾得干干净净，门口的小龛里供着一尊合掌石像，龛前的香灰还新。',
+      '一位鬓发全白的老妇正跪在小龛前，一下一下，擦拭着早已看不出颜色的门槛。',
+    ],
+    brief: '塌了大半的香客寮。唯一干净的小屋里供着新香，老妇在擦门槛。',
+    exits: {
+      e: { to: 'lamp_court', label: '回石兽灯庭', flavor: '你退出香客寮。身后，擦门槛的沙沙声不紧不慢地继续着。' },
+    },
+    npcs: {
+      sue: {
+        name: '老香客素娥', img: null, role: '守着香客寮小龛的老妇',
+        talk: async () => {
+          const i = await choose([
+            { text: '「婆婆，这殿……您守了多久？」' },
+            { text: '「熄掉的那三对灯柱，还能修么？」', when: () => S.sideQuests.lamps === 'active' && !S.flags.lampsLit },
+            { text: '「讨口水喝。」' },
+          ]);
+          if (i === 0) {
+            setFlag('sueLore');
+            await say([
+              '「守不住多久喽，」素娥擦门槛的手没停，「我进山那年，殿里就剩守殿的铁须老爷子一个人了。他说：香客寮的门槛，是给走不动的人歇脚的，断不得。」',
+              '「他就抬了张草席让我住下。这一住……他把殿守到只剩他一个，我把门槛擦到只剩我一张席。」她笑了笑，「人老得快，殿老得慢，说不清喽。」',
+              '「殿里的火啊，比人长久。你进去见着守殿人，替我问一声：门槛，还擦得动么。」',
+            ]);
+          } else if (i === 1) {
+            setFlag('sueHint');
+            await say([
+              '「修是修得好。」素娥朝灯庭的方向抬了抬下巴，「那些石兽，是守殿人亲手凿的。兽背上的晶屑灯芯，一支灯柱一颗，坏不了，只是叫人撬了去。」',
+              '「被蚀了一半的石兽里，兴许还有一颗囫囵的；钟塔那口哑钟的肚子里，守殿人惯常藏备用的；地宫的烛泪堆成塔，守殿人把备件封在泪壳里——三代目交代的：灯要常亮，晶屑常备。」',
+              '她重新低下头去擦门槛：「客官要是寻着了，替我把灯点上。夜里跪着，也好有个亮。」',
+            ]);
+          } else {
+            setFlag('sueWater');
+            await say([
+              '素娥从屋里拎出一只粗陶壶，给你倒了碗温水。水是山泉，带着一点松木的清气。',
+              '「慢慢走，」她说，「殿里的路，急不得。」（斗气 +1）',
+            ]);
+            fx({ sp: 1 });
+          }
+        },
+      },
+    },
+    actions: [
+      { text: '翻看寮内的香客登记簿', when: () => !S.flags.guestLedger, run: async () => {
+        setFlag('guestLedger');
+        await say([
+          '供桌底下压着一册厚厚的登记簿，纸页黄脆。几百年的名字密密麻麻：卖炭的、赶考的、还愿的、逃荒的……',
+          '最后一页只有一行，墨迹很新：「素娥，携香三炷，长住。」',
+          '再往前翻，隔了整整一册空白——那三百年里，一个名字也没有。',
+        ]);
+      } },
+    ],
   },
 
   temple_gate: {
@@ -1142,7 +2332,7 @@ const WORLD = {
     ],
     brief: '十丈高门，三枚符文泛着微光。石碑上古谚沉默。',
     exits: {
-      s: { to: 'temple_foot', label: '退回石阶', flavor: '你退回石阶平台，雾风拂面。' },
+      s: { to: 'lamp_court', label: '退回灯庭', flavor: '你退回灯庭。两列石兽灯柱望着你，金光明明灭灭。' },
       n: { to: 'temple_hall', label: '进入圣殿', flavor: '你穿过幽深的门廊。光——温热的、带着旧日颂歌回响的光，从大殿深处涌来。', req: s => S.flags.gateOpen, lock: '巨门紧闭。三枚符文在等你按落。' },
     },
     actions: [
@@ -1195,6 +2385,16 @@ const WORLD = {
       thorne: {
         name: '索恩·铁须', img: CH + 'thorne.svg', role: '符文圣殿守殿人 · 铁须氏族最后的矮人',
         talk: async () => {
+          if (S.flags.masonLore && !S.flags.stoneDelivered) {
+            setFlag('stoneDelivered');
+            fx({ rep: 1 });
+            await say([
+              '你把那块白石屑递过去。索恩捏在指间看了看，忽然别过脸去，好一会儿才哑声说：「料场还有人……三百年了，料场还有人记着俺们。」',
+              '他把石屑小心收进胸口的皮囊里：「替俺谢谢那位老师傅。莫家的錾子，跟铁须家的斧子，是同一座殿的两条根。」',
+              '（声望 +1）',
+            ]);
+            return;
+          }
           if (S.flags.thorne) { await say(['「俺的斧头如今跟你走，」索恩咧嘴一笑，「不过这殿俺还回得来。祭坛的火，比俺的胡子还旺。」']); return; }
           const done = ['courageDone', 'wisdomDone', 'heartDone'].filter(f => S.flags[f]).length;
           if (done === 0) await say(['「三重试炼，一关都别想跳。」索恩用拇指擦着斧刃，「勇气在东回廊，智慧在西圆厅，心灵在最深处的黑水池。俺就在这儿，给谁收尸可说不准。」']);
@@ -1317,6 +2517,7 @@ const WORLD = {
     brief: '环形回廊与坍塌的僧舍。铁炉早已冷却。',
     exits: {
       e: { to: 'temple_hall', label: '回大殿', flavor: '你沿回廊折回大殿，金色的穹顶重新出现在头顶。' },
+      n: { to: 'bell_stump', label: '北 · 塔影荒草', flavor: '你沿回廊向北。荒草深处伏着一道倾颓的影子，像一座折断的塔。' },
       down: { to: 'temple_crypt', label: '下 · 地宫石阶', flavor: '铁炉后的石板虚掩着一道下行石阶。你们举起点燃的火把，踩着积尘下到底。' },
     },
     onEnter: async () => {
@@ -1389,6 +2590,87 @@ const WORLD = {
       ]);
       fx({ gold: 8 });
     },
+    actions: [
+      { text: '从烛泪塔底翻找', when: () => S.flags.cryptDone && !S.flags.cryptCrystal, run: async () => {
+        setFlag('cryptCrystal');
+        await say([
+          '烛泪积成的小塔层层叠叠。你贴着塔基，小心地掰开最底下一层——泪壳里封着一枚聚光晶屑，被烛火焐了不知多少年，竟一点没坏。',
+          '历代守殿人把备件藏在历代守殿人中间。这份谨慎，本身就是一句遗言。',
+          '（获得：引火晶屑 · 其三）',
+        ]);
+        fx({ item: 'lamp_crystal' });
+      } },
+    ],
+  },
+
+  bell_stump: {
+    name: '钟塔残基', ch: '第一部 · 晨曦之印', sub: '小节三 · 符文圣殿', bg: BG + 'temple.svg', mood: 'dark',
+    desc: [
+      '回廊尽头，一座塌了大半的钟塔伏在荒草里。塔身的裂口像一道没缝上的伤，半口青铜古钟斜嵌在瓦砾中，钟口朝天，接了三百年的雨。',
+      '塔基上绕着一圈枯朽的绳痕——有人试过把这口钟弄倒、弄碎，或者弄哑。绳索换了三次，钟还在。',
+    ],
+    brief: '塌了大半的钟塔。半口古钟斜嵌在瓦砾里，钟口朝天。',
+    exits: {
+      s: { to: 'temple_cloister', label: '回圣殿回廊', flavor: '你沿着墙根退回回廊。荒草在身后合拢，把钟塔重新藏了起来。' },
+      w: { to: 'temple_spring', label: '西 · 山壁石窟', flavor: '你拨开塔后的荒草向西。山壁凹进一处石窟，里头传出极轻的、一滴一滴的水声。' },
+    },
+    onEnter: async () => {
+      if (!ev('bellStumpVisit')) return;
+      await say([
+        '艾莉娅仰头望着那道裂口：「守殿人的钟。老辈人说，圣殿的钟只为大事实响——七印重燃一次，钟声就传遍一遍艾尔多兰。」',
+        '「这口钟哑了三百年。」她轻声说，「它在等一桩配得上它的大事。」',
+      ]);
+    },
+    actions: [
+      { text: '敲一敲半埋的古钟', when: () => !S.flags.bellStruck, run: async () => {
+        setFlag('bellStruck');
+        await say([
+          '你解下剑鞘，在钟腹上轻轻磕了一下。',
+          '声音不大，却深——像一颗石子落进三百年的井里。满塔的荒草伏了一伏，远处鸦群轰然惊起，绕着圣殿金顶转了三圈才散。',
+          '胸腔里的血也跟着那口钟嗡嗡震颤，斗气在经脉里荡开一圈涟漪。（斗气 +2）',
+        ]);
+        fx({ sp: 2 });
+      } },
+      { text: '探身查看钟腹内侧', when: () => !S.flags.bellBelly, run: async () => {
+        setFlag('bellBelly');
+        await say([
+          '钟腹内侧干燥，避开了三百年的雨。里头用油布裹着一个小包裹——守殿人藏的私货：一小袋金币，和一枚备用的聚光晶屑。',
+          '油布上用炭条写着字：「灯要常亮。晶屑常备。——铁须·三代目」',
+          '（金币 +6，获得：引火晶屑 · 其二）',
+        ]);
+        fx({ gold: 6, item: 'lamp_crystal' });
+      } },
+    ],
+  },
+
+  temple_spring: {
+    name: '不冻泉石窟', ch: '第一部 · 晨曦之印', sub: '小节三 · 符文圣殿', bg: BG + 'temple.svg', mood: 'holy',
+    desc: [
+      '钟塔残基再往西，山壁向内凹成一个石窟。一泓细泉从石缝里渗出来，滴进一方人工凿出的石槽，槽沿刻着两个字：「不冻」。',
+      '雾海之上的圣殿山滴水成冰，唯独这眼泉三百年不冻。石槽的沿口，被一只只手掌摸出了温润的包浆。',
+    ],
+    brief: '山壁石窟里的细泉。三百年不冻，石槽沿口摸出了包浆。',
+    exits: {
+      e: { to: 'bell_stump', label: '回钟塔残基', flavor: '你退出石窟。泉滴声在身后一声一声，不急，不停。' },
+    },
+    actions: [
+      { text: '掬一捧不冻泉水', when: () => !S.flags.springDrink, run: async () => {
+        setFlag('springDrink');
+        await say([
+          '泉水凉得钻骨，入喉却是一线暖意。守殿人登山前在这儿净手，下山前在这儿濯剑——三百年的进退起落，都在这一捧水里过过一遍。',
+          '斗气顺着那线暖意在经脉里走了一个周天，通泰之极。（斗气 +3）',
+        ]);
+        fx({ sp: 3 });
+      } },
+      { text: '细看石槽底部的刻字', when: () => !S.flags.springInscribe, run: async () => {
+        setFlag('springInscribe');
+        await say([
+          '石槽底刻着一行小字，水光晃眼，你看了半天才认全：',
+          '「三代目铭：火有灯火庭，剑有剑碑林，人有人的香客寮，泉有泉的不冻心。殿不只要有人守，还要有水记得。」',
+          '你想起回廊里冷了的铁炉、塌了顶的僧舍、哑了三百年的钟——以及那位擦个不停的门槛。',
+        ]);
+      } },
+    ],
   },
 
   temple_altar: {
@@ -1524,6 +2806,10 @@ const WORLD = {
             }
           }
         },
+      },
+      boozehound: {
+        name: '疤脸酒客', img: null, role: '驿镇酒摊的老油子 · 南北消息灵通',
+        talk: async () => { await tavernRumors('疤脸汉子'); },
       },
       raven: {
         name: '渡鸦', img: CH + 'raven.svg', role: '来历不明的行商',
@@ -2766,6 +4052,10 @@ const WORLD = {
     exits: {
       w: { to: 'coast_road', label: '回海风岬', flavor: '你沿官道折返。两日后，海风的咸味重新漫过衣领。' },
       e: { to: 'harvest_village', label: '东 · 穗安村', flavor: '你踏着田埂东行。暮色里，一座围着谷仓的小村亮起零星的灯，安静得不像有人的样子。' },
+      n: {
+        to: 'war_road', label: '北 · 战痕古道', flavor: '你跨过麦浪原的北缘。风换了方向——腐甜味淡了，取而代之的是一股极淡的铁锈味。',
+        req: s => s.flags.part4, lock: '北风里还没有钟声——先顾眼前的麦浪',
+      },
     },
     onEnter: async () => {
       if (!ev('roadArrive')) return;
@@ -3022,18 +4312,1019 @@ const WORLD = {
             '「越往后，印越沉，」索恩把斧头擦得雪亮，「俺们的运气倒是一直挺旺。」',
           ]);
         }
-        quest('q_horizon');
+        quest('q_war');
         await say([
           '启程前夜，蓉婆婆在界石上多刻了一行小字，念给你们听——',
           '『五印在途，六印在望。唯第七印，不在途中，在底下。』',
           '她合起木镰：「孩子们，往北走的时候，替老朽听听北边的风。风里要是有钟声，就说明时间还够。」',
-          '【第四部 · 丰收之印 · 完】——七印之路，已行其四。终部「深渊之印」制作中。',
+          '【第四部 · 丰收之印 · 完】——从麦浪原北缘跨出去，便是战痕古道的界碑。',
         ]);
         checkpoint();
       } },
     ],
   },
+
+  /* ==================== 第五部 · 战争之印 ==================== */
+
+  war_road: {
+    name: '战痕古道 · 界碑', ch: '第五部 · 战争之印', sub: '小节一 · 北望古战场', bg: BG + 'road.svg', mood: 'dark',
+    wild: true, checkpoint: true,
+    desc: [
+      '北行的路在一道倾斜的界碑前矮了下去。碑上刻着两个被风磨平大半的字，勉强认得出是「止兵」。',
+      '界碑以北，大地像被一头巨兽犁过：塌陷的壕沟、半埋的轮辐、成片立着又倒下的矛杆，一直铺到天边铁灰色的雾里。',
+      '风从北面来，带着铁锈味。艾莉娅拢紧斗篷：「一千年前，七位先王就是在这里把影裔军团挡下的。第五印『战争之印』，就沉眠在这片战场的最深处。」',
+    ],
+    brief: '「止兵」界碑旁的古道。北面的荒原上，壕沟与断矛一直铺进雾里。',
+    rest: { cost: 4, label: '在驿棚歇一晚' },
+    exits: {
+      s: { to: 'golden_road', label: '回金穗平原', flavor: '你沿古道折返南下。两日后，铁锈味重新换成麦浪与腐甜的气息。' },
+      w: {
+        to: 'dusk_path', label: '西 · 暮色山道', flavor: '你踏上西面的山道。风里的钟声隐约可辨，像谁在很远的地方数着长夜。',
+        req: s => s.flags.part5, lock: '古战场的事没有了结——北风里还没有钟声',
+      },
+      n: { to: 'rust_field', label: '北 · 铁锈荒原', flavor: '你跨过界碑。脚下的土忽然变得很松——下面埋着一千年的东西。' },
+    },
+    roam: { en: 'warshades', chance: 0.3, intro: '壕沟里的雾凝成了几条人影——披着锈甲的亡卒从土里直起身来。' },
+    onEnter: async () => {
+      if (!ev('warArrive')) return;
+      await say([
+        '道旁的驿棚塌了半边，棚柱上还拴着半面褪色的军旗。卡雅伸手碰了碰旗面，布屑簌簌地落。',
+        '「一千年了，」她轻声说，「还没人把这面旗收走。」',
+        '索恩摘下头盔，朝界碑郑重其事地躬了一躬：「铁须氏的老规矩：路过战场，先敬亡者。他们把整片天扛下来，才轮得到咱们走路。」',
+        '艾莉娅展开地图：「碑林在荒原西面，影蚀的营地扎在东北。多看、多问——这一片的亡者，比活人知情的多。」',
+      ]);
+    },
+    npcs: {
+      raven: {
+        name: '渡鸦', img: CH + 'raven.svg', role: '来历不明的行商',
+        talk: async () => {
+          await shopLoop(
+            '「古战场的客人，」渡鸦把货箱摊开在界碑背风处，「亡者的地界，活人得把自己照顾好。」',
+            { text: '「这片荒原上，影蚀在找什么？」', when: () => !S.flags.warHint,
+              run: async () => {
+                setFlag('warHint');
+                await say([
+                  '「找的东西嘛……」渡鸦用杖尖拨了拨火堆，「一印沉眠晨光里，二印悬在星塔尖——可你听过第五印怎么唱的吗？」',
+                  '『四印压阵军旗下，五印在旗杆心里。』旗杆心里，懂吗？谁把战旗升起来，谁就要先答亡者的问题——答错了，旗杆比刀还硬。」',
+                  '「还有件事白送你：东北边那座营地的影蚀，不抢粮、不抓人，天天往地底下挖。你猜，他们想挖通到哪儿？」',
+                  '你与艾莉娅对视一眼。等你回过神，界碑旁只剩下一小堆烧尽的篝火。',
+                ]);
+              } }, ['potion', 'potion_big', 'amulet']);
+        },
+      },
+    },
+    actions: [
+      { text: '拂去界碑上的尘土', when: () => !S.flags.warStone, run: async () => {
+        setFlag('warStone');
+        await say([
+          '你伸手拂开界碑上的积尘。碑座上还有一行小得几乎磨平的铭文——',
+          '『此地止兵。非胜者止，乃埋甲者止——凡我旗下，亡者为兵，生者为约。』',
+          '艾莉娅指尖抚过刻痕：「先王的口气……这不是一块界碑，是一份军令。记住它——待会儿在战旗台下，用得上。」',
+        ]);
+      } },
+    ],
+  },
+
+  rust_field: {
+    name: '铁锈荒原', ch: '第五部 · 战争之印', sub: '小节二 · 荒原与碑林', bg: BG + 'mountain.svg', mood: 'dark',
+    wild: true, checkpoint: true,
+    desc: [
+      '荒原上的风声很低，像有一千个人贴着地面齐声呼吸。',
+      '塌陷的壕沟纵横交错，沟底积着经年的锈水。成片的断矛插在土里，斜度整齐得可怕——那不是溃败的姿态，是军阵到死都没有散。',
+      '西面立着一片灰白的石影，是碑林；东北方向，几缕紫色的烟直直地升上天际。',
+    ],
+    brief: '风声低鸣的荒原。壕沟与断矛保持着一千年前的阵形，西面是碑林，东北有紫烟。',
+    roam: { en: 'warshades', chance: 0.3, intro: '锈水洼里冒起一串泡——比战影更沉默的东西，从壕沟深处站了起来。' },
+    exits: {
+      s: { to: 'war_road', label: '回界碑古道', flavor: '你退回界碑旁的古道，驿棚的破檐在风里吱呀作响。' },
+      w: { to: 'memorial_grove', label: '西 · 亡者碑林', flavor: '你踏进西面的石影之间。风声忽然低了下去，像进了灵堂的人自觉收声。' },
+      e: { to: 'broken_ridge', label: '东 · 折戟丘', flavor: '你向东面的土丘走去。丘上的断矛密得像庄稼，一根挨着一根。' },
+      ne: { to: 'shadow_camp', label: '东北 · 影蚀辎重营', flavor: '你压低身形，借着壕沟向东北的紫烟摸过去。' },
+      n: { to: 'banner_hill', label: '北 · 战旗高台', flavor: '你向北面的高台走去。台上五面残旗的剪影，像五根竖着的手指。' },
+    },
+  },
+
+  memorial_grove: {
+    name: '亡者碑林', ch: '第五部 · 战争之印', sub: '小节二 · 荒原与碑林', bg: BG + 'grove.svg', mood: 'holy',
+    checkpoint: true,
+    desc: [
+      '千百块石碑沿着坡地层层而立，碑身上刻满了名字——密得像另一种年轮。风穿过碑林的缝隙，呜咽声自动放轻。',
+      '坡顶立着一块无名的将军碑，碑前长明着一点豆大的火。碑影里拄着一个人形的影子，见了你们，缓缓抬起手，行了一个一千年前军中的礼。',
+    ],
+    brief: '刻满名字的碑林。坡顶无名将军碑前燃着长明火，碑影里立着一个亡魂。',
+    exits: {
+      e: { to: 'rust_field', label: '回荒原', flavor: '你退出碑林。风声在背后重新高了起来。' },
+    },
+    npcs: {
+      veteran: {
+        name: '守碑的老兵', img: null, role: '碑林间不散的亡魂',
+        talk: async () => {
+          if (S.sideQuests.warname === 'active' && (S.items.dogtag || 0) >= 3) {
+            await say([
+              '你把三块军牌一一递过去。老兵亡魂双手接过——碰不到，却把腰弯到了底。',
+              '他把军牌挨个嵌进三座空碑的碑座。每嵌进一块，碑身上的名字便亮一线暗金的光，像迟到了一千年的点名。',
+              '「名字回来了，」老兵直起身，「队伍就齐了。」',
+              '他从碑座下的石匣里取出一杆擦得发亮的长戈：「老将军的佩戈，替俺们再走一程吧。还有这袋军饷——亡者的钱，只付给记得亡者的人。」',
+              '（支线报酬：折戟长戈 · 攻击+4，金币 +12，声望 +1）',
+            ]);
+            take('dogtag', 3);
+            fx({ gold: 12, rep: 1, item: 'war_glaive' });
+            finishSide('warname');
+            return;
+          }
+          if (S.sideQuests.warname === 'active') {
+            await say(['「军牌……一块在折戟丘的土里，一块在白骨哨塔上，还有一块，叫东边影蚀的营里拿去了。」老兵的指节穿过碑影，「找回来，碑林就认他们。」']);
+            return;
+          }
+          await say([
+            '亡魂的眉眼模糊，敬礼的手势却一丝不苟：「客人。俺守了这片碑一千年——守的不是碑，是名字。」',
+            '「荒原上翻出来的军牌，都叫风沙埋了名字。名字一散，人就真死了。」他朝坡下三座空着的碑座望了一眼，「俺们的牌，一块在折戟丘，一块在哨塔上……还有一块，落在影蚀手里。」',
+            '「找回来。碑林欠你们一份亡者的情分。」',
+          ]);
+          sideQuest('warname');
+        },
+      },
+    },
+    actions: [
+      { text: '细读无名将军的碑文', when: () => !S.flags.warRhyme, run: async () => {
+        setFlag('warRhyme');
+        await say([
+          '将军碑的碑文深而稳，一笔一划都像下过令：',
+          '『开阵有五：盾为墙，枪为林，骑为锋，弓为雨，医为心。五旗次第升，缺一者，阵不认。』',
+          '艾莉娅把这行字拓进册子：「军阵的次序。战旗台上的五面残旗——答案应该就在这里。」',
+          '（碑文记下：五旗的升起次序——盾、枪、骑、弓、医。）',
+        ]);
+      } },
+      { text: '向石龛里的长明火致意', when: () => !S.flags.groveBox, run: async () => {
+        setFlag('groveBox');
+        fx({ gold: 7 });
+        await say([
+          '你照军中的规矩，向长明火抱了抱拳。火苗轻轻跳了跳。',
+          '石龛后头，一只锈蚀的饷匣不知被谁推开了缝——里面码着七枚磨得发亮的金币，像等了很久的军饷。（金币 +7）',
+        ]);
+      } },
+    ],
+  },
+
+  broken_ridge: {
+    name: '折戟丘', ch: '第五部 · 战争之印', sub: '小节二 · 荒原与碑林', bg: BG + 'mountain.svg', mood: 'dark',
+    wild: true,
+    desc: [
+      '土丘上的断矛密得像收割前的麦子。传令兵的号角、辎重车的轮辐、半面撕烂的旗，全都陷在齐踝的锈土里。',
+      '丘顶插着一杆最长的矛，矛尖折断的地方，挂着一面只剩一个角的军旗，风一过，猎猎地响。',
+    ],
+    brief: '断矛密布的土丘。丘顶折断的长矛上挂着半面残旗。',
+    roam: { en: 'warshades', chance: 0.28, intro: '锈土忽然塌了一块——从土里坐起来的东西，还保持着握矛的姿势。' },
+    exits: {
+      w: { to: 'rust_field', label: '回荒原', flavor: '你退出折戟丘。身后，残旗还在一下一下地拍打着风。' },
+    },
+    actions: [
+      { text: '在断矛堆里翻找', when: () => !S.flags.ridgeDug, run: async () => {
+        setFlag('ridgeDug');
+        fx({ gold: 6 });
+        give('dogtag');
+        await say([
+          '你沿着矛杆的行列细看。最密的那片断矛下，锈土里露出一截折断的皮带——皮带上拴着一块黄铜军牌，牌面的名字被血锈咬掉了半边。',
+          '旁边还散落着几枚生前没来得及花出去的饷钱。（金币 +6，获得：沙场军牌）',
+        ]);
+      } },
+    ],
+  },
+
+  bone_tower: {
+    name: '白骨哨塔', ch: '第五部 · 战争之印', sub: '小节二 · 荒原与碑林', bg: BG + 'lighthouse.svg', mood: 'dark',
+    desc: [
+      '一座用矛杆和盾片架起来的哨塔立在丘顶，一千年来被风沙磨得发白。塔身的缝隙里，还卡着当年哨兵的遗骨。',
+      '塔顶的瞭望口朝着四面八方——当年站在这里的人，看得比谁都远。',
+    ],
+    brief: '矛杆与盾片架成的哨塔。塔顶的瞭望口还朝着四面八方。',
+    exits: {
+      w: { to: 'rust_field', label: '回荒原', flavor: '你从塔下退开。塔影在锈土上拉得很长，像一杆立着的矛。' },
+    },
+    actions: [
+      { text: '登上白骨哨塔远眺', when: () => !S.flags.towerClimb, run: async () => {
+        setFlag('towerClimb');
+        fx({ gold: 8 });
+        give('dogtag');
+        await say([
+          '你踩着盾片搭的蹬脚登上塔顶。风在这里陡然大了。',
+          '西北，是碑林灰白的石影；东北，影蚀的辎重营扎在两道壕沟的夹角里，紫焰灯围出一圈刺眼的光——营里的影蚀不操练，只轮班往地底下挖。',
+          '极北的天际，雾海之上浮着一道黑曜石的棱线，像大地上一道结了痂的伤口。血色的光在棱线上方一跳一跳。',
+          '「影渊……」艾莉娅的声音很轻，「比图上画的，还要近。」',
+          '瞭望口的砖缝里，前任哨兵的遗骨还靠着墙——他的军牌落在砖缝里，你替他收好。（金币 +8，获得：沙场军牌）',
+        ]);
+      } },
+    ],
+  },
+
+  shadow_camp: {
+    name: '影蚀辎重营', ch: '第五部 · 战争之印', sub: '小节二 · 荒原与碑林', bg: BG + 'cave.svg', mood: 'dark',
+    desc: [
+      '营盘扎在两道壕沟的夹角里，黑曜石凿的帐篷一座挨一座，紫焰灯把每一道帐缝都照得雪亮。',
+      '营地中央挖着一口深不见底的竖井，辘轳吱呀作响——吊上来的不是土，是一段一段锈死的古渠石条。',
+      '营里没有喊杀声。影蚀们沉默地干活，沉默地换岗，像一支在替谁赶工的工兵队。',
+    ],
+    brief: '扎在壕沟夹角里的营盘。中央的竖井吊着锈死的古渠石条。',
+    exits: {
+      sw: { to: 'rust_field', label: '回荒原', flavor: '你退出营盘。身后，辘轳还在一下一下地吊着石条。' },
+    },
+    onEnter: async () => {
+      if (S.flags.campClear) return;   // 战败可重试
+      await say([
+        '你们刚摸到辕门下，巡营的影蚀营卫忽然收住了脚——紫焰灯下，它的兜帽正对着你们藏身的壕沟。',
+        '「上座的工令在此，」它的声音像石头磨石头，「闲杂人等——填沟。」',
+      ]);
+      const r = await battle('campguard');
+      if (r !== 'win') return;
+      setFlag('campClear');
+      fx({ item: ['war_order', 'dogtag'] });
+      await say([
+        '营卫溃成黑水。你们从辕门的火盆里抢出那卷烧剩一半的军令，又在哨位上搜出一块被扒下来的军牌。',
+        '（获得：影蚀工令——「上座亲谕：掘通古渠，静待月晦。——影」。他们在古战场挖的不是印，是路。沙场军牌 +1）',
+        '卡雅捏着军令的手紧了紧：「挖古渠……通往影渊的地底暗道。他们要给那位，修一条不用走正门的路。」',
+      ]);
+    },
+    actions: [
+      { text: '搜查辎重帐', when: () => !S.flags.campLoot, run: async () => {
+        setFlag('campLoot');
+        give('war_map');
+        await say([
+          '辎重帐里码着成捆的工具和干粮。图架上摊着一张军阵图——画到一半被人撕走了，只剩三面战旗的画样，和一句批注：',
+          '『五旗不齐，阵眼不开。上座要的「路」，在阵眼底下。』',
+          '（获得：布阵图残页——五面战旗中的三面。缺的两面，得去碑林问亡者。）',
+        ]);
+      } },
+    ],
+  },
+
+  banner_hill: {
+    name: '战旗高台', ch: '第五部 · 战争之印', sub: '小节三 · 战旗高台', bg: BG + 'dawn.svg', mood: 'holy',
+    desc: [
+      '高台由整块黑曜石凿成，五根旗杆环台而立，五面残旗垂得笔直——一千年的风，都没能把它们吹展开。',
+      '台心插着一杆最高的主旗，旗杆心里透出一点暗金的光，一明，一灭，像压在旗布下的心跳。',
+      '台上，一名拄着断矛的锈甲巨影背对你们而立，像已经站成了高台的一部分。',
+    ],
+    brief: '黑曜石高台。五面残旗垂得笔直，主旗杆心里透着暗金的光。',
+    exits: {
+      s: { to: 'rust_field', label: '回荒原', flavor: '你退下高台。身后，五面残旗仍旧垂得笔直。' },
+    },
+    actions: [
+      { text: '按碑文的军阵竖起五面残旗', when: () => !S.flags.bannerOrder && !S.flags.part5, run: async () => {
+        await say([
+          '你握住第一面残旗的旗绳。旗布沉得像灌了铅——亡者的军阵，只认正确的次序。',
+          '艾莉娅展开拓下的碑文：『盾为墙，枪为林，骑为锋，弓为雨，医为心。』',
+          S.flags.warRhyme ? '（碑文里的次序，在你心里过了一遍。）' : '（没有读过碑文。五面旗，只能凭军阵的常识碰了。）',
+        ]);
+        const ranks = ['盾', '枪', '骑', '弓', '医'];
+        const picked = [];
+        for (;;) {
+          const pool = ranks.filter(g => !picked.includes(g));
+          if (!pool.length) break;
+          const i = await choose(pool.map(g => ({ text: `把「${g}」字旗升在这一位` })));
+          picked.push(pool[i]);
+        }
+        if (picked.join('') === '盾枪骑弓医') {
+          setFlag('bannerOrder');
+          await say([
+            '五面残旗次第升顶——「盾」字旗张开的一瞬，整片荒原的风都停了半拍；「枪」「骑」「弓」依次猎猎展平，「医」字旗最后升定，像一颗心落回了阵中。',
+            '轰——主旗杆心的暗金光陡然涨起，顺着旗杆淌下高台。荒原上，所有断矛的影子齐齐转了一个方向，朝台心聚拢。',
+            '碑林的方向，隐隐传来一声悠长的、如释重负的号角。',
+            '（阵眼开了。可旗影深处，那名拄矛的巨影缓缓转过身来——）',
+          ]);
+        } else {
+          fx({ hp: -2 });
+          await say([
+            '旗绳勒进掌心，五面残旗轰然垂落，反震顺着手臂撞进胸口。（生命 -2）',
+            '台心的暗金光黯了一瞬。风里隐约有亡者低声的哄笑——次序。想想开阵的时候，谁站在最前面。',
+          ]);
+        }
+      } },
+      { text: '直面影蚀战将断矛，重燃战争之印', when: () => S.flags.bannerOrder && !S.flags.rune5, run: async () => {
+        await say([
+          '锈甲的巨影拄矛而立，兜帽深处两点暗金的光死死锁住你——它守着这面主旗，守了一千年。',
+          '「旗升了。」它的声音像磨刀，「那么开阵。老规矩——旗下的印，只交给打得赢军阵的人。」',
+          '「一千年前俺倒在这里，」断矛顿地，锈甲哗啦作响，「一千年里，影蚀天天来教俺『换个主子』。今天正好——让俺看看，先王的兵法，还有没有人接得住！」',
+        ]);
+        const r = await battle('wargeneral');
+        if (r !== 'win') return;
+        await say([
+          '断矛当啷落地。锈甲一片片剥落，战争之印从旗杆心里缓缓升起——暗金的光落进你的掌心，像一面终于交还的军旗。',
+          '「好……」锈甲散尽的地方，亡魂抱拳，退进旗影，「军阵不认生死的，只认这一口气。拿去——底下那条路，替俺们堵上。」',
+          '五枚符文在行囊里遥遥辉映。荒原尽头，碑林的所有石碑同时亮了一遍，像一场迟到一千年的授勋。',
+        ]);
+        fx({ item: 'rune5', maxHp: 6, rep: 2, flag: ['rune5', 'part5'] });
+        give('war_mail');
+        checkpoint();
+        if (S.corruption >= 1) {
+          await chapterEnd('ending_war_whisper', '锈色低语', 'RUST-COLORED WHISPERS', [
+            '当夜扎营，索恩的鼾声照旧，艾莉娅的星图照旧。你却翻来覆去睡不着。',
+            '荒原的风贴着帐缝钻进来，在你耳边一遍遍低声排练着同一句话——旗升了，就该有个旗主。五印齐了四印，谁替亡者扛旗？',
+            '行囊深处，那几样来自深渊的东西轻轻搏动着。你数着它们的节拍入睡——今夜，你梦见的不是战场，是王座。',
+          ]);
+        } else {
+          await chapterEnd('ending_war_warden', '战旗不倒', 'THE STANDARD STILL FLIES', [
+            '翌日拔营，你们绕路经过碑林。千百块石碑亮了整整一夜，此刻正一层层暗下去，像一场散了的军礼。',
+            '老兵亡魂立在坡顶，朝你们行的最后一个军礼，一丝不苟。',
+            '「军阵不认生死，只认这一口气。」索恩低声把这句话重复了一遍，把斧头背得更正了些。',
+          ]);
+        }
+        quest('q_bell');
+        await say([
+          '收拾行装时，卡雅忽然侧过耳朵：「西边——山里有钟声。」',
+          '艾莉娅翻开星图，在西面的群山里圈出一座修道院的标记：「第六印『暮钟之印』，悬在暮色修道院的钟楼顶层。一千年来，那口钟替整片大陆数着长夜。」',
+          '「影蚀的工令写着『静待月晦』，」她抬起头，「月亮圆缺只剩十几天——钟，不能再哑了。」',
+          '【第五部 · 战争之印 · 完】——从界碑古道向西，便是暮色山道。',
+        ]);
+        checkpoint();
+      } },
+    ],
+  },
+
+  /* ==================== 第六部 · 暮钟之印 ==================== */
+
+  dusk_path: {
+    name: '暮色山道', ch: '第六部 · 暮钟之印', sub: '小节一 · 暮色山道', bg: BG + 'forest.svg', mood: 'dark',
+    wild: true, checkpoint: true,
+    desc: [
+      '山道贴着崖壁向西盘升。暮色在这里浓得反常——明明是晌午，林梢却浸在一片化不开的昏黄里。',
+      '风里的钟声越来越清晰：很慢，很沉，一声与一声之间隔得极长，像有人在数着什么。',
+      '「暮钟，」艾莉娅侧耳听着，「传说它一响，影渊那位就要多睡一百年。可最近这几声……间隔越来越长了。」',
+    ],
+    brief: '浸在昏黄暮色里的山道。钟声很慢，很沉，一声与一声隔得极长。',
+    roam: { en: 'mutes', chance: 0.3, intro: '林间的雾里走出两名黑袍人影——走的姿势是修士的，身上却缠着紫雾。' },
+    exits: {
+      e: { to: 'war_road', label: '回界碑古道', flavor: '你沿山道折返东行。钟声在背后一声一声，送出很远。' },
+      n: { to: 'abbey_gate', label: '北 · 暮色修道院', flavor: '你转过最后一道崖壁。灰白的修道院钟楼立在山坳里，像一位垂首祈祷的老僧。' },
+    },
+    onEnter: async () => {
+      if (!ev('duskArrive')) return;
+      await say([
+        '道旁立着一座小小的神龛，龛里的灯芯早就干了。奇怪的是——灯芯上凝着一滴新的烛泪。',
+        '「有人最近来添过灯，」卡雅擦着鱼叉，「这条路上，还有活人在走。」',
+      ]);
+    },
+  },
+
+  abbey_gate: {
+    name: '暮色修道院 · 山门', ch: '第六部 · 暮钟之印', sub: '小节一 · 暮色山道', bg: BG + 'temple.svg', mood: 'dark',
+    checkpoint: true,
+    desc: [
+      '修道院的山门是两扇包铁的橡木门，门环上缠着褪色的祈绳。门前的石阶扫得干干净净——有人还在这里修行。',
+      '可门楼两侧的阴影里，几道黑袍身影正贴着墙根游走，紫雾顺着他们的袍角淌下来。',
+    ],
+    brief: '包铁橡木门的山门。石阶干净，门楼两侧的阴影里却缠着紫雾。',
+    exits: {
+      s: { to: 'dusk_path', label: '回暮色山道', flavor: '你退下山门石阶。钟声在头顶一声一声，不紧不慢。' },
+      n: {
+        to: 'abyss_mouth', label: '北 · 影渊谷口', flavor: '你穿过修道院后墙的小门，踏上北面的黑崖栈道。脚下的雾海深处，隐隐透着血色的光。',
+        req: s => s.flags.part6, lock: '钟楼的事没有了结——影渊还轮不到你',
+      },
+    },
+    onEnter: async () => {
+      if (S.flags.abbeyOpen) return;   // 战败可重试
+      if (S.flags.gameClear) return;
+      await say([
+        '山门虚掩着，门缝里透出一线烛光。你们刚要叩门，门楼阴影里蓦地立起一名黑袍辅祭——袖口上，绣着一只睁开的眼睛。',
+        '「上座有谕：钟楼清场。」辅祭的掌心托着一只小香炉，紫烟袅袅，「修士迁走，钟——哑掉。挡路的……一并哑掉。」',
+        '门内传来老人们压低的诵经声。辅祭朝门缝里瞥了一眼，笑了一声，把香炉高高举起——',
+      ]);
+      const r = await battle('acolyte');
+      if (r !== 'win') return;
+      setFlag('abbeyOpen');
+      await say([
+        '辅祭的黑袍散作烟尘，香炉哐当滚下石阶。门内安静了几息——随后，门闩响动，橡木门缓缓开了。',
+        '一位灰衣老修士提着灯立在门内，身后是数十名屏息的修士。他浑浊的眼睛在你们掌心的符文光上停了很久。',
+        '「一千三百年了，」他嘶哑地说，「先王的光，又一次走到了暮色山道。进来吧——晚课的钟，还替你们留着座。」',
+      ]);
+      checkpoint();
+    },
+  },
+
+  vespers_hall: {
+    name: '修道院 · 晚课堂', ch: '第六部 · 暮钟之印', sub: '小节二 · 晚课与静室', bg: BG + 'temple.svg', mood: 'holy',
+    desc: [
+      '晚课堂里烛火成排，木凳上跪坐着数十名修士，诵经声压得极低、极稳，像退潮时的海。',
+      '讲经台边立着一座一人高的木架，架上摊着一部厚得像门板的圣咏书。墙角的蒲团上，坐着那位灰衣老修士。',
+      '西墙上开着一道小门，门楣上刻着两个字：静室。北面的祭坛后，是通往钟楼的旋梯。',
+    ],
+    brief: '烛火成排的晚课堂。修士们低声诵经，老修士坐在墙角蒲团上。',
+    exits: {
+      s: { to: 'abbey_gate', label: '出山门', flavor: '你穿过前院，山门在身后合拢，诵经声隔在门内。' },
+      w: { to: 'quiet_cell', label: '西 · 静室', flavor: '你推开静室的小门。烛光暖暖的，蒲团与薄毯都干净。' },
+      n: { to: 'bell_lower', label: '北 · 钟楼', flavor: '你从祭坛后踏上旋梯。石阶上刻着一圈圈磨出来的浅坑——那是守钟人一千年的脚印。' },
+    },
+    npcs: {
+      anselm: {
+        name: '老修士安瑟姆', img: null, role: '暮色修道院最后一位听钟人',
+        talk: async () => {
+          if (ev('anselmMet')) {
+            await say([
+              '老修士朝你们合十，浑浊的眼睛却亮得惊人：「山门那一战，老朽在门后听得清楚。客人们——坐。晚课不长，故事很长。」',
+              '「影蚀要这口钟哑掉，不是恨它。是怕它。」安瑟姆咳嗽了两声，「暮钟一响，影渊那位就要多睡一百年——钟声替大地数着长夜。数满了，才轮得到日出。」',
+              '「可如今钟楼里蹲着个『圣咏者』，钟舌又叫辅祭偷了去。老朽这双腿，上不去旋梯了。」',
+            ]);
+            const i = await choose([
+              { text: '「我该怎么做？」' },
+              { text: '「七印到底是什么？——请如实告诉我。」' },
+              { text: '先去四处看看' },
+            ]);
+            if (i === 0) {
+              await say([
+                '「钟舌在辅祭手里，就在钟楼的石阶上。」安瑟姆指向北面旋梯，「取回来，老朽替你们敲开顶层的门——三口钟的次序，圣咏书里写着。」',
+                '「至于顶上那位……」他浑浊的眼睛暗了暗，「她原本是老朽的师妹。别让她把最后一课，讲完。」',
+              ]);
+              sideQuest('belltongue');
+            } else if (i === 1) {
+              setFlag('lore');
+              await say([
+                '安瑟姆沉默了很久，久到烛火跳了三次。',
+                '「七印不是七把锁。」他终于开口，「孩子们，你们一路听来的传说，都错在开头——先王们从来没想过把莫格拉斯锁一辈子。」',
+                '『晨曦教你如何开始，星辰教你如何看清，海洋教你如何退让，丰收教你如何积蓄，战争教你如何止损，暮钟教你如何收梢。』——六印，是六份遗嘱，是六堂先王们留给后来人的课。」',
+                '「他们真正想教会的，是最后那一课：怎样『结束』这一切。可三百年前走进影渊的那批人，只想学会怎么赢。」安瑟姆摇摇头，「于是封印越锁越死，遗嘱没人读完，而那位——一直等一个读完的人。」',
+                '「客人。你们若真走到了王座跟前，替老朽把这句话带到：先王的正文，写到你们这一页了。」',
+                '（安瑟姆的课记下了——七印的真相。在影渊的王座前，也许用得上。）',
+              ]);
+            } else {
+              await say(['安瑟姆合十：「去吧。静室可以歇脚，圣咏书随便翻——只是别惊了晚课的孩子们。」']);
+            }
+            return;
+          }
+          if (S.sideQuests.belltongue === 'active' && (S.items.bell_tongue || 0) > 0) {
+            await say([
+              '你把铜舌递过去。安瑟姆双手捧住，像捧回一颗心：「轻些……它睡了三个月了。」',
+              '他把钟舌贴在耳边听了听，浑浊的眼睛一下子涌出水光：「没伤着。一个磕痕都没有。」',
+              '「老朽没什么谢的——这枚玉磬跟着老朽六十年，压噩梦、提精神，比药管用。拿去。往后你的路比老朽的陡，得有个响亮的东西陪着。」',
+              '「还有这些散碎的香火钱，别推——亡人的庙不缺这个，活人的剑才缺。」',
+              '（支线报酬：玉磬坠 · 斗气上限+6，金币 +10，声望 +1）',
+            ]);
+            take('bell_tongue');
+            fx({ gold: 10, rep: 1, item: 'jade_chime' });
+            finishSide('belltongue');
+            await say([
+              '当夜，暮钟百年来自鸣了第一次。钟声滚过山谷，滚过荒原——影渊的方向，有什么东西不满地翻了个身。',
+              '（钟声涤荡：斗气 +10）',
+            ]);
+            fx({ sp: 10 });
+            return;
+          }
+          if (S.sideQuests.belltongue === 'active') {
+            await say(['「铜舌在辅祭手里——就在钟楼的石阶上。」安瑟姆咳嗽着，「老朽这双腿，上不去了。」']);
+            return;
+          }
+          if (!S.flags.lore) {
+            const i = await choose([
+              { text: '「七印到底是什么？——请如实告诉我。」' },
+              { text: '「告辞。」' },
+            ]);
+            if (i === 0) {
+              setFlag('lore');
+              await say([
+                '安瑟姆沉默了很久，久到烛火跳了三次。',
+                '「七印不是七把锁。」他终于开口，「先王们从来没想过把莫格拉斯锁一辈子。晨曦教你如何开始，星辰教你如何看清，海洋教你如何退让，丰收教你如何积蓄，战争教你如何止损，暮钟教你如何收梢——六印，是六份遗嘱，是六堂留给后来人的课。」',
+                '「他们真正想教的，是最后一课：怎样『结束』这一切。可三百年前走进影渊的那批人，只想学会怎么赢。」',
+                '「客人。你们若真走到了王座跟前，替老朽把这句话带到：先王的正文，写到你们这一页了。」',
+              ]);
+            }
+            return;
+          }
+          await say(['安瑟姆合十：「记住那句话，孩子——七印不是七把锁，是七份遗嘱。走得再远，也别忘了问自己：这一课，教的是什么。」']);
+        },
+      },
+    },
+    actions: [
+      { text: '研读晚课圣咏书', when: () => !S.flags.vesperRhyme, run: async () => {
+        setFlag('vesperRhyme');
+        await say([
+          '圣咏书厚得像门板，翻开的页脚被一千年的手指磨出了凹槽。当页经文旁，有一行朱笔小注——',
+          '『摇钟次序：先鸣者送亡者，次鸣者唤生者，末鸣者，为归人。次序颠倒，魂惊而钟哑。』',
+          '（钟序记下：钟楼的钟——亡者钟、生者钟、归人钟，依次而鸣。）',
+        ]);
+      } },
+    ],
+  },
+
+  quiet_cell: {
+    name: '修道院 · 静室', ch: '第六部 · 暮钟之印', sub: '小节二 · 晚课与静室', bg: BG + 'inn.svg', mood: 'warm',
+    desc: [
+      '一间狭小的静室，一床、一凳、一盏灯。窗台上摆着修士们匀出来的干粮和一壶温水，还带着体温。',
+      '墙上挂着一幅褪色的字：『为一切人，成一切声。』',
+    ],
+    brief: '一床一凳一盏灯的静室。窗台上有修士们匀出来的干粮。',
+    rest: { cost: 3, label: '在静室歇一晚' },
+    exits: {
+      e: { to: 'vespers_hall', label: '回晚课堂', flavor: '你合上静室的门。诵经声从大殿那头隐隐传来，稳得像退潮的海。' },
+    },
+  },
+
+  bell_lower: {
+    name: '钟楼 · 下层', ch: '第六部 · 暮钟之印', sub: '小节三 · 钟楼之夜', bg: BG + 'temple.svg', mood: 'dark',
+    checkpoint: true,
+    desc: [
+      '旋梯的尽头是一座圆形的钟室。三口钟从横梁上垂下：最大的那口绿锈斑驳，钟身刻着「归人」；一口刻着「亡者」，一口刻着「生者」。',
+      '通往顶层的木门闩着三道闩——门楣上写着：钟鸣三巡，闩落门开。',
+      '石阶旁的暗格里塞着守钟人的杂物，一根不知第几任守钟人留下的麻绳还垂在钟绳旁。',
+    ],
+    brief: '三口巨钟垂在横梁上。顶层的木门闩着三道闩：钟鸣三巡，闩落门开。',
+    exits: {
+      s: { to: 'vespers_hall', label: '下旋梯 · 回晚课堂', flavor: '你踩着磨出浅坑的石阶退回晚课堂。烛光把你的影子拉得很长。' },
+      up: {
+        to: 'bell_top', label: '上 · 钟楼顶层', flavor: '三道木闩次第弹开。你攀上最后一段梯子，风声与钟声一齐灌进耳朵。',
+        req: s => s.flags.bellReady, lock: '三道闩纹丝不动——钟鸣三巡，闩落门开',
+      },
+    },
+    onEnter: async () => {
+      if (S.flags.stairsClear) return;   // 战败可重试
+      await say([
+        '旋梯中段，一道黑袍身影从阴影里转出来——是那名辅祭。他怀里死死抱着什么，铜舌在袍子里磕出一声闷响。',
+        '「上座要的，是一口哑钟。」辅祭退到旋梯高处，掌心的香炉腾起紫烟，「你们，连钟声都别想听见。」',
+      ]);
+      const r = await battle('acolyte');
+      if (r !== 'win') return;
+      setFlag('stairsClear');
+      give('bell_tongue');
+      await say([
+        '辅祭的黑袍散作烟尘，铜舌从他怀里滚落，沿着石阶叮叮当当弹到底——一路上，三口钟像感应到什么，各自轻轻嗡了一声。',
+        '（获得：暮钟的钟舌。钟室的石阶暗格里，还塞着前任守钟人攒下的几枚香火钱。）',
+      ]);
+    },
+    actions: [
+      { text: '搜查石阶暗格', when: () => !S.flags.bellBox, run: async () => {
+        setFlag('bellBox');
+        fx({ gold: 8 });
+        await say(['暗格里有半袋干豆、一本记满了钟点的簿子，和八枚磨得发亮的铜钱——每一枚都用朱砂点过。（金币 +8）']);
+      } },
+      { text: '摇响三口钟', when: () => !S.flags.bellReady, run: async () => {
+        await say([
+          '三根钟绳垂在手边。绳结上系着小小的木牌：亡者、生者、归人。',
+          '安瑟姆在山下仰着头。圣咏书上的朱批，你记得多少？',
+          S.flags.vesperRhyme ? '（朱批在你心里过了一遍：先鸣者送亡者……）' : '（没有读过圣咏书。三口钟……凭感觉了。）',
+        ]);
+        const bells = ['亡者钟', '生者钟', '归人钟'];
+        const picked = [];
+        for (;;) {
+          const pool = bells.filter(g => !picked.includes(g));
+          if (!pool.length) break;
+          const i = await choose(pool.map(g => ({ text: `先拉「${g}」的钟绳（第 ${picked.length + 1} 声）` })));
+          picked.push(pool[i]);
+        }
+        if (picked.join('') === '亡者钟生者钟归人钟') {
+          setFlag('bellReady');
+          await say([
+            '第一声送给亡者——钟声沉得像整座山在低眉。第二声唤生者——山下晚课堂里，诵经声齐齐扬起了一个调。第三声迎归人——',
+            '「当——」',
+            '一声悠长的、活过来的钟鸣滚过山谷。三道木闩次第弹开，震落的百年积尘在月光里像一场小雪。',
+            '「响了……」山下隐隐传来修士们的呜咽与欢呼。可你听得出，这声钟鸣的尾音里，还缠着一缕不属于自己的圣歌。',
+            '（顶层的门开了。那缕圣歌的主人，在上面等你。）',
+          ]);
+        } else {
+          fx({ hp: -2 });
+          await say([
+            '钟声乱了。三口钟发出刺耳的不谐和音，一股钝痛顺着耳骨撞进颅腔。（生命 -2）',
+            '钟绳上的木牌轻轻摇晃。次序——谁第一个走？谁最后归来？',
+          ]);
+        }
+      } },
+    ],
+  },
+
+  bell_top: {
+    name: '钟楼 · 顶层', ch: '第六部 · 暮钟之印', sub: '小节三 · 钟楼之夜', bg: BG + 'lighthouse.svg', mood: 'dark',
+    desc: [
+      '顶层的钟室四面漏风，暮钟之印就悬在大钟的钟梁上，幽蓝的光随着一声不存在的钟鸣缓缓荡漾。',
+      '一道黑袍的身影悬在钟舌旁，像停驻在琴弦上的一只蛾。她没有脸——只有一道唱着圣歌的、缓缓开合的缝。',
+    ],
+    brief: '四面漏风的钟室顶层。暮钟之印悬在钟梁上，黑袍的圣咏者悬在钟舌旁。',
+    exits: { down: { to: 'bell_lower', label: '退回钟室下层', flavor: '你退下梯子。身后的圣歌断了一瞬，又续上了。' } },
+    actions: [
+      { text: '直面圣咏者夜祷，重燃暮钟之印', when: () => !S.flags.rune6, run: async () => {
+        await say([
+          '圣咏者缓缓转过身来。她原本该有一副怎样的面孔，已经没人记得——如今那道开合的缝里，只流出一层又一层的圣歌。',
+          '「小师弟。」她的声音像许多口钟同时开口，「安瑟姆教过你吗？钟是大地的心跳。心跳，只需要一个节拍器——我。」',
+          '「影主答应过我：从此以后，全大陆只剩下我的节拍。一声，一声，永远……不用数到头。」',
+          '「她原本是守钟人里最好的嗓子。」山下，安瑟姆的声音混着晚课的诵经声传上来，「可惜她等不及钟声自己停——想替大地按下休止符。」',
+          '「师妹，」老修士的声音哽了一下，「把最后一课，讲完。」',
+        ]);
+        const r = await battle('chantress');
+        if (r !== 'win') return;
+        await say([
+          '咏叹声碎在半空。黑袍一层层垂落，暮钟之印从钟梁上缓缓升起，幽蓝的光落进你的掌心——它认的不是嗓音，是「替长夜计时的人」。',
+          '六枚符文在行囊里遥遥辉映。当夜，暮钟百年来自鸣了第一次：一声，一声，稳得像大地重新找回了心跳。',
+          '远处的天际线上，血月旁边悄悄洇开了一点鱼肚白。',
+        ]);
+        fx({ item: 'rune6', maxHp: 7, rep: 2, flag: ['rune6', 'part6'] });
+        checkpoint();
+        if (S.corruption >= 1) {
+          await chapterEnd('ending_bell_back', '钟声的背面', 'THE OTHER SIDE OF THE BELL', [
+            '修士们的晚课重新开嗓，钟声稳稳地荡着。所有人都说，这是修道院百年来最亮的一夜。',
+            '只有你知道，钟声对你有一层听不懂的低音。你数着钟声入睡——而梦里有什么东西，正耐心地、一声一声，替你数着下一声。',
+            '行囊深处，来自深渊的东西们轻轻应和着钟鸣。它们在学这个节拍。它们记性很好。',
+          ]);
+        } else {
+          await chapterEnd('ending_bell_warden', '晚祷的回声', 'ECHO OF VESPERS', [
+            '修士们的晚课重新开嗓。安瑟姆把你们的名字一笔一划写进《守钟人名录》，写完，合十，长揖到地。',
+            '「一千三百年，钟没白哑。」老人笑着说，「它这一觉，又稳了。」',
+            '卡雅倚着门框听了很久，忽然说：「这个调子……跟退潮的海一个样。」',
+          ]);
+        }
+        quest('q_abyss');
+        await say([
+          '次日清晨，安瑟姆领你们登上钟楼最高的一层。极北的天际，黑曜石的棱线浮在雾海之上，血色的光一跳一跳。',
+          '「影渊。」艾莉娅轻声说，「七印之末。蓉婆婆念过的——『唯第七印，不在途中，在底下。』」',
+          '「深渊之印不是锁，」安瑟姆望向北方，浑浊的眼睛里第一次露出近乎敬畏的神色，「它是根。想把它拿回来的人，三百年里排到了天边。」',
+          '「钟声替你们送行。」老人合十，「去吧。把正文念完。」',
+          '【第六部 · 暮钟之印 · 完】——从修道院山门向北，便是影渊谷口。',
+        ]);
+        checkpoint();
+      } },
+    ],
+  },
+
+  /* ==================== 终部 · 深渊之印 ==================== */
+
+  abyss_mouth: {
+    name: '影渊 · 谷口', ch: '终部 · 深渊之印', sub: '终章前夜 · 影渊谷口', bg: BG + 'fortress.svg', mood: 'dark',
+    checkpoint: true,
+    desc: [
+      '山道在暮色尽头断了——大地在这里裂开一道深不见底的伤口。',
+      '黑曜石铸成的要塞攀附在裂谷边缘，像一只趴在伤口上饮血的蛛。血月悬在尖塔之上，鸦群绕塔三匝。',
+      '要塞唯一的正路，是一座悬在雾海之上的独石桥。桥头立在暮色里，像世界尽头的界碑。',
+    ],
+    brief: '裂谷边缘。血月下的黑曜石要塞，雾海之上横着唯一的独石桥。',
+    rest: { cost: 0, label: '在岩檐下背风处休整' },
+    exits: {
+      s: { to: 'abbey_gate', label: '回暮色修道院', flavor: '你退回南面的黑崖栈道。钟声在身后一声一声，稳稳地送行。' },
+      n: { to: 'stone_bridge', label: '北 · 独石桥', flavor: '你踏上独石桥。桥板之下的雾海深处，隐约有巨大的东西游弋。' },
+      w: { to: 'cliff_channel', label: '西 · 崖壁暗渠', flavor: '你拨开崖壁上的枯藤——渠口黑黢黢的，渠水声从很深的地方传上来。' },
+    },
+    onEnter: async () => {
+      if (!ev('abyssArrive')) return;
+      await say([
+        '谷口的风是黑的。你们贴着岩檐站定，谁都没有先开口。',
+        '血月把三个人的影子拉得很长。良久，索恩把斧头从背上取下来，往掌心啐了口唾沫：「三百年前，俺们氏族的人没能走到这儿。今天，俺替他们走完。」',
+        '艾莉娅展开地形记忆：「入口有三：强攻独石桥；绕行西侧，走当年工匠排水的暗渠——影蚀工令里挖的那条『路』，应该已经通了；或者……请援军。」',
+      ]);
+    },
+    npcs: {
+      raven: {
+        name: '渡鸦', img: CH + 'raven.svg', role: '来历不明的行商',
+        talk: async () => {
+          if (ev('ravenAbyss')) {
+            await say([
+              '岩檐的阴影里，一点火柴似的光亮了一下——渡鸦靠在石壁上，就着血月擦他的短杖。',
+              '「别紧张，」他头也不抬，「影渊脚下不做买卖。做买卖的都活不到结账。」',
+              '他抬起兜帽，朝要塞的方向偏了偏：「白石城离这儿七百里，女王陛下的亲卫昼夜不解甲——她登基那天就等着这一天。差一封信。」',
+            ]);
+            const i = await choose([
+              { text: '托他送信去白石城——请莉安娜女王发兵' },
+              { text: '婉拒——这一战，不必劳师动众' },
+            ]);
+            if (i === 0) {
+              setFlag('alliance');
+              fx({ rep: 1 });
+              await say([
+                '你把信塞进他手里。渡鸦掂了掂，忽然笑了——你第一次听见他笑。',
+                '「这一趟，不算买卖。」他把信贴身收好，短杖往地上一顿，「算俺入伙。三天后，让影渊听听白石城的号角。」',
+              ]);
+            } else {
+              await say([
+                '「随你。」渡鸦把短杖收进斗篷，「买卖人只管把货送到——这一单，算俺送你们的。」',
+                '他朝要塞努努嘴：「里头那位三百年没输过。想好了再进去。」',
+              ]);
+            }
+          }
+          await shopLoop('「影渊脚下的最后一单，」渡鸦把货箱摊开，「护符和药水，比后悔便宜。」', null, ['potion', 'potion_big', 'amulet']);
+        },
+      },
+    },
+    actions: [
+      { text: '远眺要塞的布防', when: () => !S.flags.abyssScout, run: async () => {
+        setFlag('abyssScout');
+        await say([
+          '你们轮流伏在岩檐后观察。桥头立着一名按剑的守将；要塞正门的巨门上没有锁，只有一只睁开的眼睛浮雕；内庭的紫焰灯柱围出一圈空场——主堡的甬道，就从灯柱尽头上去。',
+          '「守备比传说里薄，」艾莉娅皱眉，「影蚀的精锐都抽去了各印的战场。他不怕——或者说，他希望我们来。」',
+        ]);
+      } },
+    ],
+  },
+
+  stone_bridge: {
+    name: '影渊 · 独石桥', ch: '终部 · 深渊之印', sub: '终章前夜 · 影渊谷口', bg: BG + 'fortress.svg', mood: 'dark',
+    desc: [
+      '独石桥悬在雾海之上，桥面窄得只容两人并行。桥板之下，雾海深处有巨大的东西缓缓游弋，每一次摆尾，桥身都轻轻一颤。',
+      '桥头，要塞的号角一声接一声，像在替谁数着进门的步子。',
+    ],
+    brief: '悬在雾海上的独石桥。桥下的巨影缓缓游弋，桥头守将按剑而立。',
+    exits: {
+      s: { to: 'abyss_mouth', label: '退回谷口', flavor: '你退回谷口的岩檐下。桥身的轻颤隔着雾海传过来，一下，又一下。' },
+      n: {
+        to: 'fortress_court', label: '北 · 要塞内庭', flavor: '你踏过桥心。要塞的大门在头顶洞开，甬道两侧的紫焰灯一盏接一盏地熄灭，像是在为谁让路。',
+        req: s => s.flags.bridgeClear, lock: '桥头守将的黑剑还横在桥心',
+      },
+    },
+    onEnter: async () => {
+      if (S.flags.bridgeClear) {
+        await say(['断成两截的黑剑还插在桥板缝里。雾海深处，那道巨影绕开了你们走过的桥面。']);
+        return;
+      }
+      if (S.flags.gameClear) return;
+      await say([
+        '你们踏上独石桥。桥板之下的雾海深处，隐约有巨大的东西游弋。',
+        '桥头，一名影蚀武士自阴影中立起，黑剑出鞘的声音像骨头折断。它背后，要塞的号角已经吹响。',
+        '「也就是说，」索恩活动着脖子，咔咔作响，「得在援军来之前先砸开这扇门。爽利！」',
+      ]);
+      const r = await battle('bridgeguard');
+      if (r !== 'win') return;
+      setFlag('bridgeClear');
+      fx({ rep: 1 });
+      await say([
+        '守将的黑剑断成两截，它的躯体像退潮的黑水一样从铠甲里泻出。要塞大门在你们面前轰然洞开——里面所有的号角同时哑了。',
+        '「哈哈！」索恩一脚踹在门板上，「听见没？里面那位怕了！」',
+      ]);
+      checkpoint();
+    },
+  },
+
+  cliff_channel: {
+    name: '影渊 · 崖壁暗渠', ch: '终部 · 深渊之印', sub: '终章前夜 · 影渊谷口', bg: BG + 'cave.svg', mood: 'dark',
+    desc: [
+      '暗渠的入口藏在崖壁的枯藤后，渠水冰得刺骨。头顶的石缝间漏下紫色的微光，把水面染成一节一节的暗紫。',
+      '渠壁上留着崭新的凿痕——影蚀工兵的手艺。这条「路」，是他们替谁挖的，如今倒方便了你们。',
+    ],
+    brief: '崖壁枯藤后的暗渠。冰冷的渠水里，凿痕崭新，紫光一节一节。',
+    exits: {
+      e: { to: 'abyss_mouth', label: '退回谷口', flavor: '你从枯藤后退出暗渠。谷口的风把渠水声吹散了。' },
+      n: {
+        to: 'fortress_court', label: '北 · 要塞内庭', flavor: '你涉过最后一段冰水，从废弃水车房的井口攀出——正好落进要塞内庭的阴影里。',
+        req: s => s.flags.channelClear, lock: '暗渠还没走通',
+      },
+    },
+    onEnter: async () => {
+      if (S.flags.channelClear) return;
+      if (S.flags.gameClear) return;
+      await say([
+        '你们涉水而行，冰水没过腰际。行至半程，暗渠分出两条支洞：主洞更宽，但水声轰鸣，易被察觉；侧洞狭窄低矮，隐约有人工开凿的痕迹——也许通往库房。',
+      ]);
+      const i = await choose([
+        { text: '走主洞，摸黑快速通过' },
+        { text: '钻侧洞，一探究竟' },
+      ]);
+      if (i === 1) {
+        fx({ item: ['potion', 'potion'], gold: 15 });
+        await say([
+          '侧洞的人工痕迹越来越明显——凿痕、车轮辙印、散落的矿镐。这正是影蚀工兵挖了半年的支线。',
+          '洞室尽头堆着几口没来得及运走的货箱。艾莉娅用杖尖挑开一口：补给！琥珀色的药水瓶在紫光下闪着光，钱袋上还系着未拆的封条。',
+          '（获得：生命药水 ×2，金币 +15）',
+          '就在合上箱盖的一瞬，头顶传来铁栅滑动的声音——有人把井口盖上了。',
+          '「绕过去。」艾莉娅低声说，「别管是谁。」',
+        ]);
+      } else {
+        await say([
+          '你们贴着渠壁在黑暗中疾行。每一声水响都被轰鸣的瀑布声吞没。',
+          '唯一的意外是一只受惊的盲眼鱼撞在你脸上，惊出你一身冷汗——除此之外，顺利得不像话。',
+        ]);
+      }
+      setFlag('channelClear');
+      await say([
+        '暗渠的尽头，你们从一间废弃水车房的井口攀出，正好落在要塞内庭。紫焰灯柱的光在头顶摇晃——你们已经站在影渊的肚子里了。',
+      ]);
+      checkpoint();
+    },
+  },
+
+  fortress_court: {
+    name: '影渊要塞 · 内庭', ch: '终部 · 深渊之印', sub: '终章前夜 · 影渊谷口', bg: BG + 'fortress.svg', mood: 'dark',
+    checkpoint: true,
+    desc: [
+      '要塞内庭。紫焰灯柱围出一圈空场，尽头是通往主堡的巨门——门上没有锁，只有一只睁开的眼睛浮雕。',
+      '灯柱的影子安安静静。整座要塞的守军像是被谁撤空了——只剩巨门之后，某种缓慢的、黏稠的声音，像心跳，又像很多年前的哭声。',
+    ],
+    brief: '紫焰灯柱围出的内庭。尽头主堡巨门上的眼睛浮雕，静静地「看」着来人。',
+    rest: { cost: 0, label: '在紫焰灯下扎营' },
+    exits: {
+      s: {
+        to: 'stone_bridge', label: '南 · 独石桥', flavor: '你沿来路退回独石桥。雾海的风从桥面下灌上来，凉得像一句劝。',
+        req: s => s.flags.bridgeClear, lock: '得先从正门杀进来，才谈得上退路',
+      },
+      w: {
+        to: 'cliff_channel', label: '西 · 崖壁暗渠', flavor: '你从内庭西侧的水车房钻进暗渠。冰水的声音在黑暗里格外清楚。',
+        req: s => s.flags.channelClear, lock: '这一侧没有门——除非你从暗渠来',
+      },
+      up: { to: 'throne_hall', label: '上 · 主堡王座厅', flavor: '你推开通往主堡的巨门。那只眼睛浮雕忽然转动，正对着你——' },
+    },
+    onEnter: async () => {
+      if (!ev('courtArrive')) return;
+      await say([
+        '你们在灯柱的阴影里稍作休整。艾莉娅把最后一瓶药水塞进你手里：「待会儿不管发生什么——活着回来喝掉它。」',
+        '索恩往斧刃上啐了口唾沫，用袖子把斧面擦得雪亮：「小子，俺们氏族的规矩：见王座之前，先把斧头擦亮。」',
+        '他看了你一眼，「不是给你擦的。是给里头那位看的——告诉他，来的是正主。」',
+        '卡雅把鱼叉横在膝头，仰头望着主堡：「俺阿公说过，海底最深的地方，浪反而平。上头那位，现在就平得很。」',
+      ]);
+    },
+    actions: [
+      { text: '巨门前的最后一议', when: () => !S.flags.courtTalk, run: async () => {
+        setFlag('courtTalk');
+        if (S.flags.lore) {
+          await say([
+            '巨门近在咫尺。艾莉娅忽然按住你的手：「安瑟姆的话，还记得吗？七印是七份遗嘱——先王们没想锁他一辈子，他们想教后来的人怎么『结束』这一切。」',
+            '「到了王座前，把这句话，替老修士带到。」她看着你，「他等这句正文，等了三百年。」',
+            '索恩把斧头扛正：「俺不懂遗嘱。俺只知道——斧头擦亮了，正主就该进门了。」',
+          ]);
+        } else {
+          await say([
+            '巨门近在咫尺。艾莉娅望着那只眼睛浮雕，轻声说：「不管里面那位说什么——记住，我们为什么走到这里。为塞德里克，为守殿人，为所有在影渊下睡着的名字。」',
+            '索恩把斧头扛正：「俺不懂大道理。斧头擦亮了，正主就该进门了。」',
+            '（你隐约觉得，关于七印，还差一门课没上完——暮色修道院里，也许有人能补上这一课。）',
+          ]);
+        }
+      } },
+    ],
+  },
+
+  throne_hall: {
+    name: '影渊 · 王座大厅', ch: '终部 · 深渊之印', sub: '终章 · 王座与黎明', bg: BG + 'throne.svg', mood: 'dark',
+    desc: [
+      '王座大厅比想象中更高，高到烛台只是星点。黑曜王座盘踞在大厅尽头，紫焰在盆中静静燃烧。',
+      '他坐在那里。像已经坐了三百年，也像刚刚落座。黑甲上流转着极淡的紫光，双角如断折的王冠。',
+    ],
+    brief: '高得望不见顶的王座大厅。黑曜王座上，那道身影静静看着你。',
+    exits: { down: { to: 'fortress_court', label: '退回内庭', flavor: '你退出王座大厅。紫焰在你身后一盏盏重新亮起，像目送。' } },
+    onEnter: async () => {
+      if (S.flags.gameClear) {
+        await say(['王座空着。紫焰盆里的火安安静静地烧着——像在等一个不再回来的人。']);
+        return;
+      }
+      if (ev('throneReached')) {
+        // —— 门上的眼睛 ——
+        await say([
+          '你把手放上巨门。门后没有锁孔，那只眼睛浮雕忽然转动，正对着你——',
+          '「凡人……」',
+          '声音直接在你的颅骨里响起，绕过耳朵，温润得像一位旧识：「你走了一路，杀了一路，痛了一路。可曾想过——是谁把这些『命运』放在你路上的？」',
+          '「王座空悬三百年。汝之剑、汝之痛、汝之怒……皆为它而生。汝亦渴望王座否？」',
+          '索恩的呼吸粗重起来。艾莉娅的指尖抵在你后背，微凉。那只眼睛在等你回答。',
+        ]);
+        const a = await choose([
+          { text: '「王座底下埋的都是尸骨。——滚出我的脑子！」拔剑抵住眉心，斩断声音' },
+          { text: '……那个声音说的，好像有几分道理。再听一句' },
+        ]);
+        if (a === 0) {
+          fx({ rep: 1 });
+          await say(['剑锋贴上眉心，金光炸开——那只眼睛「嘶」地眯起。声音退回了门后。你推门而入。']);
+        } else {
+          fx({ corruption: 1, flag: 'darkTouched' });
+          await say([
+            '你听了下去。那声音像一双温热的手，把你一路的疼都轻轻捧了起来。',
+            '……你回过神时，手已经搭上了门环。掌心里残留着一点不属于你的暖。',
+            '（黑暗侵蚀 +1。有些声音，听过一次，就会一直听下去。）',
+          ]);
+        }
+        // —— 莫格拉斯 ——
+        await say([
+          '巨门无声洞开。',
+          '王座大厅比想象中更高，高到烛台只是星点。黑曜王座盘踞在大厅尽头——他坐在那里，双角如断折的王冠，那双眼睛抬起来的瞬间，你听见自己的心跳漏了一拍。',
+          '「晨曦的碎渣，和一个矮人。」他的声音是很多种声音的叠影，「一千年前，也有七个人带着这样的光走进来。他们管自己叫英雄。」',
+          '「——他们烧了我半座江山，又把自己的命灌进七枚石头里，把这片大陆锁进漫长的黄昏。后来者奉他们为王，管我叫暗影。」',
+          '他缓缓前倾：「孩子，你以为来的路上，那些死去的人、流掉的血、被夺走的灯火，是谁的『功绩』？锁住我的锁链，一头拴着大陆——另一头，拴着所有凡人的命。」',
+          '「我叫莫格拉斯。我只有一个要求：王座之下，唯力为真。把这句话，嚼碎了再反驳我。」',
+        ]);
+        const b = await choose([
+          { text: '「不需要反驳——你的时代在三千年前就结束了。」拔剑！' },
+          { text: '「……唯力为真。若我帮你坐上那个位置，你给我什么？」' },
+          { text: '「你怕的不是我们。你怕晨曦之约——七印不是锁，是遗嘱。先王们留了后手，我知道那是什么。」', req: s => s.flags.lore, lock: '需要真正听懂七印的传说（暮色修道院的课）' },
+        ]);
+        if (b === 1) {
+          // —— 交易 ——
+          await say([
+            '王座上的黑影笑了。那笑声不响，却让整座大厅的紫焰矮了三寸。',
+            '「聪明的孩子。」他抬起手——黑甲之下，掌心向上，与水池中那个戴王冠的你，一模一样的姿势。',
+            '「你给我开锁，我给你世界。晨曦也好深渊也好，不过是旧人们的牌位。坐上来，{name}。名字会被遗忘，力量永世长存。」',
+            '索恩的斧头横过来一半，被你抬手拦下。艾莉娅在唤你的名字，声音很远。',
+            '那只手在你面前摊开。掌心里，映着你自己的倒影——头戴王冠。',
+          ]);
+          const c = await choose([
+            { text: '后退，拔剑：「梦里什么都有。——可我醒着。」' },
+            { text: '握住那只手' },
+          ]);
+          if (c === 1) {
+            await ending('ending_corrupt', '暗影新王', 'THE NEW SHADOW THRONE', [
+              '你握住了那只手。',
+              '黑甲合拢的声音像潮水漫过头顶。冷，然后不再冷——因为温度这种东西，也是活人的计量。',
+              '莫格拉斯从王座上站起，退开一步，朝你躬身——不是臣服，是让座。三百年了，他等这个动作等了三百年。',
+              '「晨曦符文？」他随手从你怀里拈出那枚符文，掂了掂，「拿去堵影渊的门，正好。」',
+              '你坐上王座。黑曜石出乎意料地温热，像终于回家。',
+              '「第一道王令？」他问。',
+              '你想了很久。想起塞德里克的炉火，艾莉娅的星辉，索恩的斧刃，卡雅的潮路，想起白石城的鸽子和黑鸦旅店的酒。',
+              '「把那三个还活着的脚夫放了。」你说，「黑鸦旅店的酒钱，挂我账上。」',
+              '莫格拉斯大笑，笑声让整座影渊的紫焰涨了三寸。',
+              '大陆的历史书上，这一页被后世反复涂改：有人说那一天暗影陨落了；有人说暗影只是换了王座。',
+              '只有黑鸦旅店的独眼店主知道真相——每年同一夜，会有一枚金币从门缝里滚进来，准时得像涨潮。',
+              '他把金币串成串，挂在乌鸦木牌旁边，从不花掉。',
+              '——暗影新王，终。（有些王座，坐上去才看清它是什么。）',
+            ]);
+            return;
+          }
+          fx({ rep: 1 });
+          await say(['你后退半步，剑尖抬起。那只手慢慢收了回去，叠影般的声音里听出一丝赞许：「醒着的人……三百年没来过了。那就——拿剑来说。」']);
+        } else if (b === 2) {
+          // —— 遗嘱 ——
+          setFlag('righteous');
+          await say([
+            '他第一次真正地停住了。叠影般的声音沉了半拍：「……那本书，早就烧了。」',
+            '「烧了目录，」你向前一步，「烧不了正文。七印不是七把锁——是七份遗嘱，莫格拉斯。晨曦教人开始，星辰教人看清，海洋教人退让，丰收教人积蓄，战争教人止损，暮钟教人收梢。」',
+            '「先王们没想锁住你一辈子，他们想教会后来的人怎么『结束』这一切。你怕的是这个：有人真的读懂了，然后走进来——不为封印，为了终结。」',
+            '艾莉娅在你身后扬起法杖，星辉如瀑。索恩的斧刃映着紫焰。卡雅的鱼叉斜指王座，稳得像退潮时的海。',
+            '莫格拉斯缓缓站起。黑甲相撞的声音像遥远的雷。「很好。」他说，「那就让正文，来见一见遗嘱。」',
+            '（安瑟姆的课在这一刻抵达了王座——你听见了大厅深处，锁链松动的第一声轻响。战斗开始时，莫格拉斯会有一瞬的失神。）',
+          ]);
+        }
+        await startFinalBattle(b === 2);
+      } else {
+        await say(['莫格拉斯坐在王座上，像从未动过。叠影般的声音铺满大厅：「回来得比俺想的快。」索恩在旁边小声纠正：「比『俺们』想的快。」']);
+        await startFinalBattle(!!S.flags.righteous || !!S.flags.alliance);
+      }
+    },
+    actions: [
+      { text: '拔剑，直面暗影君主莫格拉斯', when: () => !S.flags.gameClear, run: async () => {
+        await startFinalBattle(!!S.flags.righteous || !!S.flags.alliance);
+      } },
+    ],
+  },
+
 };
+
+/* ---------------- 终部决战：王座之战与结局裁定 ----------------
+ * bonus=先手（安瑟姆的「遗嘱」课让莫格拉斯失神 / 白石城援军佯攻牵制）。 */
+async function startFinalBattle(bonus) {
+  const r = await battle('mograth', { bonus: bonus ? 1 : 0 });
+  if (r === 'sacrifice') {
+    await say([
+      '晨光漫过大厅时，你在王座阶前醒来——像被谁轻轻放回来的。',
+      '（晨曦之痕认得祭品，但没有收下你。全队回复。）',
+    ]);
+    S.hp = S.maxHp;
+    ensureTeam();
+    for (const id of Object.keys(S.team)) { S.team[id].hp = allyMaxHp(id); S.team[id].sp = allySpMax(id); }
+    await ending('ending_sacrifice', '晨曦之殉', 'MARTYR OF THE FIRST LIGHT', [
+      '你的血顺着剑脊流上符文。金光陡然明亮——它认出了这不是武器，是祭品。',
+      '「住手——！」艾莉娅的呼喊很远。索恩伸手来抓你，抓到一片光。卡雅的鱼叉脱手飞来，插在你脚边，叉尾还在颤。',
+      '你笑着朝他们摇头。有些账要有人来平：塞德里克的一杯酒，矮人氏族的三百年，半精灵被围困的黄昏，和所有在影渊下睡着的名字。',
+      '「晨曦之痕本来就不是兵器。」你想，「它是黎明。而黎明——从来都是有人熬过长夜换来的。」',
+      '光吞没了一切。',
+      '——多年以后，圣殿的第七座祭坛前立着一座无名的石像：一个把剑插进大地、迎着朝阳摊开手心的旅人。',
+      '石像的手心里，每年夏至的清晨，会准时落进第一缕阳光。',
+      '艾莉娅成为新的守殿贤者。她在典籍里为你写下的谥号只有四个字：',
+      '「晨曦本人」。',
+      '——晨曦之殉，终。',
+    ]);
+    return;
+  }
+  if (r !== 'win') return;
+  await say([
+    '黑甲崩解。莫格拉斯的身影在紫焰中一层层变淡，退回王座深处，只剩那双眼睛，静静看着你走近。',
+    '「……好。」叠影般的声音散了，「正文，念完了。」',
+    '黑曜王座之上，三百年来的第一缕晨光，落了下来。',
+  ]);
+  if (S.corruption >= 1) {
+    await ending('ending_dusk', '灰烬之约', 'THE ASHEN COVENANT', [
+      '符文的光劈开莫格拉斯的黑甲——却在触及他的一瞬，被你自己身体里的那缕黑暗轻轻「扶」住了。',
+      '你愣住。莫格拉斯没有。他望着你，像望着镜子，然后笑了。',
+      '「原来如此。」他说，「原来它选择了你，像我当年。」',
+      '黑甲崩解。莫格拉斯的身影在紫焰中变淡、后退，最终化作一缕黑烟渗入影渊最深处——临走前，他向你微微颔首，像国王致意对手，更像先辈致意继承者。',
+      '「王座等你。不急。」',
+      '封印重合。紫焰熄灭。所有人都说，影渊之战大获全胜。',
+      '只是你再也没有睡过一个完整的觉。左手袖子里，那缕黑暗偶尔醒来，轻轻搏动，像第二颗心脏。',
+      '而影渊最深处，有什么东西在耐心地、一个字一个字地，教会你听懂它的低语。',
+      '索恩为你擦亮斧头。艾莉娅为你斟满酒。卡雅替你守着夜。他们都说，英雄不负众望。',
+      '你在笑。你也在听。',
+      '——灰烬之约，终。（带着「侵蚀」战胜影主，会有这个故事——未完的故事。）',
+    ]);
+  } else if ((S.items.runeWeak || 0) > 0) {
+    await ending('ending_watcher', '守夜人之誓', 'THE OATH OF THE WATCHER', [
+      '黯淡的符文在你剑上烧出一道残缺的黎明——但它终究，烧起来了。',
+      '莫格拉斯在光中崩解、重凝、再崩解，最终化作一道黑烟遁入影渊最深处。封印没有修复，只是重新锁上了大半。',
+      '「还会再见，孩子。」黑烟里传出他最后的低语，听不出威胁，倒像一句约定，「把符文修完整。到那天，我们再分高下。」',
+      '影渊重归寂静。你带着残缺的符文回到圣殿，索恩把它嵌进第一祭坛——火苗摇曳，但没有熄。',
+      '「残缺就残缺，」矮人拍拍你的肩，「俺们守着它，直到有人补全那一角。」',
+      '从此艾尔多兰有了一支新的誓言团：守夜人。宣誓者不问出身，只带一样东西上山——一颗记着那场战斗的心。',
+      '卡雅把家传的潮路图捐给了誓言团——影渊的每一条暗渠，图上都画着。',
+      '第一任守夜人团长的名字，刻在圣殿门口：{name}。',
+      '影渊深处，某种巨大的东西在沉睡中翻了个身。——但那是后话了。',
+      '——守夜人之誓，终。',
+    ]);
+  } else {
+    await ending('ending_dawn', '破晓之光', 'THE LIGHT OF DAWN', [
+      '晨曦符文在你的剑上炸开成黎明。',
+      '紫焰熄灭时没有轰鸣，只有一声悠长的、如释重负的叹息。莫格拉斯的黑甲一片片剥落，像退潮。最后一刻，那双眼睛里没有恨——他望着晨光，像望着一个迟到三百年的黎明。',
+      '「先王的正文……」他的声音散在风里，「原来写到这一页了。」',
+      '七印的光柱自影渊升起，照亮半个大陆的清晨。井水清了，乌鸦散了，孩子们第一次听说「影渊」，只是当作山那边的一个地名。',
+      '索恩回到圣殿重燃了七坛火，铁须氏的钟声三百年后再次响起；艾莉娅把你的名字写进了《符文新典》的第一页——不是封印的记录，而是『结束』的方法；卡雅把家传的潮路图捐给了新的守夜人。',
+      '至于你，{name}——',
+      '清晨的酒馆里，有流浪剑客听说你的故事后追问：那个早晨，符文之王坐在哪里？',
+      '「他没坐在哪儿，」酒保擦着杯子笑，「他坐在门槛上，把靴子倒在晨光里晒着。王座么——听说他顺手把王座搬去堵了影渊的门。」',
+      '——破晓之光，终。',
+    ]);
+  }
+  checkpoint();
+}
 
 /* ---------------- 剧情复用文本 ---------------- */
 const STORY_TEXT = {
@@ -3135,6 +5426,42 @@ const TRAVEL_EVENTS = [
     },
   },
   {
+    id: 'cairn',
+    when: () => !S.flags.part1,
+    intro: '前方岔口垒着一座半人高的石堆，路过的人各添一块石头，垒了几十年——每一块都被人摩挲得发亮。',
+    run: async () => {
+      await say([
+        '你弯腰捡了块石头，学着前人的样子放上去。石堆微微一晃，稳住了。',
+        '不知道为什么，心里那点赶路的慌，像是也被这一块石头压住了。（斗气 +1）',
+      ]);
+      fx({ sp: 1 });
+    },
+  },
+  {
+    id: 'mare',
+    when: () => !S.flags.part1,
+    intro: '路边的灌木里忽然窜出一匹驮马，鞍具还全，见了人又惊又喜地打起响鼻——它主人怕是凶多吉少。',
+    run: async () => {
+      const i = await choose([
+        { text: '上前安抚它，翻看鞍袋' },
+        { text: '怕它受惊踢人，远远绕开' },
+      ]);
+      if (i === 0) {
+        await say([
+          '你摊开手掌慢慢凑近。老马嗅了嗅，忽然把脑袋抵进你怀里蹭——它认得人的温度。',
+          '鞍袋里是几包染料和一小袋金币。染料泡了水，金币还响。你取走金币，把染料原样捆好，牵着它走到岔路口，朝有人烟的方向拍了拍它的脖子。',
+          '它小跑几步，又回头望了你一眼，才消失在路尽头。（金币 +4）',
+        ]);
+        fx({ gold: 4 });
+      } else {
+        await say([
+          '你贴着路基另一侧绕开。走出很远，身后还传来一声长长的、像哭的马嘶。',
+          '你加快了脚步——这世道，先顾好自己的人，才有余力顾别的。',
+        ]);
+      }
+    },
+  },
+  {
     id: 'fishsong',
     when: () => S.flags.part2,
     intro: '海风把一段调子送到官道上——前方的礁石上坐着个补网的渔人，一边补一边唱。',
@@ -3156,6 +5483,18 @@ const TRAVEL_EVENTS = [
         '你把麦穗别回稻草人怀里，替它扶正斗笠。索恩看了一眼，什么也没说，只是走远几步后，把肩膀上不知什么时候多的一小捆柴，放在了另一块田头。（生命 +3）',
       ]);
       fx({ hp: 3 });
+    },
+  },
+  {
+    id: 'standard',
+    when: () => S.flags.part4,
+    intro: '路边立着一杆折断的军旗，旗面下的木杆被人削平了，像一座小小的碑。',
+    run: async () => {
+      await say([
+        '木杆削平的截面上，密密麻麻刻满了名字——是过路人一个一个添上去的。',
+        '索恩把军旗扶正，摘下头盔，敬了一个不知哪学来的军礼。艾莉娅轻声念出最近的一个名字，像是替谁记住了。（斗气 +2）',
+      ]);
+      fx({ sp: 2 });
     },
   },
 ];

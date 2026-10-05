@@ -96,6 +96,14 @@ const SCENARIOS = [
     setup: s => { s.level = 9; s.maxHp = 80; s.hp = 80; s.sp = 28; s.spMax = 28; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 1; s.equip.weapon = 'whale_lance'; s.equip.armor = 'guard_mail'; s.equip.accessory = 'tide_pearl'; } },
   { key: '祭坛·腐穗巨灵(满编)', en: 'harvestgiant', n: 400,
     setup: s => { s.level = 10; s.maxHp = 88; s.hp = 88; s.sp = 30; s.spMax = 30; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 2; s.equip.weapon = 'whale_lance'; s.equip.armor = 'vine_mail'; s.equip.accessory = 'harvest_charm'; } },
+  { key: '古战场·影蚀战将(满编)', en: 'wargeneral', n: 400,
+    setup: s => { s.level = 11; s.maxHp = 94; s.hp = 94; s.sp = 32; s.spMax = 32; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'vine_mail'; s.equip.accessory = 'tide_pearl'; } },
+  { key: '钟楼·圣咏者夜祷(满编)', en: 'chantress', n: 400,
+    setup: s => { s.level = 12; s.maxHp = 100; s.hp = 100; s.sp = 36; s.spMax = 36; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
+  { key: '影渊·桥头守将(满编)', en: 'bridgeguard', n: 400,
+    setup: s => { s.level = 12; s.maxHp = 100; s.hp = 100; s.sp = 36; s.spMax = 36; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
+  { key: '王座·莫格拉斯(满编)', en: 'mograth', n: 400,
+    setup: s => { s.level = 13; s.maxHp = 106; s.hp = 106; s.sp = 40; s.spMax = 40; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 3; s.items.potion_big = 3; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
 ];
 
 (async () => {
