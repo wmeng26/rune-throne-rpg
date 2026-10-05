@@ -6,15 +6,20 @@
   --danger:#c0392b; --holy:#e8c96a; --shadow:#5b2d8a;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;}
+html,body{height:100%;overscroll-behavior:none;}
 body{
   background:var(--bg); color:var(--ink);
   font-family:"STZhongsong","Noto Serif SC","SimSun",Georgia,serif;
   overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-text-size-adjust:100%;
 }
-#app{max-width:1280px;margin:0 auto;height:100vh;position:relative;}
+#app{max-width:1280px;margin:0 auto;height:100vh;height:100dvh;position:relative;}
 .hidden{display:none !important;}
-button{font-family:inherit;cursor:pointer;}
+button{font-family:inherit;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
+/* 移动端专用控件：桌面隐藏（状态抽屉按钮 / 抽屉收起按钮） */
+#btn-status,#btn-side-close{display:none;}
+#side-mask{display:none;}
 
 /* ---------- 通用按钮 ---------- */
 .btn{
@@ -29,7 +34,7 @@ button{font-family:inherit;cursor:pointer;}
 .btn-mini{padding:5px 12px;font-size:13px;letter-spacing:1px;border-radius:3px;}
 
 /* ============ 标题界面 ============ */
-#title-screen{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#title-screen{position:relative;min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .title-art{position:absolute;inset:0;}
 .title-art img{width:100%;height:100%;object-fit:cover;opacity:.55;}
 .title-veil{position:absolute;inset:0;background:
@@ -52,7 +57,7 @@ button{font-family:inherit;cursor:pointer;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
 
 /* ============ 游戏界面布局 ============ */
-#game-screen{display:flex;flex-direction:column;height:100vh;}
+#game-screen{display:flex;flex-direction:column;height:100vh;height:100dvh;}
 #topbar{
   display:flex;align-items:center;gap:14px;padding:8px 16px;
   background:linear-gradient(180deg,#181928,#12131f);
@@ -201,24 +206,87 @@ button{font-family:inherit;cursor:pointer;}
 #modal-content p,#modal-content li{line-height:1.95;font-size:15px;color:var(--ink);}
 #modal-content ul{padding-left:22px;}
 #modal-btns{margin-top:22px;text-align:center;}
-#toasts{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:120;}
+#toasts{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:120;pointer-events:none;}
 .toast{background:rgba(23,24,39,.95);border:1px solid var(--gold);color:var(--gold-bright);
   padding:8px 16px;border-radius:4px;font-size:14px;letter-spacing:1px;animation:toastIn .25s ease, toastOut .4s ease 2.1s forwards;}
 .toast.bad{border-color:#7a3232;color:#ff9d8a;}
 @keyframes toastIn{from{opacity:0;transform:translateX(30px);}}
 @keyframes toastOut{to{opacity:0;transform:translateX(30px);}}
 
-/* ---------- 响应式 ---------- */
+/* ---------- 响应式 · 平板与手机 ----------
+ * ≤900px：聊天式布局——顶栏压成「HUD + 图标按钮」，日志弹性占满中部，
+ * 指令栏贴底可滚，状态侧栏收进右侧抽屉（📊 按钮唤出）。 */
 @media (max-width:900px){
-  body{overflow:auto;}
-  #game-screen{height:auto;}
-  #layout{grid-template-columns:1fr;}
-  #sidebar{order:-1;}
-  #log-panel{min-height:46vh;}
-  #log{max-height:50vh;}
-  .game-title{font-size:52px;letter-spacing:10px;}
-  #topbar{gap:8px;}
-  .chapter-label{display:none;}
+  html,body{overflow:hidden;}
+  #title-screen{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  .game-title{font-size:44px;letter-spacing:10px;text-indent:10px;}
+  .game-sub{font-size:15px;letter-spacing:8px;text-indent:8px;}
+  .title-body{padding:28px 16px;}
+  .title-btns{margin-top:32px;}
+  .title-btns .btn{min-width:220px;}
+
+  /* 顶栏：紧凑两行 */
+  #topbar{padding:calc(6px + env(safe-area-inset-top)) 10px 6px;gap:6px 10px;}
+  .brand,.chapter-label{display:none;}
+  #hud{flex-wrap:wrap;gap:4px 10px;font-size:12px;}
+  .hud-hp .bar{width:64px;}
+  .top-btns{gap:4px;flex-wrap:nowrap;}
+  .btn-mini{padding:8px 10px;font-size:15px;letter-spacing:0;min-height:36px;border-radius:4px;}
+  .btn-mini .bl{display:none;}
+  #btn-status{display:inline-block;}
+
+  /* 主区：日志弹性占满，指令栏贴底 */
+  #layout{display:flex;flex-direction:column;gap:8px;padding:8px;
+    padding-bottom:calc(8px + env(safe-area-inset-bottom));}
+  #maincol{flex:1;min-height:0;}
+  #log-panel{flex:1;min-height:0;}
+  #log{height:100%;max-height:none;padding:14px 16px;line-height:1.9;font-size:15.5px;}
+  #log .ln.endbanner{font-size:18px;letter-spacing:4px;}
+
+  /* 指令按钮：加大触控区（≥44px），动作多时指令栏内部滚动 */
+  #cmd{flex-shrink:0;max-height:42dvh;overflow-y:auto;}
+  .cmd-row{gap:6px;min-height:0;}
+  .cmd,.choice{padding:11px 14px;font-size:15px;min-height:44px;}
+  .cmd.exit{flex:1 1 calc(50% - 3px);min-width:0;}
+  .cmd:hover,.choice:hover{transform:none;}
+
+  /* 敌方条 */
+  #enemy-strip{padding:8px 10px;}
+  .enemy-row{min-width:150px;}
+  .enemy-row img{width:40px;height:48px;}
+
+  /* 侧栏 → 右侧抽屉 */
+  #sidebar{position:fixed;top:0;right:0;bottom:0;width:min(84vw,340px);z-index:60;
+    background:var(--bg);border-left:1px solid var(--line);
+    padding:12px 12px calc(16px + env(safe-area-inset-bottom));
+    transform:translateX(105%);transition:transform .25s ease;overflow-y:auto;}
+  #game-screen.side-open #sidebar{transform:none;box-shadow:-16px 0 40px rgba(0,0,0,.55);}
+  #side-mask{position:fixed;inset:0;z-index:55;background:rgba(5,5,10,.6);}
+  #game-screen.side-open #side-mask{display:block;}
+  #btn-side-close{display:block;margin:0 0 10px auto;}
+
+  /* 弹窗 / 提示 / 面板 */
+  #modal-root{padding:12px;}
+  #modal-box{padding:18px 16px;max-height:88vh;max-height:88dvh;}
+  #modal-content p,#modal-content li{font-size:14.5px;}
+  .char-grid{grid-template-columns:1fr;}
+  .inv-item .use{min-height:34px;padding:6px 12px;font-size:13px;}
+  .party-row img{width:46px;height:56px;}
+  #toasts{left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));align-items:center;}
+  .toast{max-width:100%;}
+}
+
+/* 手机横竖屏细节 */
+@media (max-width:380px){
+  .game-title{font-size:36px;letter-spacing:7px;text-indent:7px;}
+  #hud{font-size:11.5px;gap:3px 8px;}
+  .btn-mini{padding:7px 8px;}
+}
+@media (max-width:900px) and (max-height:460px){
+  .game-title{font-size:34px;letter-spacing:6px;text-indent:6px;}
+  .title-btns{margin-top:18px;gap:8px;}
+  #log{padding:10px 14px;line-height:1.7;}
+  #cmd{max-height:52dvh;}
 }
 
 /* ---------- 世界地图总览 ---------- */

@@ -33,7 +33,7 @@ global.document = {
   addEventListener() {},
 };
 global.window = { addEventListener() {} };
-global.location = { search: '' };
+global.location = { search: '?fast=1' };   // 确定性模式：关闭随机旅途/游荡遭遇，避免流程断言被随机扰动
 global.localStorage = (() => {
   const m = {};
   return { getItem: k => (k in m ? m[k] : null), setItem: (k, v) => { m[k] = String(v); }, removeItem: k => { delete m[k]; } };

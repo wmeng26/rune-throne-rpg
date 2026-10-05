@@ -35,7 +35,7 @@ global.document = {
   addEventListener() {},
 };
 global.window = { addEventListener() {} };
-global.location = { search: '' };
+global.location = { search: '?fast=1' };   // 确定性模式：跳过打字等待与随机遭遇
 global.localStorage = (() => {
   const m = {};
   return { getItem: k => (k in m ? m[k] : null), setItem: (k, v) => { m[k] = String(v); }, removeItem: k => { delete m[k]; } };

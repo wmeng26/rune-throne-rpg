@@ -25,7 +25,7 @@ let lastSub = '';
 let typing = false;
 let typeSkip = false;
 
-const FAST = /[?&]fast=1/.test(location.search);
+const FAST = /[?&]fast=1/.test(location.search);   // ?fast=1：确定性/调试模式——跳过打字等待与随机旅途、游荡遭遇
 const DIRS = { n: '↑ 北', s: '↓ 南', w: '← 西', e: '→ 东', up: '↥ 上', down: '↧ 下', se: '↘ 东北', nw: '↖ 西北', sw: '↙ 西南', ne: '↗ 东北', enter: '▸ 进入' };
 
 const rnd = n => Math.floor(Math.random() * n);
@@ -311,7 +311,12 @@ async function gainExp(n) {
 }
 
 /* ================= 日志与打字机 ================= */
-function scrollLog() { const el = $('#log'); el.scrollTop = el.scrollHeight; }
+function scrollLog() {
+  const el = $('#log');
+  el.scrollTop = el.scrollHeight;
+  // 指令栏增删（战斗开始/选项渲染）会在同一帧内改变日志面板高度：布局定型后再校正一次
+  setTimeout(() => { el.scrollTop = el.scrollHeight; }, 0);
+}
 
 function logLine(text, cls) {
   const box = $('#log');
@@ -382,6 +387,7 @@ function choose(opts) {
       }
       box.appendChild(btn);
     });
+    scrollLog();
     if (!box.children.length) resolve(-1);
   });
 }
@@ -527,7 +533,7 @@ async function enterLoc(id, opts = {}) {
   if (S.loc !== wasLoc) return; // 事件中已转场
 
   // 游荡遭遇（按时段取表：夜晚常换一批更凶的东西）
-  if (loc.roam && !opts.respawn && S.roamCd === 0) {
+  if (loc.roam && !opts.respawn && S.roamCd === 0 && !FAST) {
     const rv = (loc.roam.byTime && loc.roam.byTime[timeKey()]) ? Object.assign({}, loc.roam, loc.roam.byTime[timeKey()]) : loc.roam;
     if (Math.random() < rv.chance) {
       S.roamCd = 2;
@@ -598,6 +604,7 @@ function renderExplore() {
     });
   }
   if (busy) document.querySelectorAll('#cmd button').forEach(b => b.disabled = true);
+  scrollLog();
 }
 
 /* 事件/动作统一入口：锁住指令栏，结束后刷新界面并存档 */
@@ -1293,6 +1300,7 @@ async function chapterEnd(id, name, en, paras) {
 function showTitle() {
   mode = 'title';
   $('#game-screen').classList.add('hidden');
+  $('#game-screen').classList.remove('side-open');
   $('#title-screen').classList.remove('hidden');
   refreshTitle();
 }
@@ -1302,6 +1310,7 @@ function startNewGame(name) {
   if (name) S.name = name;
   C = null; lastCh = ''; lastSub = '';
   $('#log').innerHTML = '';
+  $('#game-screen').classList.remove('side-open');
   $('#title-screen').classList.add('hidden');
   $('#game-screen').classList.remove('hidden');
   mode = 'explore';
@@ -1322,6 +1331,7 @@ function continueGame() {
   }
   C = null; lastCh = ''; lastSub = '';
   $('#log').innerHTML = '';
+  $('#game-screen').classList.remove('side-open');
   $('#title-screen').classList.add('hidden');
   $('#game-screen').classList.remove('hidden');
   mode = 'explore';
@@ -1429,6 +1439,11 @@ function init() {
   $('#btn-skills').addEventListener('click', openSkills);
   $('#btn-char').addEventListener('click', openChar);
   $('#btn-map').addEventListener('click', openMap);
+  // 移动端：状态侧栏以抽屉呈现（≤900px 时 CSS 生效），桌面端按钮本身隐藏
+  const sideToggle = on => $('#game-screen').classList[on === false ? 'remove' : 'toggle']('side-open');
+  $('#btn-status').addEventListener('click', () => sideToggle());
+  $('#btn-side-close').addEventListener('click', () => sideToggle(false));
+  $('#side-mask').addEventListener('click', () => sideToggle(false));
   $('#modal-root').addEventListener('click', e => { if (e.target.id === 'modal-root') closeModal(); });
 
   // 快捷键：B 背包 / K 技能 / C 角色 / M 地图 / Esc 关闭 / 空格跳过打字

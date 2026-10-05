@@ -2,7 +2,12 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d0e16">
+<meta name="description" content="符文王座 · 暗影觉醒 —— 自由行走的西方奇幻文字RPG">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>符文王座 · 暗影觉醒</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -43,13 +48,14 @@
       </div>
       <div id="chapter-label" class="chapter-label"></div>
       <div class="top-btns">
-        <button class="btn btn-mini" id="btn-bag" title="快捷键 B">🎒 背包</button>
-        <button class="btn btn-mini" id="btn-skills" title="快捷键 K">⚔ 技能</button>
-        <button class="btn btn-mini" id="btn-char" title="快捷键 C">👤 角色</button>
-        <button class="btn btn-mini" id="btn-map" title="快捷键 M">🗺 地图</button>
-        <button class="btn btn-mini" id="btn-save">💾 保存</button>
-        <button class="btn btn-mini" id="btn-lore2">🜛 设定集</button>
-        <button class="btn btn-mini" id="btn-title">⌂ 标题</button>
+        <button class="btn btn-mini" id="btn-status">📊 <span class="bl">状态</span></button>
+        <button class="btn btn-mini" id="btn-bag" title="快捷键 B">🎒 <span class="bl">背包</span></button>
+        <button class="btn btn-mini" id="btn-skills" title="快捷键 K">⚔ <span class="bl">技能</span></button>
+        <button class="btn btn-mini" id="btn-char" title="快捷键 C">👤 <span class="bl">角色</span></button>
+        <button class="btn btn-mini" id="btn-map" title="快捷键 M">🗺 <span class="bl">地图</span></button>
+        <button class="btn btn-mini" id="btn-save">💾 <span class="bl">保存</span></button>
+        <button class="btn btn-mini" id="btn-lore2">🜛 <span class="bl">设定集</span></button>
+        <button class="btn btn-mini" id="btn-title">⌂ <span class="bl">标题</span></button>
       </div>
     </header>
 
@@ -74,6 +80,7 @@
       </section>
 
       <aside id="sidebar">
+        <button class="btn btn-mini" id="btn-side-close">✕ <span class="bl">收起</span></button>
         <div class="card" id="loc-card">
           <div class="card-title">当前位置</div>
           <div id="loc-name" class="loc-name">—</div>
@@ -94,6 +101,7 @@
         </div>
       </aside>
     </main>
+    <div id="side-mask"></div>
   </div>
 
   <!-- ===== 弹窗 ===== -->
