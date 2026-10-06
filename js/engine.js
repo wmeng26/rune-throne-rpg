@@ -32,7 +32,7 @@ const rnd = n => Math.floor(Math.random() * n);
 const sleepMs = ms => new Promise(r => { if (FAST || document.hidden) r(); else setTimeout(r, ms); });
 
 /* 可饮用的回复品：id → 回复量（战斗/行囊通用） */
-const HEALS = { potion: 10, potion_big: 25, honey: 6, roast_fish: 8 };
+const HEALS = { potion: 10, potion_big: 25, honey: 6, roast_fish: 8, smoked_meat: 9, hot_soup: 7, clam_skewer: 8, fish_soup: 9 };
 
 /* ================= 同伴战斗单位 =================
  * 同伴是独立单位：生命/斗气随主角等级成长（上限由等级推导，存档只存当前值）。
@@ -136,6 +136,42 @@ function setSlot(key) {
   const slot = Math.max(0, SLOT_KEYS.indexOf(key));
   S.time.ticks = Math.floor(timeTicks() / 8) * 8 + slot * 2 + 1;
   updateHUD(); updateSidebar();
+}
+
+/* ================= 坐骑 =================
+ * 行囊里的坐骑即乘骑（ITEMS[id].mount）。mount.every：每 N 程省 1 刻；
+ * mount.chance：骑乘赶路时旅途遭遇的触发概率（好马走夜路更稳）。 */
+function mountPerk() {
+  if (!S || !S.items) return null;
+  for (const id of ['horse', 'mule']) {
+    if ((S.items[id] || 0) > 0) { const m = ITEMS[id] && ITEMS[id].mount; if (m) return m; }
+  }
+  return null;
+}
+
+/* ================= 黑暗探索 =================
+ * 地窖、矿洞、暗窟一类的「暗处」藏着明面看不见的线索。
+ * 光源优先级：老矿工的风灯（装备即亮）→ 照明术「星火引灯」（斗气 -2）→ 火把（消耗一支）。 */
+function lightAvailable() {
+  if (S.equip && S.equip.accessory === 'miner_lamp') return { src: 'lamp' };
+  if (S.flags.lightSpell && S.sp >= 2) return { src: 'spell' };
+  if ((S.items.torch || 0) > 0) return { src: 'torch' };
+  return null;
+}
+async function payLight() {
+  const av = lightAvailable();
+  if (!av) {
+    await say([
+      '你摸着黑伸手——黑暗浓得像化不开的墨，什么都看不清。',
+      '（需要光亮：火把可向货郎购买；向艾莉娅讨教「星火引灯」后，一缕斗气便能照亮；老矿工的风灯戴上即亮。）',
+    ]);
+    return false;
+  }
+  if (av.src === 'lamp') logLine('🏮 老矿工的风灯在暗处稳稳地亮着，挡风的灯罩纹丝不动。', 'sys');
+  else if (av.src === 'spell') { S.sp -= 2; logLine('✦ 你屈指一弹，一团暖黄的「星火引灯」悬上半空，照亮了一步之内的黑。（斗气 -2）', 'sys'); }
+  else { take('torch'); logLine('🔥 你点燃一支火把。松脂爆出细小的火星，光圈撑开了一步之内的黑。（火把 -1）', 'sys'); }
+  updateHUD();
+  return true;
 }
 
 /* ================= 效果 / 条件 ================= */
@@ -457,6 +493,8 @@ function updateSidebar() {
     <div class="stat-row"><span>斗气</span><b>${S.sp} / ${S.spMax}</b></div>
     <div class="stat-row"><span>金币</span><b>${S.gold}</b></div>
     <div class="stat-row"><span>声望</span><b>${S.rep}</b></div>`;
+  const ride = mountPerk();
+  if (ride) statHtml += `<div class="stat-row"><span>坐骑</span><b>${ride.name}（每${ride.every}程省1刻）</b></div>`;
   for (const id of PARTY_IDS) {
     if (S.flags[id] && S.team[id]) {
       const t = S.team[id];
@@ -470,7 +508,12 @@ function updateSidebar() {
 /* ================= 移动 ================= */
 async function move(id, opts = {}) {
   const from = WORLD[S.loc];
-  advanceTime(1);   // 赶路消耗时间：每段路程 +1 刻
+  const mk = mountPerk();
+  if (mk) {   // 骑乘赶路：每 mk.every 程省 1 刻
+    S.rideN = (S.rideN || 0) + 1;
+    if (S.rideN % mk.every === 0) logLine(mk.text || '坐骑脚程轻快——这一程没耗时辰。', 'sys');
+    else advanceTime(1);
+  } else advanceTime(1);   // 赶路消耗时间：每段路程 +1 刻
   let flavor = null;
   if (from) for (const [, ex] of exitsOf(from)) if (ex.to === id) { flavor = ex.flavor; break; }
   S.prevLoc = S.loc;
@@ -487,7 +530,8 @@ async function travelEvent(dest) {
   const loc = WORLD[dest];
   if (!loc || !loc.wild || FAST) return;
   if ((S.travelCd || 0) > 0 || mode !== 'explore' || C) return;
-  if (Math.random() > 0.22) return;
+  const mk = mountPerk();
+  if (Math.random() > (mk && mk.chance !== undefined ? mk.chance : 0.22)) return;
   const pool = (typeof TRAVEL_EVENTS !== 'undefined' ? TRAVEL_EVENTS : []).filter(t => !t.when || t.when(S));
   if (!pool.length) return;
   S.travelCd = 2;
@@ -648,6 +692,7 @@ function openBag() {
     let useBtn = '';
     if (it.kind === 'use') useBtn = `<button class="use" data-use="${id}">使用</button>`;
     else if (it.kind === 'equip') useBtn = `<button class="use" data-equip="${id}">装备</button>`;
+    else if (it.read || it.view) useBtn = `<button class="use" data-read="${id}">翻阅</button>`;
     rows += `<div class="inv-item"><span class="ic">${it.icon}</span><span class="nm">${it.name}${S.items[id] > 1 ? ' ×' + S.items[id] : ''}${it.kind === 'equip' ? '<small>' + equipAttrText(it) + '</small>' : ''}<small>${it.desc}</small></span>${useBtn}</div>`;
   }
   openModal(`<h2 class="lore-title">🎒 行囊</h2><div class="inv-list">${rows}</div>`, [{ text: '合上行囊', primary: true }]);
@@ -661,6 +706,16 @@ function openBag() {
         if (doPotion(id) === false) return;
         updateSidebar(); openBag();
       }
+    });
+  });
+  $('#modal-content').querySelectorAll('[data-read]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const it = ITEMS[btn.dataset.read];
+      if (!it || (!it.read && !it.view)) return;
+      openModal(`<h2 class="lore-title">${it.icon} ${it.name}</h2>`
+        + (it.view ? `<div class="map-view"><img src="${it.view}" alt=""></div>` : '')
+        + (it.read || []).map(l => `<p>${fmtText(l)}</p>`).join(''),
+        [{ text: '收起', primary: true }]);
     });
   });
 }
@@ -702,6 +757,11 @@ function openChar() {
   const b = S.boons || { atk: 0 };
   const atkLo = 3 + eq.atk + (b.atk || 0) + S.corruption;
   const atkHi = 6 + eq.atk + (b.atk || 0) + S.corruption;
+  const rideRow = mountPerk();
+  const lights = [];
+  if (S.equip && S.equip.accessory === 'miner_lamp') lights.push('🏮 风灯');
+  if (S.flags.lightSpell) lights.push('✦ 星火引灯');
+  if ((S.items.torch || 0) > 0) lights.push(`🔥 火把 ×${S.items.torch}`);
   const slotRow = sl => {
     const id = S.equip && S.equip[sl];
     const it = id && ITEMS[id];
@@ -722,6 +782,8 @@ function openChar() {
       <div class="stat-row"><span>金币</span><b>${S.gold}</b></div>
       <div class="stat-row"><span>声望</span><b>${S.rep}</b></div>
       <div class="stat-row"><span>侵蚀</span><b>${S.corruption}${S.corruption > 0 ? '（攻击 +' + S.corruption + '，每战开始啃噬等量生命）' : ''}</b></div>
+      <div class="stat-row"><span>坐骑</span><b>${rideRow ? rideRow.name + '（赶路每' + rideRow.every + '程省1刻）' : '（徒步行路）'}</b></div>
+      <div class="stat-row"><span>光亮</span><b>${lights.length ? lights.join('，') : '（无——暗处的线索需要光）'}</b></div>
     </div>
     <h3>装备</h3>
     <div class="char-grid">${slotRow('weapon')}${slotRow('armor')}${slotRow('accessory')}</div>
@@ -1168,6 +1230,15 @@ async function battle(enId, opts = {}) {
       S.gold += en.gold;
       logLine(`你从${en.name}身上搜出 ${en.gold} 枚金币。`, 'sys');
       showToast(`金币 +${en.gold}`);
+    }
+    // 特殊掉落（藏宝图等）：FAST 下必中，保证测试流程确定性
+    if (en.drops) {
+      for (const d of en.drops) {
+        if (d.skip && d.skip()) continue;
+        if (!FAST && Math.random() >= (d.chance || 1)) continue;
+        if (d.text) logLine(d.text, 'sys');
+        fx({ item: d.item });
+      }
     }
     S.sp = Math.min(S.spMax, S.sp + 2);
   }

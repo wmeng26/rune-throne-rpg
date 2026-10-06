@@ -21,11 +21,15 @@ const CH = 'assets/chars/';
 /* ---------------- 物品 ---------------- */
 const ITEMS = {
   shard:   { icon: '🔸', name: '晨曦之痕', desc: '塞德里克以性命护住的符文碎片，触手微温。', kind: 'key' },
-  map:     { icon: '🗺️', name: '迷雾古图', desc: '泛黄的羊皮纸，标注着符文圣殿的方位。', kind: 'key' },
+  map:     { icon: '🗺️', name: '迷雾古图', desc: '泛黄的羊皮纸，标注着迷雾森林与符文圣殿的方位。行囊中可随时翻看。', kind: 'key', view: 'assets/map_part1.svg' },
   potion:  { icon: '🧪', name: '生命药水', desc: '琥珀色的药液，恢复10点生命。', kind: 'use' },
   potion_big: { icon: '🍶', name: '大生命药水', desc: '工匠反复蒸馏的浓浆，恢复25点生命。', kind: 'use' },
   honey:      { icon: '🍯', name: '林间蜂蜜', desc: '纪老爹蜂箱里割出来的，加一点山泉就是救命的甜。恢复6点生命。', kind: 'use' },
   roast_fish: { icon: '🐟', name: '湖畔烤鱼', desc: '阿满用苇秆串了在火上燎过的湖鱼，外皮焦香。恢复8点生命。', kind: 'use' },
+  smoked_meat: { icon: '🥓', name: '猎户熏肉', desc: '霍七用松枝熏的野猪肉，咸香顶饱，赶山人的硬干粮。恢复9点生命。', kind: 'use' },
+  hot_soup:    { icon: '🍲', name: '热姜汤', desc: '康婆的铜锅里永远温着的姜汤，一口下去从喉咙暖到脚尖。恢复7点生命。', kind: 'use' },
+  clam_skewer: { icon: '🍢', name: '烤贝串', desc: '卤叔盐灶上烤得滋滋作响的贝串，咸鲜顶饱，赶海人的硬干粮。恢复8点生命。', kind: 'use' },
+  fish_soup:   { icon: '🍜', name: '鱼骨汤', desc: '海爷的小锅咕嘟了一整天，鲜得能把眉毛鲜掉。恢复9点生命。', kind: 'use' },
   glassbead:  { icon: '🔘', name: '雾蓝玻璃珠', desc: '鸦巢里捡到的玻璃珠，天光下泛着雾一样的蓝。', kind: 'key' },
   herb:    { icon: '🌿', name: '月光草', desc: '叶背泛着银霜的药草，采药人玛戈正需要它。', kind: 'key' },
   watch:   { icon: '🧭', name: '学徒的怀表', desc: '表盖内侧刻着一行小字：「赠吾徒·艾德温」。', kind: 'key' },
@@ -41,6 +45,14 @@ const ITEMS = {
   abyss_shell: { icon: '🐚', name: '深渊螺壳', desc: '贴耳去听，里面不是海声，是很低很低的笑。', kind: 'key' },
   tide_edict:  { icon: '📃', name: '影蚀潮令', desc: '「月晦既过，转图第三印。潮起之日，先沉其岸。——上座」', kind: 'key' },
   grain:   { icon: '🌾', name: '祭典谷种', desc: '穗安村丰年祭用的头茬谷种，沉甸甸的一小袋。', kind: 'key' },
+  /* ---- 生活道具与坐骑 ----
+   * 火把：探索暗处（地窖/矿洞/暗窟）时自动点燃消耗，照出隐藏线索。
+   * 坐骑（mount）：驮上行囊即乘骑。every=每N程省1刻；chance=骑乘时旅途遭遇概率；text=省程时的话。 */
+  torch: { icon: '🔥', name: '火把', desc: '松脂浸过三遍的麻束，点燃能撑一炷香。摸黑探地窖、下矿洞、进暗窟时会自动点上，照出黑处藏着的线索。', kind: 'key' },
+  mule:  { icon: '🐎', name: '老骡「短鬃」', desc: '渡鸦货车上退役的老驮骡，认路、耐粗饲、见了雾也不惊。驮上它赶路，每三程省下一刻。', kind: 'key',
+    mount: { name: '老骡·短鬃', every: 3, chance: 0.22, text: '🐎 老骡子短鬃一甩，碎步赶得轻快——这一程省下一刻脚程。' } },
+  horse: { icon: '🐴', name: '青骢马「踏雾」', desc: '白石城马市里最贵的脚力，蹄下生风，走夜路稳得像白天。驮上它赶路，每两程省下一刻，途中遇袭的可能也更小。', kind: 'key',
+    mount: { name: '青骢马·踏雾', every: 2, chance: 0.10, text: '🐴 青骢马撒开四蹄，风从耳边过——这一程省下一刻脚程。' } },
   /* ---- 装备（kind:'equip'，slot: weapon|armor|accessory）---- */
   iron_sword:   { icon: '🗡️', name: '铁剑',     desc: '制式铁剑，顺手耐用。攻击 +1。',           kind: 'equip', slot: 'weapon',    atk: 1 },
   bandit_blade: { icon: '🔪', name: '山匪弯刀', desc: '红巾头子的佩刀，刃口有缺。攻击 +2。',     kind: 'equip', slot: 'weapon',    atk: 2 },
@@ -69,6 +81,51 @@ const ITEMS = {
   war_map: { icon: '📐', name: '布阵图残页', desc: '影蚀辎重营的军阵图残页，只画着五面战旗中的三面。', kind: 'key' },
   war_order: { icon: '📄', name: '影蚀工令', desc: '「上座亲谕：掘通古渠，静待月晦。——影」。他们在古战场挖的不是印，是路。', kind: 'key' },
   bell_tongue: { icon: '🔩', name: '暮钟的钟舌', desc: '钟楼大钟的铜舌，被辅祭偷了去。没有它，暮钟发不出声。', kind: 'key' },
+  /* ---- 藏宝图（击败特定敌人搜出；行囊中可翻阅线索，见 TREASURES）---- */
+  tmap_goblin:   { icon: '🗺️', name: '哥布林的藏宝图', kind: 'key',
+    desc: '油布裹着的粗皮纸，炭条画得歪歪扭扭，角落按着三只石斧的印子。',
+    read: [
+      '皮纸上是一团炭条涂的圈圈，中间戳着一个大大的「叉」。歪歪扭扭几笔画的似乎是：三块青石头，一块压一块，再压一块——',
+      '「叉」的旁边画着三只石斧，还有一串谁也看不懂的鬼画符。以哥布林的手艺，这已经算得上精工细作了。',
+      '（图上的叠石，像是雾林深处有人迹的地方——隐秘小径？）',
+    ] },
+  tmap_bandit:   { icon: '🗺️', name: '红巾的藏宝图', kind: 'key',
+    desc: '折得整整齐齐的一张羊皮图，图角盖着山寨的火漆印，画工意外地好。',
+    read: [
+      '羊皮图上画着隘口的岩石，一道斧凿的记号认得出——正是白霜隘口岩石上那道。',
+      '记号下头画着一个「叉」，旁边用炭条描着一行歪字：「风雨口，背风窝，弟兄们的体己。」',
+      '（红巾汉子们劫来的财货，看来就埋在隘口的背风处。）',
+    ] },
+  tmap_smuggler: { icon: '🗺️', name: '走私客的防水图', kind: 'key',
+    desc: '蜡封裹了三层的海图残页，海水晶都没渗进去。画的是潮歌湾的沉船群。',
+    read: [
+      '海图上描着湾里六七道船骸的影子，最大的一道旁边画着「正」字——正是沉船湾那艘刻满正字的巨舟。',
+      '另一道小些的船影被圈了出来，船头画着一座黄铜铳座，图注写着：「快船『鹞鹰号』压舱暗格——饶是本事再大，也别叫海吞了本钱。」',
+      '（落款只有一个潦草的「七」字。这位走私客的运数，终究还是叫海收走了。）',
+    ] },
+  tmap_miner:   { icon: '🗺️', name: '矿工的藏宝单', kind: 'key',
+    desc: '半张被体温焐软的记账纸，正面是矿上欠薪的数目，背面是一笔一笔的「凑」字账。',
+    read: [
+      '记账纸的正面是矿上欠薪的数目，背面歪歪扭扭记着另一笔账：「老四出三文，老七出三文……凑到今天，够给婆娘扯身布、给孩子抓药。剩下的，埋汤泉边热泥里。」',
+      '末尾画着个记号：三道热气，底下一块压着木牌的界石——是雪谷野汤泉边那块「勿动」的界石。',
+      '（矿工们一文一文凑出的卖命钱，就埋在温泉边的热泥底下。老规矩，埋钱的地方，得有人看着。）',
+    ] },
+  tmap_crab:   { icon: '🗺️', name: '蟹妖的藏宝图', kind: 'key',
+    desc: '被螯肢磨出毛边的半张皮纸，油渍斑斑——看不出是抢来的还是捡来的。',
+    read: [
+      '皮纸上几笔歪歪扭扭的炭线：一具大鱼的骨头，肋骨拱成一道「门」，门下戳着一个大大的「叉」。',
+      '「叉」旁边画着一只张牙舞爪的蟹，蟹钳里还夹着一枚亮闪闪的圆片——以蟹妖的性子，亮的东西它都往窝里拖。',
+      '（巨骨拱成的「门」——像是鲸骨滩那副大鲸的肋穹。）',
+    ] },
+  /* ---- 宝藏掘获的装备 ---- */
+  jade_charm:   { icon: '🟢', name: '合掌玉佩', desc: '被盘得温润的青玉佩，刻着先王的合掌纹章。生命上限 +3。', kind: 'equip', slot: 'accessory', maxHp: 3 },
+  guard_brace:  { icon: '🟡', name: '戍卒的铜护腕', desc: '白石城戍卒的制式铜护腕，内侧錾着一个名字。受伤 -1。', kind: 'equip', slot: 'accessory', def: 1 },
+  corsair_hook: { icon: '🪝', name: '私掠者的虎爪链', desc: '私掠船长贴身的虎爪链扣，扣环上还挂着半枚赌骰。攻击 +1。', kind: 'equip', slot: 'accessory', atk: 1 },
+  star_silver_charm: { icon: '🔷', name: '星髓银坠', desc: '一小块星髓银磨成的坠子，天越暗，它越亮。会心一击率 +8%。', kind: 'equip', slot: 'accessory', crit: 0.08 },
+  miner_lamp:  { icon: '🏮', name: '老矿工的风灯', desc: '挡风的灯罩磨得发亮，风雪里也吹不灭。斗气上限 +2。', kind: 'equip', slot: 'accessory', spMax: 2 },
+  peace_knot:  { icon: '🪢', name: '孩子们打的平安结', desc: '慈幼堂的孩子们用红绳一人一道编成的结。生命上限 +2。', kind: 'equip', slot: 'accessory', maxHp: 2 },
+  sea_rope:    { icon: '🧵', name: '海母祠的红绳', desc: '祝婆婆亲手系的红绳，在全祠最早的一盏祈愿灯下压了三十年。生命上限 +3。', kind: 'equip', slot: 'accessory', maxHp: 3 },
+  whale_amber: { icon: '🟠', name: '老鲸的琥珀', desc: '鲸脂裹出的老琥珀，贴身戴着，冬天下水也挡得住寒气。生命上限 +4。', kind: 'equip', slot: 'accessory', maxHp: 4 },
   /* ---- 装备（kind:'equip'，slot: weapon|armor|accessory）---- */
   war_glaive:  { icon: '🗡️', name: '折戟长戈', desc: '碑林深处找回的老将佩戈，戈头折过又重铸。攻击 +4。', kind: 'equip', slot: 'weapon', atk: 4 },
   war_mail:    { icon: '🛡️', name: '战殁重铠', desc: '从战将黑铠上剥下的残甲，千锤百炼。受到伤害 -4。', kind: 'equip', slot: 'armor', def: 4 },
@@ -159,6 +216,8 @@ const ENEMIES = {
   goblin: {
     name: '哥布林掠袭者', char: CH + 'goblin.svg',
     exp: 14, gold: 8, noFlee: true,
+    drops: [{ item: 'tmap_goblin', chance: 0.35, skip: () => (S.items.tmap_goblin || 0) > 0 || S.flags.dug_goblin,
+      text: '投索哥布林的腰囊里滚出一只油布小包——里头除了碎铜钱，还有一张画得歪歪扭扭的皮纸图。' }],
     units: [
       { name: '石斧哥布林', hp: 10, dmg: [2, 4],
         moves: [
@@ -227,6 +286,8 @@ const ENEMIES = {
     name: '红巾强盗头子', char: CH + 'bandit.svg',
     hp: 30, dmg: [3, 5], def: 1, exp: 16, gold: 12,
     rageAt: 12, rageText: '红巾汉子肩头的旧伤崩裂——他红着眼，斧势愈发狂暴！（伤害提升）',
+    drops: [{ item: 'tmap_bandit', chance: 1, skip: () => (S.items.tmap_bandit || 0) > 0 || S.flags.dug_bandit,
+      text: '红巾头子的皮甲夹层里缝着一张折得整整齐齐的图，图角盖着山寨的火漆印。' }],
     moves: [
       { name: '战斧', type: 'atk', weight: 2 },
       { name: '重劈', type: 'heavy', mult: 1.7, cd: 2, hint: '高伤害！', text: '抡圆战斧，发动【重劈】！' },
@@ -323,10 +384,62 @@ const ENEMIES = {
     ],
   },
 
+  /* ---- 第二部扩写 · 霜脊山道与白石城 ---- */
+  frosthusk: {
+    name: '霜僵', char: CH + 'husk.svg',
+    hp: 15, dmg: [2, 4], def: 1, exp: 13, gold: 6,
+    drops: [{ item: 'tmap_miner', chance: 0.35, skip: () => (S.items.tmap_miner || 0) > 0 || S.flags.dug_miner,
+      text: '霜壳剥落，冻僵的手里还攥着半张焐软了的记账纸——背面密密麻麻记着一笔「凑」出来的账。' }],
+    moves: [
+      { name: '冻爪', type: 'atk', weight: 2 },
+      { name: '碎冰重击', type: 'heavy', mult: 1.5, cd: 2, hint: '高伤害！', text: '僵直的整个躯体贴地扑砸下来——【碎冰重击】！' },
+      { name: '寒气缠身', type: 'stun', chance: 0.3, cd: 3, hint: '可能冻住你的手脚！', text: '张开嘴吐出一大团白雾，寒气顺着你的袖口爬进去——【寒气缠身】！' },
+    ],
+    intro: '雪堆里立起一个叮当作响的影子——冻僵的矿工，还保持着下矿那天弯腰拾镐的姿势。',
+    win: '霜壳簌簌散落。僵直的身躯终于躺平了，脸上那种「还在等换班」的神情松开了。',
+    death: [
+      '冰凉的手掌贴上你的额头，寒意一寸寸漫过口鼻。',
+      '——但晨曦之痕在你胸口烫了一下。故事还没完。',
+    ],
+  },
+  corrupt_guard: {
+    name: '蚀卒', char: CH + 'assassin.svg',
+    hp: 20, dmg: [3, 5], def: 1, exp: 15, gold: 8,
+    moves: [
+      { name: '长枪突刺', type: 'atk', weight: 2 },
+      { name: '横扫枪杆', type: 'heavy', mult: 1.6, cd: 2, hint: '高伤害！', text: '枪杆抡圆，把半条巷子的雪泥都扫了起来——【横扫枪杆】！' },
+      { name: '锁子铁壁', type: 'shield', amount: 5, cd: 4, hint: '正在缩甲成盾', text: '拖着枪杆退后半步，蚀变的锁子甲片片竖起，护住身前。' },
+    ],
+    intro: '披着白石城甲衣的影子缓缓转过身来——甲缝里淌着紫雾，它还记着换防的口令。',
+    win: '蚀卒散成一滩黑雾，甲衣「哗啦」瘫在地上。甲叶的缝隙里，卡着几枚没来得及发下的饷钱。',
+    death: [
+      '紫雾顺着枪杆爬上你的手腕，耳边响起整支军队踏步的声音。',
+      '——黑暗尽头，晨曦符文最后一次亮起。',
+    ],
+  },
+  overseer: {
+    name: '蚀变的矿监', char: CH + 'husk.svg',
+    hp: 26, dmg: [3, 5], def: 1, exp: 17, gold: 12, noFlee: true,
+    rageAt: 13, rageText: '矿监手里的名册哗啦啦自己翻动起来——它嘶吼着，锤势陡然狂乱！',
+    moves: [
+      { name: '矿锤', type: 'atk', weight: 2 },
+      { name: '坍方重锤', type: 'heavy', mult: 1.7, cd: 2, hint: '高伤害！', text: '把矿锤抡过头顶砸落，像轰塌一整面坑壁——【坍方重锤】！' },
+      { name: '清点名册', type: 'buff', cd: 3, hint: '矿监的怨念在攀升', text: '翻开烂掉的名册，一个名字一个名字地念——整座空村应声呻吟。' },
+    ],
+    intro: '矿监还握着那本名册——它把整个村子的人，都「记」在了上面。此战，无处可退。',
+    win: '矿监散成砂与黑雾，名册飘落在地，最后一页被风吹开——是空白。名册上欠着的，终于都清了。',
+    death: [
+      '矿锤落下来之前，你听见它念完了最后一个名字——像交了最后一次班。',
+      '——恍惚间，你怀中的符文最后一次发烫。',
+    ],
+  },
+
   /* ---- 第三部 · 潮歌湾 ---- */
   deepone: {
     name: '深潜者', char: CH + 'deepone.svg',
     hp: 20, dmg: [3, 5], exp: 16, gold: 10,
+    drops: [{ item: 'tmap_smuggler', chance: 0.2, skip: () => (S.items.tmap_smuggler || 0) > 0 || S.flags.dug_smuggler,
+      text: '它胀大的喉囊里滚出一卷蜡封三层的防水布——海水晶都没渗进去，裹着一张海图残页。' }],
     moves: [
       { name: '利爪', type: 'atk', weight: 2 },
       { name: '缠腕', type: 'heavy', mult: 1.5, cd: 2, hint: '高伤害！', text: '湿滑的长臂死死缠上来——【缠腕】！' },
@@ -342,6 +455,8 @@ const ENEMIES = {
   deeponpack: {
     name: '深潜者游群', char: CH + 'deepone.svg',
     exp: 26, gold: 16,
+    drops: [{ item: 'tmap_smuggler', chance: 0.45, skip: () => (S.items.tmap_smuggler || 0) > 0 || S.flags.dug_smuggler,
+      text: '胀裂的喉囊里滚出一卷蜡封三层的防水布——海水晶都没渗进去，裹着一张海图残页。' }],
     units: [
       { name: '深潜者', hp: 18, dmg: [3, 5],
         moves: [
@@ -366,6 +481,8 @@ const ENEMIES = {
   reefcrab: {
     name: '礁背蟹妖', char: CH + 'reefcrab.svg',
     hp: 26, dmg: [3, 5], def: 2, exp: 18, gold: 9,
+    drops: [{ item: 'tmap_crab', chance: 0.35, skip: () => (S.items.tmap_crab || 0) > 0 || S.flags.dug_crab,
+      text: '掀开的旧甲缝里卡着一卷磨出毛边的皮纸——蟹妖也爱亮东西，连人写的字都往窝里拖。' }],
     moves: [
       { name: '铁钳', type: 'atk', weight: 2 },
       { name: '凝甲', type: 'shield', amount: 6, cd: 3, hint: '正在凝聚甲壳', text: '周身的藤壶与旧甲咔咔收紧，叠出更厚的一层。' },
@@ -394,6 +511,38 @@ const ENEMIES = {
     death: [
       '深蓝的寒雾没过你的口鼻。低语在耳边念着倒转的祷词，一寸寸把你的名字从潮汐账簿上划去。',
       '——黑暗尽头，符文最后一次亮起。',
+    ],
+  },
+
+  /* ---- 第三部扩写 · 潮歌湾滩涂 ---- */
+  brinehusk: {
+    name: '盐壳鬼', char: CH + 'husk.svg',
+    hp: 16, dmg: [2, 4], def: 1, exp: 14, gold: 6,
+    moves: [
+      { name: '盐爪', type: 'atk', weight: 2 },
+      { name: '盐壳重锤', type: 'heavy', mult: 1.5, cd: 2, hint: '高伤害！', text: '体表的盐壳鼓胀到极限，轰然炸裂——【盐壳重锤】！' },
+      { name: '结晶护壳', type: 'shield', amount: 4, cd: 3, hint: '正在凝出盐壳', text: '周身的盐卤飞快析出结晶，层层叠成一面白壳。' },
+    ],
+    intro: '盐堆里立起一具窸窣作响的白影——晒透的盐壳里裹着的，不知是渔人还是别的什么，还保持着晒盐的姿势。',
+    win: '盐壳簌簌剥落，化进卤水池里。池边留下几枚被盐腌得发亮的铜钱，和一把磨秃的盐耙。',
+    death: [
+      '冰凉的白壳贴上你的口鼻，咸涩漫进呼吸。',
+      '——但怀中的符文最后一次发烫。',
+    ],
+  },
+  lampfish: {
+    name: '灯眼鮟鱇', char: CH + 'deepone.svg',
+    hp: 18, dmg: [3, 5], exp: 15, gold: 8,
+    moves: [
+      { name: '獠牙撕咬', type: 'atk', weight: 2 },
+      { name: '灯诱暴咬', type: 'heavy', mult: 1.6, cd: 2, hint: '高伤害！', text: '头顶的「灯」猛地炸亮，晃花你的眼——【灯诱暴咬】！' },
+      { name: '毒鳍横扫', type: 'poison', mult: 1.0, cd: 3, hint: '淬毒！', text: '背鳍带着紫黑的黏液横扫而过！' },
+    ],
+    intro: '黑暗的水面浮起一点冷光，光后头是一张落差极大的巨口——深海的东西，提着灯出来了。',
+    win: '灯眼鮟鱇的「灯」闪了两闪，熄了。庞大的影子无声地沉回深水，沙面上留下一小把亮晶晶的沉币。',
+    death: [
+      '冷光在你眼前炸开，巨口合拢——深海吞掉了最后一丝天光。',
+      '——但怀中的符文最后一次发烫。',
     ],
   },
 
@@ -609,7 +758,7 @@ const ENEMIES = {
 const QUESTS = {
   q_inn:    { title: '黑鸦旅店的怪客', hint: '灰岭镇黑鸦旅店里，那位灰袍老者似乎有话想对你说。' },
   q_night:  { title: '风雨之夜', hint: '在旅店客房歇一晚吧。今夜风雨大作，握紧你的剑。' },
-  q_aria:   { title: '晨曦之痕', hint: '带着符文碎片北上，穿过迷雾森林，寻找符文学者艾莉娅·星语。' },
+  q_aria:   { title: '晨曦之痕', hint: '带着符文碎片南下，穿过迷雾森林，寻找符文学者艾莉娅·星语。' },
   q_temple: { title: '符文圣殿', hint: '通过三重试炼：勇气、智慧、心灵，重燃晨曦祭坛。' },
   q_north:  { title: '星辰之印', hint: '北上白石城——星辰之印就供在星塔顶上。' },
   q_city:   { title: '白石城的阴影', hint: '觐见莉安娜女王，查清大臣巴洛克的底细。' },
@@ -630,7 +779,15 @@ const SIDE_QUESTS = {
   bees:   { title: '走失的蜂群', hint: '养蜂人纪老爹的蜂群连王带巢飞进了林子，多半在苔藓谷的老栎树洞里结了团。替他把蜂群带回去。' },
   bounty: { title: '隘口的匪首', hint: '驿镇告示：红巾匪首盘踞白霜隘口，取其首级回来领赏18金币。' },
   lost:   { title: '宵禁下的失踪', hint: '帮街角老妇寻找失踪的学徒艾德温。宵禁后的城西小巷，或许有线索。' },
+  lamb:     { title: '走失的羊羔', hint: '牧羊坡的石头丢了头羊羔（额头一块灰）。天冷了，它准往暖和的地方钻——雪谷野汤泉的白气最旺。' },
+  porridge: { title: '慈幼堂的口粮', hint: '下城慈幼堂的粥一日稀过一日。给白嬷嬷带两块猎户熏肉，让四十七个孩子喝上稠粥。' },
+  creek:      { title: '溪水的账', hint: '石桥渡的溪水浑了半个月——上游是霜脊山的矿坑，坑道下游冻着一道水闸。砸开它，下游的水才能重新流清。' },
+  seventh:    { title: '第七张脸', hint: '白石城铸像广场上，先王的像合掌而立。回荒石料场，把这位先王的模样讲给莫大——他敢刻了。' },
+  oldfriends: { title: '山里的旧友', hint: '霍七惦记着灰岭镇的老猎户哈克。替他跑一趟灰岭集市问声近况，再把口信带回山口。' },
+  letters:    { title: '矿工的家书', hint: '空营矿村何十斤攒了一沓家书与工牌——好几户矿工家属，逃难在了南边的灰岭镇。' },
   glowweeds: { title: '灯塔的荧藻', hint: '为守塔人老祈采集3株荧藻（礁滩、沉船湾、潮汐洞窟），重亮潮歌灯塔。' },
+  shipwall:  { title: '船壁的名字', hint: '海母祠的祝婆婆想听沉船湾那面刻满「正」字的船壁的最后一行——她儿子的刀法，她认得。' },
+  grandrod:  { title: '阿公的旧竿', hint: '孤礁钓台的遮棚里立着卡雅阿公的老钓竿——「留给认得的娃」。带回灯塔，交给跟阿公钓了一辈子鱼的老祈。' },
   seeds:  { title: '被偷走的谷种', hint: '穗安村的祭典谷种被偷进了老磨坊——替村长取回来。' },
   warname:{ title: '碑林的名字', hint: '亡者碑林的老兵亡魂想找回三块沙场军牌（折戟丘、白骨哨塔、影蚀辎重营），好让碑林重新记住他们的名字。' },
   belltongue: { title: '哑了的暮钟', hint: '守钟人修士的钟舌被影蚀辅祭偷上了钟楼——替他取回来。' },
@@ -660,6 +817,7 @@ const ENDINGS = [
  * unique 的货物只卖一件；已持有或已装备则不再上架。
  * ============================================================ */
 const SHOP = {
+  torch:         { cost: 3,  label: '一支火把 · 照亮黑暗一角',      line: '「松脂浸足了三遍，」渡鸦把火把递过来，「地窖、矿洞、暗窟——黑处藏的东西，只给带光的人看。」' },
   potion:        { cost: 8,  label: '一瓶生命药水 · 恢复10',        line: '你接过药水。瓶身还带着货车夹层的凉意。' },
   potion_big:    { cost: 20, label: '一瓶大生命药水 · 恢复25',      line: '浓浆似的药液在瓶里缓缓打转。「省着喝，」渡鸦说，「这玩意比金子还稠。」' },
   amulet:        { cost: 18, label: '一枚星光护符 · 濒死救命一次',  line: '星光护符在你掌心轻轻一颤，像一颗小小的心跳。「可别浪费了，」渡鸦说，「它只肯为人碎一次。」' },
@@ -668,6 +826,8 @@ const SHOP = {
   star_pendant:  { cost: 22, label: '一枚星辉坠饰 · 生命上限+6', unique: true, line: '坠饰里的碎星石一闪一闪，像把一小片夜空挂在了脖子上。' },
   tide_weave:    { cost: 26, label: '一件潮织法衣 · 受伤-2', unique: true, line: '潮织法衣入手微凉，海风一吹，衣料里像有细浪走过。' },
   harvest_charm: { cost: 24, label: '一枚麦金护符 · 会心+8%', unique: true, line: '麦金护符在指间转了半圈。「大地的偏心，」渡鸦说，「戴着的人出剑都准三分。」' },
+  mule:          { cost: 25, label: '一匹老骡「短鬃」 · 赶路每三程省一刻', unique: true, line: '老骡子冲你打了个响鼻。渡鸦拍拍它的脖子：「短鬃，一张认路的活地图。往后赶路，让它替你省力气——驮着就是骑，不用鞍。」' },
+  horse:         { cost: 70, label: '一匹青骢马「踏雾」 · 赶路每两程省一刻', unique: true, line: '青骢马通身青白，蹄子磕在石板上像敲更。渡鸦压低嗓子：「踏雾——走夜路不惊东西的名字。骑上它，路上清净得多。」' },
 };
 
 /* 通用商店循环：intro 开场白；rumor 可选传闻项 {text, when, run}；ids 限定上架货物 */
@@ -715,6 +875,10 @@ const TAVERN_RUMORS = [
     '「夜里别赶路！雾里的『没脸东西』白天还讲点规矩，一入夜，连火把都照不住。」',
     '「真要夜行？记三个字：不对视。」',
   ] },
+  { id: 'torch_talk', when: () => timeDay() >= 2, lines: [
+    '「夜里探废墟、下地窖，先去货郎那儿买支火把。老掘客的行话：黑处藏的东西，只给带光的人看。」',
+    '「雇不起火把？听说星辉法师都会一手『星火引灯』的小术——一缕斗气，亮一炷香，比火把还稳当。」',
+  ] },
   { id: 'temple_gate', when: () => S.flags.heardLegend || timeDay() >= 3, lines: [
     '「符文圣殿的大门三百年没开过。门上三枚符文：晨曦、星辰、深渊。」',
     '「门楣刻着句老话：『吾随最后一缕光沉眠』。猜了几百年，没人猜中过。」',
@@ -734,8 +898,39 @@ const TAVERN_RUMORS = [
   { id: 'part2_guard', when: () => S.flags.part2, lines: [
     '「北边白石城在换防，卫兵抽走一半调去北境。城防空成那样，可别出事。」',
   ] },
+  { id: 'mine_silent', when: () => timeDay() >= 3, lines: [
+    '「霜脊山的银矿去年秋天说停就停。矿上的人，逃的逃，没的没——如今山里夜里行走的东西，比活人还多。」',
+  ] },
+  { id: 'goat_spring', when: () => timeDay() >= 3, lines: [
+    '「赶山的人都懂：在霜脊山迷了路，就找白气。牧羊坡南边雪谷里有眼野汤泉，天越冷，白气越旺。」',
+  ] },
+  { id: 'moat_dark', when: () => S.flags.inCity || timeDay() >= 4, lines: [
+    '「白石城的护城河发黑了。老辈人讲，城根下的水最通人性——水黑成那样，是城里在『烂心』。」',
+  ] },
+  { id: 'granary_night', when: () => S.flags.granaryClue, lines: [
+    '「官仓夜里搬粮的车队？嘘——车是谁家的，官仓的墙知道。可墙不会说，你也当没看见。」',
+  ] },
+  { id: 'part2_clear', when: () => S.flags.part2, lines: [
+    '「大快人心！白石城的巴洛克大人下了大狱，满城的戒严告示一夜之间撕了个干净！」',
+    '「星塔顶上那颗宝石又亮了。老人们说，那颗星记事——它记着是谁把夜守住的。」',
+  ] },
   { id: 'part3_tide', when: () => S.flags.part3, lines: [
     '「潮歌湾的老渔人说，今年潮汛不对劲——该退的时候不退，该涨的时候黑得像墨。」',
+  ] },
+  { id: 'harbor_gloom', when: () => timeDay() >= 4, lines: [
+    '「南边潮歌湾的灯塔黑了三十年。灯一黑，海里的『老规矩』就散了——夜滩莫走，走一趟少一双鞋。」',
+  ] },
+  { id: 'whale_king', when: () => timeDay() >= 4, lines: [
+    '「鲸骨滩上那副大鲸骨，老辈人说是『鲸王』。猎鲸人敬它如敬神——滩上祭台的火，三十年没人敢断。」',
+  ] },
+  { id: 'salt_keeper', when: () => timeDay() >= 5, lines: [
+    '「潮歌湾的盐场散了三十年工，就剩个卤叔守着几十口锅。他说盐是百味之首——世道再乱，汤不能淡。」',
+  ] },
+  { id: 'sea_blind', when: () => timeDay() >= 5, lines: [
+    '「海母祠的祝婆婆眼睛瞎了三十年，可她说她『看得见』海。谁家出海都去讨一句风——奇怪的是，讨过风的，都回了港。」',
+  ] },
+  { id: 'tide_lamp', when: () => S.flags.lampLit, lines: [
+    '「潮歌湾的灯塔亮了！渔人们说，塔光扫过夜海那晚，滩上的黑影齐齐退回了水里——三十年了，头一回。」',
   ] },
   { id: 'part4_locust', when: () => S.flags.part4, lines: [
     '「金穗平原来信，说田里见了蝗虫的苗头。丰年祭要是办不成，那是要饿死人的。」',
@@ -790,6 +985,22 @@ const BOUNTIES = [
     text: '『哥布林掠袭者劫道伤人。剿灭一伙，赏九枚。』——灰岭镇公所' },
   { id: 'bramble', title: '荆扰', type: 'kill', en: 'bramble', n: 1, gold: 11, minDay: 2,
     text: '『林间老藤成了精，缠了两个药农。伐木场的老规矩：蔓灵挡道，砍散者赏。』——樵夫行会' },
+  { id: 'thugpack', title: '路匪', type: 'kill', en: 'thug', n: 2, gold: 9, minDay: 3,
+    text: '『山匪近来在霜脊山风口一带劫货，商旅裹足。剿灭两伙，赏九枚。』——驿路商会' },
+  { id: 'frosthusk', title: '僵行', type: 'kill', en: 'frosthusk', n: 1, gold: 12, minDay: 3,
+    text: '『矿村一带有冻僵不散之物游荡，行旅夜不敢走。驱散一具，赏十二枚。』——官道驿镇卫兵所' },
+  { id: 'meatrun', title: '征肉', type: 'fetch', item: 'smoked_meat', n: 2, gold: 8, minDay: 3,
+    text: '『本店征猎户熏肉两块，行商配干粮急用，松枝熏的优先。』——官道驿镇客栈' },
+  { id: 'corrupt_guard', title: '夜行', type: 'kill', en: 'corrupt_guard', n: 1, gold: 14, minDay: 4,
+    text: '『宵禁后有披城防甲衣之物游荡街巷，卫兵不敢近前。驱散一具，赏十四枚。』——白石城卫戍' },
+  { id: 'deepone', title: '滩祸', type: 'kill', en: 'deepone', n: 2, gold: 14, minDay: 4,
+    text: '『退潮滩上的长臂灰绿之物接连拖人下水，渔行悬赏：猎杀深潜者两具，凭鳃盖领赏十四枚。』——潮歌湾渔行' },
+  { id: 'brinehusk', title: '盐祟', type: 'kill', en: 'brinehusk', n: 1, gold: 12, minDay: 4,
+    text: '『盐灶滩夜里盐堆挪位，晒透的「人形」上工巡滩。驱散盐壳鬼一具，赏十二枚。』——盐灶滩卤叔' },
+  { id: 'reefcrab', title: '覆舟', type: 'kill', en: 'reefcrab', n: 1, gold: 13, minDay: 5,
+    text: '『沉船湾的老蟹妖又掀了一条修船。取其螯者，赏十三枚。』——潮记船坞' },
+  { id: 'lampfish', title: '提灯', type: 'kill', en: 'lampfish', n: 1, gold: 12, minDay: 5,
+    text: '『入夜后滩涂上有冷光游弋，专诱夜渔人。猎杀灯眼鮟鱇一尾，赏十二枚。』——渔家客栈' },
 ];
 function bountyProg(b) {
   if (!b || !S.bounty) return 0;
@@ -829,6 +1040,104 @@ async function bountyBoard() {
 }
 
 /* ============================================================
+ * 藏宝图寻宝：击败特定敌人可搜出藏宝图（见 ENEMIES 各 drops），
+ * 行囊里「翻阅」藏宝图读线索，到埋宝处挖出宝藏（选项只在持图时出现）。
+ * ============================================================ */
+const TREASURES = {
+  goblin: {
+    map: 'tmap_goblin', flag: 'dug_goblin', digAt: 'forest_deep',
+    digText: '对照藏宝图，挖开三块叠着的青石',
+    intro: [
+      '三块青石叠在老树根间，压得严丝合缝——以哥布林的力气，藏好之后想再刨出来，只怕得请动一整个寨子。',
+      '你搬开顶上那块石头。泥土翻动的腥气散开，林子深处，几双青灰色的兽瞳应声亮起——挖掘声，把狼群引来了。',
+    ],
+    guard: 'wolves',
+    found: [
+      '狼群散进雾里。翻开的土坑底下，是一只哥布林的腰囊和一只上了油的小木匣：碎铜钱、抢来的耳环戒指、一瓶从哪个倒霉货郎身上捋下来的药水——还有一枚被盘得温润的青玉佩，刻着先王的合掌纹章。',
+      '大概是哪个香客的遗物，被这群贼骨头从路上抢来，又当成宝贝埋进了土里。',
+      '（金币 +15，获得：生命药水 ×1，合掌玉佩 · 生命上限+3）',
+    ],
+    loot: { gold: 15, item: ['potion', 'jade_charm'] },
+  },
+  bandit: {
+    map: 'tmap_bandit', flag: 'dug_bandit', digAt: 'frost_pass',
+    digText: '按藏宝图所指，在斧凿记号下的岩缝里挖挖看',
+    intro: [
+      '斧凿的记号还留在岩石上。记号正下方的岩缝被碎石虚掩着——搬开来，底下是个垫着干草的土坑，埋着一口沉甸甸的小木箱。',
+      '箱子上着锁，但锁扣早被风雪锈酥了，一撬就开。',
+    ],
+    found: [
+      '箱子里是红巾汉子的「体己」：一袋金币、一瓶封蜡完好的浓浆药——还有一只白石城戍卒的制式铜护腕，内侧錾着一个名字。',
+      '箱盖内侧刻着一行小字，笔画被人摩挲得发亮：「喂饱了肚子，谁乐意把脑袋别在裤腰上劫道……」',
+      '（金币 +20，获得：大生命药水 ×1，戍卒的铜护腕 · 受伤-1）',
+    ],
+    loot: { gold: 20, item: ['potion_big', 'guard_brace'] },
+  },
+  miner: {
+    map: 'tmap_miner', flag: 'dug_miner', digAt: 'snow_hot_spring',
+    digText: '按藏宝单所指，在界石旁的热泥里挖挖看',
+    intro: [
+      '汤泉边的界石压着半朽的木牌，牌上的字被热气熏得只剩「勿动」两个。界石旁的热泥泛着咕嘟咕嘟的小泡——矿工们一文一文凑出的「账」，就埋在这里。',
+      '热泥刚扒开一道缝，汤泉深处的白雾忽然拧了拧，立起一个叮当作响的影子——老矿工们说过，埋钱的地方，得有人看着。',
+    ],
+    guard: 'frosthusk',
+    found: [
+      '影子散成一摊清水。热泥底下是一只封着蜡的陶瓮，泥封上按着一圈手印，深深浅浅，是许多双挖矿挖变形的手。',
+      '瓮里是矿工们凑出的卖命钱，一小瓶封蜡完好的药——还有一枚星髓银磨的小坠子：天越暗，它越亮。',
+      '（金币 +15，获得：生命药水 ×1，星髓银坠 · 会心+8%）',
+    ],
+    loot: { gold: 15, item: ['potion', 'star_silver_charm'] },
+  },
+  smuggler: {
+    map: 'tmap_smuggler', flag: 'dug_smuggler', digAt: 'shipwreck_cove',
+    digText: '按防水图所指，潜进「鹞鹰号」的压舱暗格',
+    intro: [
+      '鹞鹰号——湾里那艘船头留着黄铜铳座的快船，半截身子埋在沙里。压舱暗格的位置，防水图画得分毫不差。',
+      '你屏息扎进水里。暗格的盖板刚撬开一条缝，水下的阴影里，一条灰绿的长臂悄无声息地卷了过来——这艘船的新主人，可比老船长凶多了。',
+    ],
+    guard: 'deepone',
+    found: [
+      '长臂的主人也溃成了咸水。压舱暗格里的东西分毫未损：蜡封的钱袋、一瓶浓浆似的药，还有一条贴身的虎爪链扣——私掠船长的老规矩，本钱不离身。',
+      '你把它攥在手里掂了掂。海的账，这一笔总算有人来收了。',
+      '（金币 +30，获得：大生命药水 ×1，私掠者的虎爪链 · 攻击+1）',
+    ],
+    loot: { gold: 30, item: ['potion_big', 'corsair_hook'] },
+  },
+  crab: {
+    map: 'tmap_crab', flag: 'dug_crab', digAt: 'whale_beach',
+    digText: '按藏宝图所指，在鲸肋穹门下的沙里挖挖看',
+    intro: [
+      '鲸肋拱成的穹门下，沙面被浪梳得平平整整——唯有穹顶投下的阴影正中，微微凸起一个小小的沙包。',
+      '你刚扒开一把沙，阴影深处便「咔」地一声，一只巨大的螯肢探了出来——蟹妖也爱亮东西，何况是它整窝的家当。',
+    ],
+    guard: 'reefcrab',
+    found: [
+      '蟹妖顶开沙层，横着退出老远，缩进鲸骨深处再也不肯出来。沙坑里露出一窝「亮东西」：被螯肢抛光的旧币、几粒珠贝，还有一块拳头大的琥珀——鲸脂裹出的老琥珀，握在掌心，一股隔着寒气的暖。',
+      '（金币 +15，获得：大生命药水 ×1，老鲸的琥珀 · 生命上限+4）',
+    ],
+    loot: { gold: 15, item: ['potion_big', 'whale_amber'] },
+  },
+};
+/* 生成某张藏宝图的「挖掘」动作（埋宝地点的 actions 里引入 treasureAction(id)） */
+function treasureAction(tid) {
+  const t = TREASURES[tid];
+  return {
+    text: t.digText,
+    when: () => !S.flags[t.flag] && (S.items[t.map] || 0) > 0,
+    run: async () => {
+      await say(t.intro);
+      if (t.guard) {
+        const r = await battle(t.guard);
+        if (r !== 'win') return;
+      }
+      await say(t.found);
+      fx(t.loot);
+      setFlag(t.flag);
+    },
+  };
+}
+
+/* ============================================================
  * 世界地图
  * ============================================================ */
 const WORLD = {
@@ -848,6 +1157,10 @@ const WORLD = {
       w: { to: 'grayridge_street', label: '灰岭集市', flavor: '你拐进镇中集市。收摊前的货郎们正吆喝着最后几单生意，炊烟与草药味混在雨雾里。' },
       s: {
         to: 'south_road', label: '南下 · 古道', flavor: '你告别灰岭镇，踏上南下的古道。晨光渐亮，路的尽头，雾气正从林梢漫起。',
+        req: s => s.flags.cedricDead, lock: '夜深雨大，当务之急是找家旅店歇脚',
+      },
+      e: {
+        to: 'shrine_pass', label: '东 · 山口小径', flavor: '你踏出镇东的小径，翻上风口的石梁。山风迎面，小祠的火光隐约可见。',
         req: s => s.flags.cedricDead, lock: '夜深雨大，当务之急是找家旅店歇脚',
       },
     },
@@ -870,12 +1183,21 @@ const WORLD = {
         talk: async () => {
           await shopLoop(
             '「客官看看？雨夜赶路，一瓶药水能顶半个郎中。」货郎把推车上的瓶子摆正。',
-            null, ['potion', 'amulet']);
+            null, ['potion', 'amulet', 'torch']);
         },
       },
       hunter: {
         name: '老猎户哈克', img: null, role: '灰岭镇最好的猎手',
         talk: async () => {
+          if (S.flags.huoHarkAsk && !S.flags.harkReply) {
+            setFlag('harkReply');
+            await say([
+              '「霍七？」老猎户擦箭的手停住了，「那愣小子还活着？！」他大笑三声，笑到一半又咳了起来，「活着就好，活着就好……」',
+              '「替我捎话给他：老哈克还咬得动弓弦，眼也不花。就是不敢进林子了——雾里的东西不认套子，叫他也防着点。」',
+              '他把擦好的箭插回箭囊，望了望北面的山口：「告诉他，灰岭的酒还温着。哪天他肯下山，头一坛我请。」',
+            ]);
+            return;
+          }
           await say([
             '老猎户抬眼打量你的剑：「生面孔。往南去？」',
             '「记住三件事：林道走大路，别贪快；隐秘小径近，但雾里有狼，成群的；天黑前务必寻个背风的营地。」',
@@ -892,6 +1214,16 @@ const WORLD = {
           '「井水黑了三天，乌鸦把井台当成了自家院子。老人们说，水里的东西『往下沉得比石头快』——没人敢再打水。」',
           '「还有旅店那边，」他压得更低，「夜里地底下有磨牙的动静。掌柜的死活不肯让人进地窖。」',
           '（镇南有一口古井；旅店的地窖似乎也有蹊跷——都值得去看看。）',
+        ]);
+      } },
+      { text: '把矿村的家书与工牌送到逃难的人家', when: () => S.flags.heLetters && !S.flags.lettersDone, run: async () => {
+        setFlag('lettersDone');
+        finishSide('letters');
+        fx({ rep: 2 });
+        await say([
+          '你按着信皮上的名字，一户一户问过去。老四家的婆娘在货郎摊帮工，接过信的手抖了很久——她把信贴在胸口，半天说出一句：「他人呢？」',
+          '你说：矿上的账清了，人走得体面，灯一直有人擦着。她背过身去，好一会儿才转回来，把工牌端端正正挂上了门楣。孩子们仰着头看，看了一整晚。',
+          '一整条巷子的人家都听说了。有人往你手里塞了把炒栗子，有人只是朝你弯了弯腰。（声望 +2）',
         ]);
       } },
     ],
@@ -936,6 +1268,19 @@ const WORLD = {
         await say(['你从井边退开。乌鸦们连眼皮都懒得抬——它们只对井里的事感兴趣。']);
       }
     },
+    actions: [
+      { text: '点亮光，探身照向井口深处', needsLight: true, when: () => !S.flags.wellGleam, run: async () => {
+        if (!await payLight()) return;
+        setFlag('wellGleam');
+        fx({ gold: 3 });
+        await say([
+          '你把光探进井口。光圈顺着一圈圈井砖往下走——走到水面下，砖缝里的东西让光钉住了：半淹的井壁上，嵌着一道铁箍，箍着的砖比别的砖薄，四边磨出了缝。',
+          '那是一道门。砌在井底下的门。',
+          '门边的砖上还挂着一截断掉的麻绳，绳头系着一枚老式铜牌——镇上打水人的旧物，不知是谁的，也永远不会有人来认了。',
+          '你收回光。乌鸦们齐刷刷把头低得更深，像怕被光烫着。（金币 +3。乌鸦守的不是井，是井底那扇门。）',
+        ]);
+      } },
+    ],
   },
 
   inn_hall: {
@@ -969,7 +1314,7 @@ const WORLD = {
           if (ev('keeperRumor')) {
             await say([
               '「热葡萄酒，加蜂蜜。」你把两枚铜板推过吧台。',
-              '独眼店主压低嗓子：「客官是往北去？劝您一句——别喝村口的井水。这几天，井水黑得像墨，乌鸦落满了屋脊，赶都赶不走。」',
+              '独眼店主压低嗓子：「客官是往南去？劝您一句——别喝村口的井水。这几天，井水黑得像墨，乌鸦落满了屋脊，赶都赶不走。」',
               '「还有啊，」他凑得更近，「夜里有人听见地底下……有磨牙的声音。」',
             ]);
           } else {
@@ -1071,6 +1416,19 @@ const WORLD = {
         await say(['你退回窄梯。身后的黑暗里，磨牙声又轻轻响了起来，像在目送。']);
       }
     },
+    actions: [
+      { text: '压低烛火，钻进墙角的地洞', needsLight: true, when: () => !S.flags.cellarHole, run: async () => {
+        if (!await payLight()) return;
+        setFlag('cellarHole');
+        fx({ gold: 3 });
+        await say([
+          '你把烛火压得只剩一豆，侧身钻进墙角的洞。地洞只容一人爬行，两壁的土比灰岭镇的年纪还老——这洞不是昨夜那东西挖的，是「走」出来的：不知多少代，不知多少东西，沿着它去同一个方向。',
+          '爬出一丈多远，指头碰到一样硬物：半截朽烂的油布包，里头是一小把磨得发亮的旧铜钱——像是哪个「过路的」也在这儿摸过黑，掉了盘缠。',
+          '洞壁深处的抓痕层层叠叠，最新的一道划断了最旧的一道。所有的爪痕，都朝着南边——雾林的方向。',
+          '你退回地窖，后背的冷汗贴着衣裳。（金币 +3。这条地道比灰岭镇还老，而且一直通到南边去……）',
+        ]);
+      } },
+    ],
   },
 
   inn_room: {
@@ -1263,11 +1621,31 @@ const WORLD = {
             ]);
             return;
           }
+          if (S.flags.sluiceBroken && !S.flags.wugouThanks) {
+            setFlag('wugouThanks');
+            fx({ gold: 3, rep: 1 });
+            await say([
+              '你还没开口，吴钩的手先探进了溪水——搅了两下，摊开掌心。水从指缝里漏下去，清得能看见掌纹。',
+              '「清了。」他盯着自己的手看了半晌，忽然朝北面的山口拱了拱手，「矿上那道闸，是客官砸的？好汉子。这溪里有一半是俺的饭碗，另一半，是下游几十户人家的水缸。」',
+              '他把三枚金币拍进你手里，不由分说：「船资。这一趟，是替几十户人家摆的渡。」（声望 +1，金币 +3）',
+            ]);
+            return;
+          }
           if (S.flags.part1 && !S.flags.wugouNews) {
             setFlag('wugouNews');
             await say([
               '「哟，从圣殿山下来的？」吴钩上下打量你，「今早溪对岸的老鸦全朝金顶那边飞，叫得那叫一个欢——咱这破渡口，多少年没这么热闹过了。」',
               '他把长篙往船上一横：「替我谢谢那位点灯的。从前夜里赶路，就指望烽燧和圣殿那点亮。」',
+            ]);
+            return;
+          }
+          if (!S.flags.creekAsked) {
+            setFlag('creekAsked');
+            sideQuest('creek');
+            await say([
+              '吴钩一边补船一边跟你闲扯：「北边古战场，俺当年在那儿丢的腿。」他忽然把船桨往水里一指，「客人要是打北边来，替我留意一件事：溪水这半月浑得邪性，上游准出了事。」',
+              '「上游是霜脊山的矿坑。矿上的人原先隔三差五下来买酒，如今一个不见——他们准是把什么脏东西，捂在水里了。你要是路过，替老吴看一眼；能治，就治。」',
+              '（支线接取：溪水的账——去霜脊山矿坑，看看上游出了什么事。）',
             ]);
             return;
           }
@@ -1317,6 +1695,18 @@ const WORLD = {
               '「传了三代，谁也说不清为什么。到我这辈儿，我照着老样子的身形刻，脸——」錾子停了停，「不敢。总觉得刻完了，就该出事了。」',
               '他终于抬头看你一眼：「客官要是进圣殿，替我看看第七座坛。要是坛上真有那位没有脸的……替我瞅瞅，他到底长什么样。」',
               '「对了，」他往你手里塞了一小块白白的石屑，「捎给圣殿的守殿人。铁须家的老规矩：料场的石屑到了，就是料场还有人。」',
+            ]);
+            return;
+          }
+          if (S.flags.statueHands && !S.flags.masonFace) {
+            setFlag('masonFace');
+            finishSide('seventh');
+            fx({ gold: 8, rep: 1 });
+            await say([
+              '「回来了？」莫大直起腰，「圣殿里……那位到底长什么样？」',
+              '你把白石城铸像广场上那位先王的模样讲给他听：左手按剑，右手五指并拢，轻轻合在胸前——三百年了，那双手一直合着。有人贴脏东西，就有撕脏东西的手。',
+              '莫大怔了很久，忽然转身钻进石板棚，翻出一把裹了三层油布的錾子，在袖口上擦了又擦：「合掌……合掌好啊。手合则印固——这张脸，我刻。」',
+              '他把八枚金币按进你手里：「跑腿钱。等像刻成了，你来料场，头一个看。」（声望 +1，金币 +8）',
             ]);
             return;
           }
@@ -1481,6 +1871,7 @@ const WORLD = {
           '你照玛戈教的方法，贴着根须割下茎叶，露水顺着叶背滚进掌心，凉丝丝的。（获得：月光草）',
         ]);
       } },
+      treasureAction('goblin'),
     ],
     roam: {
       en: ['wolves', 'wraith'], chance: 0.45, fleeTo: 'dusk_camp',
@@ -1964,6 +2355,14 @@ const WORLD = {
           '你贴着根须割下茎叶，装进玛戈给的粗布袋。（获得：月光草）',
         ]);
       } },
+      { text: '向艾莉娅讨教照明的法子（星火引灯）', when: () => S.flags.aria && !S.flags.lightSpell, run: async () => {
+        setFlag('lightSpell');
+        await say([
+          '「探黑的地界儿，别硬闯。」艾莉娅把法杖横在膝上，「地窖、矿洞、塌了顶的殿——黑处藏的东西，只给带光的人看。」',
+          '她教你一手符文学者的家传小术：屈指为引，以一缕斗气凝出一团暖黄的光球，悬在肩头，亮一炷香——便是「星火引灯」。',
+          '你练到半夜，指缝里终于漏出一点稳当的光。（学会照明术：此后探暗处可消耗 2 点斗气照亮；若有火把亦可直接点燃。）',
+        ]);
+      } },
     ],
     onEnter: async () => {
       if (S.flags.aria) return;   // 战败可重试，直到救下艾莉娅
@@ -2008,6 +2407,7 @@ const WORLD = {
       await say([
         '✦ 艾莉娅·星语加入了队伍！她是独立的战斗单位，将在战斗中按「态势」自主施展星辉魔法：星火弹 / 星辉庇护 / 治愈星雨。',
         '当晚轮到你守火。艾莉娅靠着行囊睡去，雾在谷口站了一整夜，像也在等天亮。',
+        '（睡前她提了一句：探黑的地界儿别硬闯——想学「星火引灯」的照明小术，在营火边向她讨教即可。）',
       ]);
       sleepToDawn();   // 救援与夜谈耗去半夜，一觉到天明
     },
@@ -2108,7 +2508,7 @@ const WORLD = {
             ]);
           }
           const i = await choose([
-            { text: '递给他一瓶生命药水', req: s => (s.items.potion || 0) > 0, lock: '没有生命药水' },
+            { text: '递给他一瓶生命药水', when: () => !S.flags.tangjiuHelped, req: s => (s.items.potion || 0) > 0, lock: '没有生命药水' },
             { text: '替他把夹板重新绑紧些' },
             { text: '打听上山的路' },
           ]);
@@ -2246,7 +2646,10 @@ const WORLD = {
     exits: {
       e: { to: 'temple_foot', label: '回圣殿石阶', flavor: '你穿过梯田回到石阶。身后果叶沙沙，像谁在数你的脚步。' },
     },
-    roam: { en: 'bramble', chance: 0.3, fleeTo: 'temple_foot', intro: '梯田边的老藤悄然立了起来——连果园的篱，也长了三百年的心眼。' },
+    roam: {
+      en: 'bramble', chance: 0.3, fleeTo: 'temple_foot', intro: '梯田边的老藤悄然立了起来——连果园的篱，也长了三百年的心眼。',
+      byTime: { night: { en: 'wraith', chance: 0.35, intro: '入夜的果园静得反常，稻草人还朝着你来的方向。雾顺着田垄漫上来，拧出一个没有脸的影子。' } },
+    },
     actions: [
       { text: '从果树上摘些果子', when: () => !S.flags.orchardPick, run: async () => {
         setFlag('orchardPick');
@@ -2284,7 +2687,7 @@ const WORLD = {
           const i = await choose([
             { text: '「婆婆，这殿……您守了多久？」' },
             { text: '「熄掉的那三对灯柱，还能修么？」', when: () => S.sideQuests.lamps === 'active' && !S.flags.lampsLit },
-            { text: '「讨口水喝。」' },
+            { text: '「讨口水喝。」', when: () => !S.flags.sueWater },
           ]);
           if (i === 0) {
             setFlag('sueLore');
@@ -2556,6 +2959,16 @@ const WORLD = {
           '艾莉娅盯着那幅画看了很久：「三枚熄了……锁链，快断了。」',
         ]);
       } },
+      { text: '举光照亮禅房墙角的刻痕', needsLight: true, when: () => !S.flags.cloisterMarks, run: async () => {
+        if (!await payLight()) return;
+        setFlag('cloisterMarks');
+        fx({ item: 'torch:2' });
+        await say([
+          '僧舍的黑暗深得连白昼都进不来。你举起光，贴着墙角一寸寸照过去——积尘之下，砖上刻着几行小字，笔迹和三代目守殿人如出一辙：',
+          '「钟哑之年，磨牙声亦止。地底的东西畏钟声，却学会了等人把它弄哑。——三百年前弄哑钟的，不是天灾，是与人换了价的祸。」',
+          '刻痕旁边的石龛里，油布裹着两支上了油的新火把——守殿人备了三百年、始终没等到来取的人。（获得：火把 ×2）',
+        ]);
+      } },
     ],
   },
 
@@ -2729,7 +3142,8 @@ const WORLD = {
     ],
     brief: '山风呼啸的岔路。西面是白霜隘口，东面通官道驿镇，北面官道直达白石城。',
     checkpoint: true,
-    roam: { en: 'thug', chance: 0.35, intro: '风雪里蹿出一条裹着兽皮的身影——山匪把这片山脊当成了自家院子。' },
+    roam: { en: 'thug', chance: 0.35, intro: '风雪里蹿出一条裹着兽皮的身影——山匪把这片山脊当成了自家院子。',
+      byTime: { night: { en: 'wraith', chance: 0.3, intro: '夜里的山脊认不得人。风雪拧出一个没有脸的轮廓，贴着崖线漂过来。' } } },
     exits: {
       s: { to: 'temple_foot', label: '回圣殿山道', flavor: '你沿山道折返，圣殿的金顶在云缝里一闪而过。' },
       w: { to: 'frost_pass', label: '西 · 白霜隘口', flavor: '你踏上西面陡峭的隘口小道，风雪立刻扑了上来。' },
@@ -2750,9 +3164,11 @@ const WORLD = {
     exits: {
       w: { to: 'spur_fork', label: '回山麓岔路', flavor: '你出镇向西，重新走进山风里。' },
       n: { to: 'north_road', label: '北 · 官道', flavor: '你出镇北上。官道笔直，道旁的景色从市井烟火渐渐换成荒郊野店。' },
+      s: { to: 'shrine_pass', label: '南 · 风口山神祠', flavor: '你出南门踏上山道。风口的白气里，隐约可见一间小祠的檐角。' },
     },
     rest: { cost: 5, label: '在客栈休整一晚' },
     actions: [
+      { text: '查看驿镇客栈的委托木板', run: async () => { await bountyBoard(); } },
       { text: '查看镇口的悬赏告示板', run: async () => {
         if (S.flags.bountyDone) {
           await say(['告示板上，红巾匪首的悬赏令已被撕下，只留下一角浆糊印。']);
@@ -2839,9 +3255,11 @@ const WORLD = {
       '艾莉娅蹲下身，拂开坑木上的雪——木头深处刻着一圈细小的记号，一圈「睁开的眼睛」。',
     ],
     brief: '塌了半边坑木的废弃银矿。风从坑道深处带出铁锈味。',
-    roam: { en: ['thug', 'goblin'], chance: 0.22, fleeTo: 'frost_pass', intro: '坑道阴影里蹿出一条佝偻的身影——废弃的矿坑，如今是山匪和哥布林的仓库。' },
+    roam: { en: ['thug', 'goblin'], chance: 0.22, fleeTo: 'frost_pass', intro: '坑道阴影里蹿出一条佝偻的身影——废弃的矿坑，如今是山匪和哥布林的仓库。',
+      byTime: { night: { en: 'wraith', chance: 0.3, intro: '坑道深处的雾漫出坑口。雪地上，几点冷光贴着矿车的旧辙漂了过来。' } } },
     exits: {
       e: { to: 'frost_pass', label: '回白霜隘口', flavor: '你退出矿坑，风雪重新罩下来，把身后的坑口糊成一片灰白。' },
+      n: { to: 'miner_camp', label: '北 · 矿村方向', flavor: '你沿着矿车的旧辙向北。翻过雪坡，一片窝棚的轮廓伏在山坳里。' },
     },
     onEnter: async () => {
       if (!ev('mineEnter')) return;
@@ -2852,6 +3270,16 @@ const WORLD = {
       ]);
     },
     actions: [
+      { text: '砸开坑道下游冻住的水闸', when: () => S.sideQuests.creek === 'active' && !S.flags.sluiceBroken, run: async () => {
+        setFlag('sluiceBroken');
+        finishSide('creek');
+        fx({ rep: 1 });
+        await say([
+          '坑道下游的岩缝里横着一道水闸，闸后的黑水冻成一面浑浊的镜子——矿上的尾水全捂在这道闸后面，捂浑了一整条溪。',
+          '你抡起剑柄，一下，两下——冻壳「轰」地裂开，黑水裹着雪泥冲了出去，在坑口外撞出一团白汽，一路朝下游的溪谷奔去。',
+          '浊水终会流尽。「替下游的人把水看住了。」你把剑擦干净。（声望 +1。回石桥渡看看吧——吴钩念叨这溪水半个月了。）',
+        ]);
+      } },
       { text: '钻进矿道深处', when: () => !S.flags.mineDeep, run: async () => {
         await say([
           '坑道向下倾斜，冻住的矿壁泛着幽蓝。转过第三道弯，你们停住了——',
@@ -2879,6 +3307,16 @@ const WORLD = {
         ]);
         fx({ gold: 3 });
       } },
+      { text: '举光照向坑道深处的冻壁', needsLight: true, when: () => !S.flags.mineGleam, run: async () => {
+        if (!await payLight()) return;
+        setFlag('mineGleam');
+        fx({ gold: 4 });
+        await say([
+          '矿道深处的冻壁泛着幽蓝，光照上去，一层薄冰把底下东西映得清清楚楚——「睁眼」刻痕旁边，多了几个方方正正的凿坑。',
+          '坑口的边缘还新着，碎屑没有冻进冰层里。有人比矿工们逃亡更晚来过这儿，把岩层里的星髓银一粒一粒凿走了。',
+          '凿坑底下的冰壳里冻着一小截皮绳，绳上拴着几枚散碎的银砂——「过路的」抖落了盘缠，也抖落了行迹。（金币 +4。影蚀还在来。他们在往山里挖。）',
+        ]);
+      } },
     ],
   },
 
@@ -2891,10 +3329,14 @@ const WORLD = {
     ],
     brief: '破茶棚旁的溃兵营地。甲衣上还带着白石城的徽记。',
     checkpoint: true,
+    roam: { en: 'thug', chance: 0.12, fleeTo: 'burnt_post', intro: '营外的旷野上晃过一条人影——荒驿那头的劫道者，最近摸到营边来了。',
+      byTime: { night: { en: 'wraith', chance: 0.25, intro: '夜里的营地边，雾贴着车辙漂过来。有士兵压着嗓子念叨：「又来点名了。」' } } },
     exits: {
       s: { to: 'spur_fork', label: '回山麓岔路', flavor: '你沿官道折返南下，重新走进山风里。' },
       e: { to: 'road_town', label: '东 · 官道驿镇', flavor: '你踏上下山的岔道，驿镇的炊烟渐渐可见。' },
       n: { to: 'whitestone_gate', label: '北 · 白石城', flavor: '官道在旷野上铺开。两天后，白石城的白墙在云层下静静发着光。' },
+      w: { to: 'burnt_post', label: '西 · 烧塌的荒驿', flavor: '你折向官道西侧。焦木的轮廓在荒草尽头歪歪斜斜地立着。' },
+      ne: { to: 'ridge_watchtower', label: '东北 · 岭线烽哨', flavor: '你朝东北的岭线爬去。塌了半边的烽哨蹲在雪线上，像一顶戴了三百年的斗笠。' },
     },
     onEnter: async () => {
       if (!ev('deserterCamp')) return;
@@ -2952,6 +3394,7 @@ const WORLD = {
       e: { to: 'spur_fork', label: '回山麓岔路', flavor: '你退回岔路，风雪在身后合拢。' },
       n: { to: 'north_road', label: '北 · 下山官道', flavor: '你穿过隘口北坡，风雪渐歇，官道在山下铺开。' },
       w: { to: 'frost_mine', label: '西 · 废弃矿坑', flavor: '你踏进隘口西侧的背风坳地。塌了一半的坑木与生锈的矿车辙，从雪底下露出来。' },
+      s: { to: 'snow_hot_spring', label: '南 · 雪谷野汤', flavor: '你沿隘口南坡下到谷底。雪谷深处，一团白气正从洼地里慢慢升起来。' },
     },
     onEnter: async () => {
       if (S.flags.banditEventDone) return;   // 战败可重试；缴路费/借名号则视为了结
@@ -2986,6 +3429,373 @@ const WORLD = {
         ]);
       }
     },
+    actions: [treasureAction('bandit')],
+  },
+
+  /* ---- 第二部扩写 · 山道与官道 ---- */
+
+  shrine_pass: {
+    name: '风口山神祠', ch: '第二部 · 星辰之印', sub: '小节一 · 霜脊山道', bg: BG + 'mountain.svg', mood: 'warm',
+    desc: [
+      '驿镇以南的风口上蹲着一间巴掌大的山神祠，半间屋顶的瓦被山风揭走了，剩下的瓦上压着三块白石头。',
+      '祠里没有神像，只有一方被摩挲得发亮的供桌——赶山人不供像，供的是「风调雪顺」四个刻字。桌角的香灰是新的：这年头，还有人记得来还愿。',
+      '祠檐下避风处，一个断眉的汉子正给火塘添柴，身边挂着几条熏得油亮的肉。',
+    ],
+    brief: '风口上的巴掌大山神祠。断眉猎户的火塘就生在檐下。',
+    rest: { cost: 0, label: '在祠檐下避风歇脚' },
+    exits: {
+      n: { to: 'road_town', label: '北 · 回官道驿镇', flavor: '你出祠北上，驿镇的炊烟很快接住了你。' },
+      e: { to: 'goat_slope', label: '东 · 牧羊坡', flavor: '你翻过祠后的石梁，坡上传来断断续续的铃铛声。' },
+      w: { to: 'grayridge_gate', label: '西 · 下山去灰岭镇', flavor: '你沿山口小径下到镇口。灰岭镇的炊烟，还是老样子。' },
+    },
+    onEnter: async () => {
+      if (!ev('shrineVisit')) return;
+      await say([
+        '供桌前的小木匣里插着几根竹签，签上刻着赶山人的规矩：「山里三不借：火不借，盐不借，运气不借。」',
+        '可火塘边的断眉汉子朝你扬了扬下巴——意思分明是：火，随便烤。',
+      ]);
+    },
+    actions: [
+      { text: '往供桌的愿钱匣里投一枚金币，添一炷香', when: () => !S.flags.shrineOffer, req: s => s.gold >= 1, lock: '金币不足', run: async () => {
+        setFlag('shrineOffer');
+        fx({ gold: -1, sp: 2 });
+        await say([
+          '你投下一枚金币。断眉汉子把一炷香插进香灰。火光里，山风恰好在此时歇了一拍。',
+          '「山神爷记下了。」他难得开口，「风顺了，脚下的路就顺。」（斗气 +2）',
+        ]);
+      } },
+    ],
+    npcs: {
+      huoqi: {
+        name: '断眉猎户霍七', img: null, role: '霜脊山里最后一个敢下套子的猎户',
+        talk: async () => {
+          if (!S.flags.huoMet) {
+            setFlag('huoMet');
+            await say([
+              '「霍七。」汉子拍拍身边滚圆的熏肉，「行七，猎户行里排第七，前头六个都改行了。」',
+              '他扯下两条熏肉，不由分说塞给你：「山里人见面分肉，不算施舍——拿着，顶饱。」',
+              '「往西边隘口去的客官，夜里千万别贪路。矿那头，去年冬天就『换人住』了：白天是雪，夜里是雪底下的东西。」',
+            ]);
+            give('smoked_meat', 2);
+            await say(['（获得：猎户熏肉 ×2）']);
+            return;
+          }
+          if (S.flags.harkReply && !S.flags.huoHarkDone) {
+            setFlag('huoHarkDone');
+            finishSide('oldfriends');
+            give('smoked_meat', 2);
+            fx({ rep: 1 });
+            await say([
+              '「他真这么说？」霍七背过身去好一会儿，再转回来时嗓子有点哑，「老不死的，还咬得动弓弦就好……当年在霜脊山，他的套子比我准，酒比我狠。」',
+              '「雾里的东西不认套子——这话在理。你回去告诉他：山口这头，有火塘，有热汤，套子我照下。哪天他想走动了，我这儿有他的铺位。」',
+              '他扯下两条熏肉塞给你，下手很重：「替我带给他的……算了，你路上吃。替我记着这份心就行。」（声望 +1，获得：猎户熏肉 ×2）',
+            ]);
+            return;
+          }
+          if (S.flags.mineDeep && !S.flags.huoMine) {
+            setFlag('huoMine');
+            await say([
+              '「矿里那圈坐着的，你见着了？」霍七往火塘里添了根柴，「都是好汉子。矿监逼着下井那晚，是他们把最后一盏灯挂上坑口的——说灯亮着，后来人就知道这儿塌过。」',
+              '他忽然抹了把脸：「替我多看他们一眼。我进不去——一进山，腿肚子就转筋。」',
+            ]);
+            return;
+          }
+          if (S.flags.part2 && !S.flags.huoNews) {
+            setFlag('huoNews');
+            await say([
+              '「城里那颗星星又亮起来的那晚，」霍七难得笑出声，「满山的套子都空着——好啊，野兽跟人都活着，比什么都好。」',
+            ]);
+            return;
+          }
+          if (!S.flags.huoHarkAsk) {
+            setFlag('huoHarkAsk');
+            sideQuest('oldfriends');
+            await say([
+              '「客官是从南边灰岭镇那条山口过来的？」霍七往火塘里添了根柴，忽然没头没尾地问，「镇上是不是有个背弓的老头，姓哈克？」',
+              '「俺们当年一块儿在霜脊山下套。打从雾一起，音信就断了——老汉腿脚沉，我这心里，悬。」',
+              '「客官要是回灰岭，替我问一声：他还打猎吗？腰还弯得动吗？问完了捎回来，算我欠你一趟山。」',
+              '（支线接取：山里的旧友——回灰岭集市，替霍七问一声老猎户哈克的近况。）',
+            ]);
+            return;
+          }
+          await say([
+            '「熏肉要吃就掰，别客气。」霍七眯眼望着西边的山脊，「这些日子，坡上的羊夜里都不卧坡了，全挤在祠檐底下——牲口比人先知道该挨着谁睡。」',
+          ]);
+        },
+      },
+    },
+  },
+
+  goat_slope: {
+    name: '牧羊坡', ch: '第二部 · 星辰之印', sub: '小节一 · 霜脊山道', bg: BG + 'mountain.svg', mood: 'warm',
+    desc: [
+      '背风的阳坡上覆着短草，几十只山羊散在坡上，铃铛声东一下西一下，像谁在雪地里撒了一把碎星。',
+      '坡上支着一顶磨得发白的小帐篷，一个半大孩子在石头间跳来跳去，鞭子甩得比人还高。',
+    ],
+    brief: '散着羊群的阳坡。牧羊少年的鞭子甩得比人还高。',
+    rest: { cost: 1, label: '在帐篷边喝碗羊奶歇脚' },
+    exits: {
+      w: { to: 'shrine_pass', label: '西 · 风口山神祠', flavor: '你沿石梁折回风口。祠檐下的火光在风里一明一暗。' },
+      s: { to: 'ridge_watchtower', label: '南 · 荒烽哨', flavor: '你顺着坡脊南下。一座塌了半边的烽哨蹲在岭线上。' },
+      n: { to: 'miner_camp', label: '北 · 牧道翻山', flavor: '你赶着让过羊群，踏上北面的牧道。翻过山坳，一片死寂的矿村摊在雪里。' },
+    },
+    roam: {
+      en: 'wolves', chance: 0.2, fleeTo: 'shrine_pass', intro: '坡下的乱石后头，几双青灰的眼睛正借着雪光打量羊群。',
+      byTime: { night: { en: 'wraith', chance: 0.3, intro: '入夜后的牧羊坡静得反常——羊群挤成一团，雾从坡下漫上来，拧出一个没有脸的轮廓。' } },
+    },
+    onEnter: async () => {
+      if (!ev('slopeVisit')) return;
+      await say([
+        '牧羊少年把鞭子往腰里一插，老气横秋地朝羊群喊了一嗓子。羊群听话地往帐篷那边拢了拢。',
+        '「夜里的坡不能待。」他冲你们摆摆手，「不是狼——狼好歹是畜生。夜里来的那位，羊看了都往回跑。」',
+      ]);
+    },
+    npcs: {
+      shi: {
+        name: '牧羊少年石头', img: null, role: '牧羊坡上最年轻的赶山人',
+        talk: async () => {
+          if (S.sideQuests.lamb === 'active' && S.flags.lambFound) {
+            await say([
+              '「灰角儿！」石头从你怀里接过瑟瑟发抖的羊羔，脸埋进那身卷毛里好一顿蹭。',
+              '「它在汤泉边缩着？难怪——它最会挑地方。」他掏出一个小布包，「给你！赶山人的谢礼，我娘熏的。」',
+            ]);
+            fx({ gold: 3, rep: 1 });
+            give('smoked_meat', 2);
+            finishSide('lamb');
+            await say(['（报酬：金币 +3，猎户熏肉 ×2，声望 +1）']);
+            return;
+          }
+          if (S.sideQuests.lamb === 'active') {
+            await say(['「灰角儿还没回来？」石头朝各个方向望了一圈，最后指着西北的雪谷，「汤泉！白气最旺的地方它准在——那小东西，冷了知道找暖和。」']);
+            return;
+          }
+          if (S.sideQuests.lamb === 'done') {
+            await say(['「灰角儿如今不敢跑远了。」石头得意地晃晃鞭子，「铃铛一响它头一个回——赶山人嘛，日子就是一声一声摇出来的。」']);
+            return;
+          }
+          await say([
+            '「客官见着一头羊羔没？额头一块灰，角才冒尖儿。」石头搓着通红的手，「晌午雾一起，它就跟丢了。我娘说了，找不回来，今年冬天的羊奶饼就少一张嘴的份。」',
+            '「它性子暖和，天一冷准往暖和的地方钻——西北雪谷里那眼野汤泉，白气最旺。」',
+          ]);
+          sideQuest('lamb');
+        },
+      },
+    },
+    actions: [
+      { text: '帮石头把走散的羊拢回坡顶', when: () => !S.flags.slopeHerd, run: async () => {
+        setFlag('slopeHerd');
+        fx({ rep: 1, hp: 2 });
+        await say([
+          '你学着他的样子吆喝了两声，把三只贪嘴的羊从雪窝里撵回坡顶。石头冲你竖起大拇指：「地道！赶山的活儿你也干得来。」',
+          '他舀了一碗温羊奶塞给你。（声望 +1，生命 +2）',
+        ]);
+      } },
+    ],
+  },
+
+  ridge_watchtower: {
+    name: '荒烽哨', ch: '第二部 · 星辰之印', sub: '小节二 · 官道北行', bg: BG + 'mountain.svg', mood: 'dark',
+    desc: [
+      '岭线上的烽哨塌了半边，剩下的半边还立着，箭窗正对着北面旷野。哨台下的雪窝里，半截拴马的桩子冻在冰里。',
+      '最后一任哨卒走得很体面：灶膛封了灰，水缸扣着盖，箭窗内侧的墙上留着一行炭字——「无事。风大。」',
+    ],
+    brief: '塌了半边的岭线烽哨。箭窗对着北面旷野，墙上有前任哨卒的炭字。',
+    wild: true,
+    roam: {
+      en: 'thug', chance: 0.25, fleeTo: 'goat_slope', intro: '哨台的阴影里蹲着个人影——山匪把这处废哨当成了歇脚的窝。',
+      byTime: { night: { en: 'wraith', chance: 0.3, intro: '夜里，箭窗外浮起一个没有脸的哨兵轮廓，规规矩矩地立着岗——它已经立了很多年。' } },
+    },
+    exits: {
+      n: { to: 'goat_slope', label: '北 · 回牧羊坡', flavor: '你沿坡脊折回北面。羊铃声远远地飘着。' },
+      sw: { to: 'north_road', label: '西南 · 下山接官道', flavor: '你从烽哨西南的碎石坡下去，官道在旷野上铺开。' },
+    },
+    actions: [
+      { text: '登上哨台，从箭窗远眺白石城', when: () => !S.flags.watchSeen, run: async () => {
+        setFlag('watchSeen');
+        fx({ gold: 5 });
+        await say([
+          '箭窗正对北面旷野。两天路程外的白石城在暮色里泛着白光，那座细高的星塔挑在城中央，塔顶的蓝白宝石一明一灭，像在喘气。',
+          '艾莉娅贴着箭窗看了很久，眉头越皱越紧：「护城河的水……是黑的。城防本该映在水里，可河面上连一盏巡灯的影子都没有。」',
+          '窗台上搁着一只粗陶碗，碗里冻着一层陈年的雪水——最后一任哨卒，把最后一碗水留给了下一班岗。碗底压着五枚金币。（金币 +5）',
+        ]);
+      } },
+      { text: '翻看封好的哨灶', when: () => !S.flags.watchStove, run: async () => {
+        setFlag('watchStove');
+        fx({ hp: 2, gold: 3 });
+        await say([
+          '灶膛封着灰，灰底下压着一小袋干粮和几张油布——哨卒走得从容，东西留给了可能路过的人。干粮还能吃。（生命 +2，金币 +3）',
+        ]);
+      } },
+    ],
+  },
+
+  snow_hot_spring: {
+    name: '雪谷野汤', ch: '第二部 · 星辰之印', sub: '小节一 · 霜脊山道', bg: BG + 'mountain.svg', mood: 'warm',
+    desc: [
+      '雪谷的谷底淌着一汪野汤泉，白气一团团往上升，把周围的雪烘出一圈湿黑的泥土。泉边的界石压着半朽的木牌，上面的字被热气熏得只剩「勿动」。',
+      '泉眼咕嘟咕嘟地冒，几枚蛋大的卵石窝在泉边的热泥里——赶山人路过，都知道把蛋埋进去，一袋烟的工夫就熟。',
+    ],
+    brief: '雪谷底冒着白气的野汤泉。界石压着「勿动」的木牌。',
+    rest: { cost: 0, label: '在泉边的热石上烤干衣裳' },
+    exits: {
+      n: { to: 'frost_pass', label: '北 · 回白霜隘口', flavor: '你烤干衣裳，踏着热气离开泉边。风雪在谷口重新罩下来。' },
+    },
+    onEnter: async () => {
+      if (!ev('springSoak')) return;
+      await say([
+        '你把手脚泡进泉边的热水洼里。寒气顺着骨头缝被一点点拔出来，僵了一路的筋骨松开了。（生命 +2，斗气 +2）',
+        '白气之外，雪谷静悄悄的。只有界石旁的热泥偶尔咕嘟一声——底下似乎埋着什么。',
+      ]);
+      fx({ hp: 2, sp: 2 });
+    },
+    actions: [
+      { text: '把羊羔从泉边的热泥窝里抱出来', when: () => S.sideQuests.lamb === 'active' && !S.flags.lambFound, run: async () => {
+        setFlag('lambFound');
+        await say([
+          '白气最旺的热泥窝里，一团灰白的小东西猛地弹了起来——额头一块灰，角才冒尖儿，正把四条腿轮流插进热泥里取暖。',
+          '羊羔认生，却不认热水。你脱下外衣把它一裹，它立刻安生了，隔着衣裳「咩」了一声，湿乎乎的鼻尖拱了拱你的下巴。',
+          '（羊羔找到了——回牧羊坡交给石头吧。）',
+        ]);
+      } },
+      treasureAction('miner'),
+    ],
+  },
+
+  miner_camp: {
+    name: '空营矿村', ch: '第二部 · 星辰之印', sub: '小节一 · 霜脊山道', bg: BG + 'mountain.svg', mood: 'dark',
+    desc: [
+      '翻过山坳，一整片矿工的窝棚村摊在雪里。灶是冷的，晾衣绳是空的，只有村口那盏矿灯还挂在木杆上——灯罩擦得干干净净，火苗却早灭了。',
+      '雪地上只有一行脚印，从村子里出来，绕了一圈，又回去了。脚印的主人，显然还在村里「上工」。',
+    ],
+    brief: '灶冷灯灭的矿工窝棚村。雪地上一行脚印绕着村子打转。',
+    checkpoint: true,
+    rest: { cost: 2, label: '在何十斤的火塘边歇脚' },
+    exits: {
+      s: { to: 'goat_slope', label: '南 · 牧道翻山', flavor: '你沿牧道翻下山坳，羊铃声渐渐接住了你。' },
+      w: { to: 'frost_mine', label: '西 · 封冻的银矿', flavor: '你踏着矿车的旧辙向西。坑口那半扇门板还在风里磕着门框。' },
+    },
+    roam: {
+      en: 'frosthusk', chance: 0.28, fleeTo: 'frost_mine', intro: '雪雾里立起一个叮当作响的影子——下工的「人」，还在村道上走最后一趟。',
+      byTime: { night: { en: 'wraith', chance: 0.35, intro: '入夜后的矿村，那行脚印又绕了出来。雾里浮起几点冷光，挨家挨户地「查铺」。' } },
+    },
+    onEnter: async () => {
+      if (S.flags.villageClear) return;   // 战败可重试
+      await say([
+        '村道中央的雪被踩得板结。一个高大的身影背对着你们，正拿把矿锤一下一下地敲着村口的灯杆——不是在毁灯，是在「上弦」，像三十年里每一个收工的傍晚一样。',
+        '它转过身。矿监的皮裙还系在腰上，手里攥着一本烂掉的名册——名字念完了，它就把来的人也记上去。',
+      ]);
+      const r = await battle('overseer');
+      if (r !== 'win') return;
+      setFlag('villageClear');
+      await say([
+        '矿监散成砂与黑雾。名册飘落在雪里，最后一页是空白。',
+        '村道上那行转圈的脚印，从雪面上一寸寸淡了下去——下工的人，终于等到了收工的锣。',
+      ]);
+    },
+    actions: [
+      { text: '把村口的矿灯重新点亮', when: () => !S.flags.campLamp, run: async () => {
+        setFlag('campLamp');
+        fx({ rep: 1 });
+        await say([
+          '你摘下灯罩，拨亮捻子。矿灯的光不大，但在雪原上，够走夜路的人看一里地。',
+          '何十斤在身后看着，忽然背过身去，肩膀抖了半天：「三十年……我天天擦它，就是想着万一，万一还有人回来呢。」',
+          '（声望 +1）',
+        ]);
+      } },
+      { text: '翻看窝棚里没带走的家当', when: () => !S.flags.campLoot, run: async () => {
+        setFlag('campLoot');
+        fx({ gold: 6 });
+        await say([
+          '窝棚里的东西都码得整整齐齐——矿工们不是逃命，是「等着回来」：墙上钉着工牌，灶边码着碗，唯独一双孩子的虎头鞋挂在门边，鞋尖朝着山外。',
+          '炕洞里塞着一只钱袋，是哪户人家攒下的口粮钱。（金币 +6）',
+        ]);
+      } },
+    ],
+    npcs: {
+      he: {
+        name: '留下的老矿工何十斤', img: null, role: '空营矿村里唯一没走的人',
+        talk: async () => {
+          if (!S.flags.heMet) {
+            setFlag('heMet');
+            await say([
+              '火塘边坐着个精瘦的老头，正拿一块肉干逗火——火早灭了，他还是天天喂。「何十斤。体重，我爹取的，他希望我沉。」',
+              '「都走了。就我没走——矿是老四他们一镐一镐刨出来的，人留在里头，总得有人看着灯。」',
+              '「坑里那圈兄弟你见着了吧。」他声音低下去，「影蚀的秃驴们惦记矿里的星髓银。老四他们不肯带路，就……都留在了最里头。」',
+            ]);
+            return;
+          }
+          if (S.flags.mineDeep && !S.flags.heLamp) {
+            setFlag('heLamp');
+            give('miner_lamp');
+            give('tmap_miner');
+            await say([
+              '「灯挂回坑口了？」何十斤的手抖了很久，从怀里摸出一样东西——一盏擦了几十年的挡风矿灯，「拿着。老四他们要是知道灯有人接着点，能乐醒过来。」',
+              '（获得：老矿工的风灯 · 斗气上限+2）',
+              '「还有这个。」他又撕下半张记账纸，「矿工们的卖命钱，一文一文凑的，埋在雪谷野汤泉边——老规矩，埋钱的地方，得有人看着。你去，替他们把这笔账清了。」',
+              '（获得：矿工的藏宝单——行囊里翻阅可知埋宝处。）',
+            ]);
+            return;
+          }
+          if (S.flags.part2 && !S.flags.heNews) {
+            setFlag('heNews');
+            await say([
+              '「城里的兵要回来了？！」何十斤一巴掌拍在膝盖上，「好啊！等官府把矿证批下来，我挨家挨户去信——老四家的、老七家的，都回来！这矿，还出银子！」',
+            ]);
+            return;
+          }
+          if (!S.flags.heLetters && S.flags.villageClear) {
+            setFlag('heLetters');
+            sideQuest('letters');
+            await say([
+              '「对了，还有桩心事。」何十斤从炕席底下摸出一沓皱巴巴的信，和几块擦得发亮的工牌，「好几户家属，当年逃难往南边的灰岭镇去了。老四家的、老七家的……都带着娃。」',
+              '「矿上的账清了，人也走得体面——这话得有人带到。客官要是要去灰岭，替我把信捎到。工牌也带上：挂在门楣上，就算人回来了。」',
+              '（支线接取：矿工的家书——把家书与工牌送到灰岭镇。）',
+            ]);
+            return;
+          }
+          if (S.flags.lettersDone && !S.flags.heLettersBack) {
+            setFlag('heLettersBack');
+            await say([
+              '「送到了？」何十斤接过你学来的那句回话——老四家的婆娘说，工牌挂上门楣那天，孩子们在底下看了一整晚。',
+              '他没说话，往那口灭了的火塘边坐下，拿肉干「喂」了很久的火。这一次，火塘里好像真的暖了一点。',
+              '「这山啊，总算又跟人通着气了。」',
+            ]);
+            return;
+          }
+          await say([
+            '何十斤往灭了的火塘边一坐，又开始拿肉干「喂」火。「矿灯你见着了？擦干净点儿。灯亮着，山里走夜路的，心里就有个亮。」',
+          ]);
+        },
+      },
+    },
+  },
+
+  burnt_post: {
+    name: '官道荒驿', ch: '第二部 · 星辰之印', sub: '小节二 · 官道北行', bg: BG + 'road.svg', mood: 'dark',
+    desc: [
+      '官道旁的驿亭烧塌了大半，焦黑的梁木上还挂着半面驿旗。火不是新烧的——焦木缝里都长出了去年的枯草。',
+      '驿亭后头的地窖盖板虚掩着，窖口两侧各摆了一块石头，像有人进出时，特意留下的记号。',
+    ],
+    brief: '烧塌了大半的官道驿亭。焦梁上挂着半面驿旗，地窖口摆着记号石。',
+    wild: true,
+    roam: {
+      en: 'thug', chance: 0.22, fleeTo: 'road_town', intro: '驿亭的焦梁后闪出一条人影——荒驿成了劫道者眼中现成的哨卡。',
+      byTime: { night: { en: 'wraith', chance: 0.3, intro: '夜里，驿旗的残角无风自动。雾从地窖口漫出来，聚成一个没有脸的驿卒，朝你比了个「验关」的手势。' } },
+    },
+    exits: {
+      s: { to: 'road_town', label: '南 · 回官道驿镇', flavor: '你沿官道折回南下，驿镇的灯火渐渐近了。' },
+      n: { to: 'north_road', label: '北 · 溃兵营地方向', flavor: '你踏着焦木间的荒草北上。破茶棚的烟在旷野尽头隐约可见。' },
+    },
+    actions: [
+      { text: '掀开地窖盖板', when: () => !S.flags.postCellar, run: async () => {
+        setFlag('postCellar');
+        fx({ gold: 4 });
+        await say([
+          '地窖不深，码着几桶没烧着的酒和半袋栗子——驿卒们跑火之前埋下的存货。桶底的泥里还陷着一把验关用的铜戳。',
+          '你取走栗子和桶底捞出的几枚泡胀的铜钱，把铜戳端端正正摆回窖口——驿亭会再开张的。（金币 +4）',
+        ]);
+      } },
+    ],
   },
 
   whitestone_gate: {
@@ -3106,6 +3916,8 @@ const WORLD = {
     brief: '又窄又深的巷子。墨坊后门虚掩，墙根散落着没人认领的物件。',
     exits: {
       e: { to: 'whitestone_street', label: '回大街', flavor: '你贴着墙根退出小巷，大街上的火光让人心里踏实了些。' },
+      n: { to: 'city_well', label: '北 · 巷尾老井', flavor: '你绕到巷子北头的井台。两层官府封条在风里掀着角。' },
+      w: { to: 'curfew_post', label: '西 · 宵禁更楼', flavor: '你沿巷子向西。高脚更楼的灯火在夜色里晃出一圈暖黄。' },
     },
     onEnter: async () => {
       if (S.flags.alleyDone) return;   // 战败可重试
@@ -3124,7 +3936,8 @@ const WORLD = {
       fx({ gold: 6 });
       await say(['（回到大街，把怀表交给街角老妇吧。）']);
     },
-    roam: { en: 'thug', chance: 0.3, intro: '巷子深处的黑影又立了起来——宵禁后的巷子，从来不安全。' },
+    roam: { en: 'thug', chance: 0.3, intro: '巷子深处的黑影又立了起来——宵禁后的巷子，从来不安全。',
+      byTime: { night: { en: 'corrupt_guard', chance: 0.35, intro: '宵禁后的巷子深处，一双脚跟不着地的脚步行了过来——甲叶摩擦的声响里，混着紫雾的腥气。' } } },
   },
 
   city_market: {
@@ -3138,6 +3951,7 @@ const WORLD = {
     exits: {
       w: { to: 'whitestone_street', label: '回大街', flavor: '你出市集向西，回到白石大街。' },
       n: { to: 'city_barracks', label: '北 · 卫戍营房', flavor: '你绕过市集北面的空场。操练场上星纹旗低垂，兵器架擦得锃亮。' },
+      e: { to: 'king_square', label: '东 · 铸像广场', flavor: '你穿过市集东面的牌坊。广场中央，先王的白石铸像在暮色里立着。' },
     },
     npcs: {
       raven: {
@@ -3167,9 +3981,11 @@ const WORLD = {
       '宵禁前的下城区比大街有人气，也比大街更沉。',
     ],
     brief: '歪斜木屋间的下城区。赈粥棚前的长队安静得过分。',
-    roam: { en: 'thug', chance: 0.18, fleeTo: 'whitestone_street', intro: '巷口的黑影晃了晃——下城区的宵禁，比别处来得更早。' },
+    roam: { en: 'thug', chance: 0.18, fleeTo: 'whitestone_street', intro: '巷口的黑影晃了晃——下城区的宵禁，比别处来得更早。',
+      byTime: { night: { en: 'corrupt_guard', chance: 0.25, intro: '下城的夜雾里，一双脚跟不着地的脚步行过晾衣绳下——甲叶擦着墙皮，沙沙作响。' } } },
     exits: {
       ne: { to: 'whitestone_street', label: '回大街', flavor: '你踏上石阶回到大街。身后，粥棚的木牌在风里轻轻磕碰。' },
+      sw: { to: 'orphanage', label: '西南 · 慈幼堂', flavor: '你朝西南的巷子深处走。晾衣绳的小山后面，传来稀粥的翻滚声。' },
     },
     npcs: {
       crone: {
@@ -3228,6 +4044,7 @@ const WORLD = {
     brief: '空了一半的操练场。宽肩军官在场边磨枪。',
     exits: {
       s: { to: 'city_market', label: '回白石市集', flavor: '你离开营房，市集的吆喝声重新涌进耳朵。' },
+      e: { to: 'granary_gate', label: '东 · 官仓', flavor: '你沿营房东墙走去。官仓的高墙下，运粮的辙印密得能织成席子。' },
     },
     npcs: {
       captain: {
@@ -3276,6 +4093,259 @@ const WORLD = {
         },
       },
     },
+  },
+
+  /* ---- 第二部扩写 · 白石城坊间 ---- */
+
+  king_square: {
+    name: '白石城 · 铸像广场', ch: '第二部 · 星辰之印', sub: '小节三 · 白石城中', bg: BG + 'city.svg', mood: 'warm',
+    desc: [
+      '广场正中，先王的白石铸像立了三百年：左手按剑，右手五指并拢、轻轻合在胸前——那是「封印之手」的古礼，手合则印固。',
+      '像座下的石阶上坐着避风晒太阳的老人。广场东角支着一口黄铜大锅，锅底的炭火不紧不慢，姜汤的白气混着人声，把戒严撕开了一道口子。',
+      '不知是谁，把一张画着「睁开的眼睛」的纸贴在了铸像合拢的手心上。老人们看见了，谁也不去揭，只是别过脸去。',
+    ],
+    brief: '立着先王合掌像的广场。东角的姜汤锅冒着白气。',
+    exits: {
+      w: { to: 'city_market', label: '西 · 回白石市集', flavor: '你穿过广场回到市集。吆喝声重新涌进耳朵。' },
+    },
+    actions: [
+      { text: '揭掉铸像手心上的「睁眼」纸', when: () => !S.flags.statueClean, run: async () => {
+        setFlag('statueClean');
+        fx({ rep: 1 });
+        await say([
+          '你踮脚揭下那张纸，撕碎，扬进风里。石阶上的老人们先是怔住，随后不知是谁先起的头，掌声零零落落地响成了一片。',
+          '一位老者朝你深深拱手：「三百年了，那双手一直合着。有人贴脏东西，就有撕脏东西的手。」（声望 +1）',
+        ]);
+      } },
+      { text: '细看先王铸像的合掌手印', when: () => !S.flags.statueHands, run: async () => {
+        setFlag('statueHands');
+        sideQuest('seventh');
+        await say([
+          '铸像的双手合得极缓极稳，指尖相抵，虚虚拢成一个环——像捧着一件看不见的东西。',
+          '你想起藏书阁的起居注：「手合则印固，手张则印倾。」巴洛克袖口那只「睁开的眼睛」，与这双手隔着的，是三百年的人心。',
+          '你忽然想起荒石料场那位老石匠——三代人不敢刻的第七位先王的脸。模样就在眼前：合着手的，就该是这个样子。',
+          '（支线接取：第七张脸——回荒石料场，把先王的模样讲给莫大。）',
+        ]);
+      } },
+    ],
+    npcs: {
+      kang: {
+        name: '姜汤摊的康婆', img: null, role: '广场东角熬了半辈子姜汤的摊主',
+        talk: async () => {
+          if (!S.flags.kangMet) {
+            setFlag('kangMet');
+            await say([
+              '「头一碗不要钱。」康婆舀起一勺滚烫的姜汤，不由分说递过来，「下城来的孩子、守夜的兵、跑单帮的——到我锅前，都算半个客。」',
+              '「官府封了城西的井，说是水坏了。」她撇撇嘴，「坏的是水？坏的是有人想掐着全城的水囊米袋。我这一锅，姜是下城凑的，柴是卫戍营的兵偷偷抱来的——人心没坏透。」',
+            ]);
+            fx({ hp: 3 });
+            await say(['你捧着粗陶碗喝了。姜味冲，后味甜，从喉咙一路暖到脚尖。（生命 +3）']);
+            return;
+          }
+          if (S.flags.part2 && !S.flags.kangNews) {
+            setFlag('kangNews');
+            await say([
+              '「巴洛克下了大狱那晚，」康婆把火拨得旺旺的，「我这一锅姜汤，愣是被守夜的兵和下城的爷们喝干了三回！今儿起，头一碗还是不要钱——好日子，得从锅里开始。」',
+            ]);
+            return;
+          }
+          for (;;) {
+            const i = await choose([
+              { text: '买一碗热姜汤（1金币）', req: s => s.gold >= 1, lock: '金币不足' },
+              { text: '道谢告辞' },
+            ]);
+            if (i !== 0) return;
+            fx({ gold: -1, item: 'hot_soup' });
+            await say(['康婆麻利地灌满一只小陶壶，塞给你：「路上喝。姜味冲，忍着点——冲的才是好姜。」（获得：热姜汤 ×1）']);
+          }
+        },
+      },
+    },
+  },
+
+  city_well: {
+    name: '白石城 · 城西老井', ch: '第二部 · 星辰之印', sub: '小节三 · 白石城中', bg: BG + 'city.svg', mood: 'dark',
+    desc: [
+      '老井的井台上交叉贴着两张官府封条，浆糊的印迹压着更早的一层——这井封过不止一次。',
+      '井绳齐根断了，井口的砖沿被磨出几十道深深的绳痕。奇怪的是封条底下的砖缝里，有人用炭条画了一道小小的门，门是开着的。',
+    ],
+    brief: '贴着两层封条的老井。井绳齐根断了，砖缝里画着一扇开着的小门。',
+    exits: {
+      s: { to: 'west_alley', label: '南 · 回城西小巷', flavor: '你离开井台。巷子深处的更声一下一下，数着宵禁的时辰。' },
+    },
+    onEnter: async () => {
+      if (!ev('westWellVisit')) return;
+      await say([
+        '你趴在井沿听了听。井底深处传来极轻的、指甲挠砖的声响——一下，一下，慢得像在数着什么。',
+        '艾莉娅按住你的手腕，摇了摇头。声响停了。整条巷子静得能听见封条在风里掀角的轻响。',
+      ]);
+    },
+    actions: [
+      { text: '用剑挑开封条，放下水囊打一囊井水', when: () => !S.flags.wellWater, run: async () => {
+        setFlag('wellWater');
+        fx({ hp: 2 });
+        await say([
+          '封条脆得一挑就开。水囊落底，「咚」的一声闷响过后，你绞上来半囊清凌凌的水——井水干净得很，一点异味都没有。',
+          '「官府说水坏了？」巷口看热闹的孩子中的一个嘟囔，「坏的是他们不许人打水。」水很甜。（生命 +2）',
+        ]);
+      } },
+      { text: '摸一摸井壁的砖龛', when: () => !S.flags.wellNiche, run: async () => {
+        setFlag('wellNiche');
+        fx({ gold: 4 });
+        await say([
+          '井口下三尺的砖壁上真有一个巴掌大的砖龛，是打水人搁灯的老位置。龛里塞着一只油布包：几枚铜钱，和一小卷花名册的抄页。',
+          '抄页上是下城失踪者的名字，每个名字后头注着一行小字：「皆从西巷没。」不知是哪位更夫或什长，偷偷替没了的人记着账。（金币 +4）',
+        ]);
+      } },
+      { text: '举光照进掀开封条的井口', needsLight: true, when: () => !S.flags.cityWellGleam, run: async () => {
+        if (!await payLight()) return;
+        setFlag('cityWellGleam');
+        fx({ gold: 4 });
+        await say([
+          '你把光探进井口，顺着绳痕往下照。井壁上有一道挠痕——从水面下开始，一路向上，砖都被挠出了白茬。它想上来。它差点就上来了。',
+          '挠痕尽头的水线处，一枚铁牌嵌在砖缝里：影蚀制式的腰牌，背面錾着「验收」二字，边缘还留着半枚「睁眼」火漆的印。',
+          '「皆从西巷没。」更夫的账、井底的牌、宵禁夜的高影子，在这一口老井里对上了。（金币 +4。失踪的人不是自己走的——他们是「被收走」的。）',
+        ]);
+      } },
+    ],
+  },
+
+  granary_gate: {
+    name: '白石城 · 官仓', ch: '第二部 · 星辰之印', sub: '小节三 · 白石城中', bg: BG + 'city.svg', mood: 'warm',
+    desc: [
+      '官仓的高墙下，运粮的辙印密得能织成席子——进仓的辙深，出仓的辙浅，压的全是新土。',
+      '仓门前，一个抱着秤杆打盹的老仓吏惊醒过来，慌忙直腰：「官仓重地……哦，不是催粮的？那就……那就站远些看，别跨辙印。」',
+    ],
+    brief: '高墙深锁的官仓。进仓的辙深，出仓的辙浅。',
+    exits: {
+      w: { to: 'city_barracks', label: '西 · 回卫戍营房', flavor: '你离开仓场。操练场上，寥落的操练声一下一下。' },
+    },
+    onEnter: async () => {
+      if (!ev('granaryVisit')) return;
+      await say([
+        '老仓吏姓娄，抱着秤杆的手背上全是冻疮。他凑近了些，声音压到几乎听不见：「客官是外乡来的？那老朽多句嘴——」',
+        '「入秋到如今，进仓的粮一石没少，出仓的车队却一夜比一夜多。出仓的批条，抬头都盖着同一方印。粮去哪儿了，秤知道，老朽的嘴不敢知道。」',
+      ]);
+    },
+    actions: [
+      { text: '夜里伏上仓场对面的屋脊，数一数出仓的车队', when: () => !S.flags.granaryClue, run: async () => {
+        setFlag('granaryClue');
+        await say([
+          '三更，你伏上屋脊。仓门开了条缝，八辆无灯的板车鱼贯而出，车辙压进雪里，一路朝城西贵族区的方向去了。押车的家丁，个个佩着巴洛克府里的腰牌。',
+          '折回来时，娄伯提着灯在仓墙根下等你，手里攥着一卷抄好的仓簿：「老朽抄了三夜。客官若真有法子治他们，把这卷账，呈到能看见的地方去。」',
+          '（获得线索：官仓的粮，正被夜里的车队一批批运进巴洛克的私库。当庭对质时，这卷账会说话。）',
+        ]);
+      } },
+    ],
+  },
+
+  orphanage: {
+    name: '白石城 · 慈幼堂', ch: '第二部 · 星辰之印', sub: '小节三 · 白石城中', bg: BG + 'city.svg', mood: 'warm',
+    desc: [
+      '下城区最深处的一进院子，门口挂着一块褪色的木匾：慈幼堂。院里晾着小山似的衣裳，十几个孩子正围着一口大锅转，锅里的粥稀得能照见人影。',
+      '掌事的白嬷嬷嗓门不大，却镇得住满院子孩子。她看见你们，先把门边的扫帚往身后拢了拢——这年头，上门的不都是好人。',
+    ],
+    brief: '下城深处的慈幼堂。锅里的粥稀得能照见人影。',
+    exits: {
+      ne: { to: 'lower_quarter', label: '东北 · 回下城区', flavor: '你离开慈幼堂。晾衣绳间的灰网在头顶晃了晃。' },
+    },
+    npcs: {
+      bai: {
+        name: '掌事的白嬷嬷', img: null, role: '慈幼堂的当家人 · 下城孩子的活菩萨',
+        talk: async () => {
+          if (S.sideQuests.porridge === 'active' && (S.items.smoked_meat || 0) >= 2) {
+            await say([
+              '两块熏肉下了锅，粥汤眼见着稠了。白嬷嬷把你的手攥在掌心里搓了搓：「好孩子。这两个月，堂里的孩子头一回闻着肉香。」',
+              '她从怀里摸出一束红绳结——是孩子们一人一道编的。「拿着。下城人的谢礼不值钱，可是灵。」',
+            ]);
+            take('smoked_meat', 2);
+            fx({ gold: 3, rep: 1, item: 'peace_knot' });
+            finishSide('porridge');
+            await say(['（报酬：金币 +3，声望 +1，获得：孩子们打的平安结 · 生命上限+2）']);
+            return;
+          }
+          if (S.sideQuests.porridge === 'active') {
+            await say(['「肉还差着呢。」白嬷嬷往灶里添了把柴，「猎户霍七的熏肉最好，熬汤出味。孩子们不挑，稠一点，就是过年。」']);
+            return;
+          }
+          if (S.sideQuests.porridge === 'done') {
+            await say(['「粥稠了，觉就香了。」白嬷嬷朝满院的孩子扬扬下巴，「你听——打呼的都比前些日子响。」']);
+            return;
+          }
+          await say([
+            '「粮税一分没少，兵一抽走，粮道也断了。」白嬷嬷搅着稀粥，声音又轻又稳，「堂里四十七个孩子，如今一日两顿稀的。老身的膝盖熬得住，孩子的骨头熬不住。」',
+            '「你要是能弄来两块肉——熏肉、腊肉，带油的都行——这场粥就能稠三天。」',
+          ]);
+          sideQuest('porridge');
+        },
+      },
+    },
+    actions: [
+      { text: '听孩子们念叨夜里的「高高的影子」', when: () => !S.flags.kidTales, run: async () => {
+        setFlag('kidTales');
+        await say([
+          '孩子们围上来七嘴八舌。说到「夜里的巷子」，吵嚷声忽然矮了下去。',
+          '「高高的影子，」最小的那个比划着，比到一半缩回了手，「贴着墙走，头能碰到屋檐。它走过的地方，狗不叫，也不摇尾巴，就是往后退。」',
+          '白嬷嬷把孩子们拢回锅边，压低声音：「别怕，有嬷嬷呢。」转头看向你时，那双稳了半辈子的眼睛里，第一次有了晃动——「后生，夜里出门，千万结伴。」',
+        ]);
+      } },
+    ],
+  },
+
+  curfew_post: {
+    name: '白石城 · 宵禁更楼', ch: '第二部 · 星辰之印', sub: '小节三 · 白石城中', bg: BG + 'city.svg', mood: 'dark',
+    desc: [
+      '巷子西头的高脚更楼下，挂着一盏气死风灯。灯下的木凳上坐着个裹着旧棉袍的老更夫，梆子横在膝头，梆身被几十年的手磨出了包浆。',
+      '老更夫的靴底磨穿了，垫着厚厚的毡子。他不用看天，闭着眼也数得出三更四更——这条街的夜，是从他梆子底下一年一年淌过去的。',
+    ],
+    brief: '巷口的高脚更楼。老更夫的梆子磨出了几十年的包浆。',
+    exits: {
+      e: { to: 'west_alley', label: '东 · 回城西小巷', flavor: '你沿墙根折回小巷。更声在身后不紧不慢地跟着。' },
+    },
+    npcs: {
+      nie: {
+        name: '老更夫聂伯', img: null, role: '打了一辈子更的老更夫',
+        talk: async () => {
+          if (!S.flags.nieMet) {
+            setFlag('nieMet');
+            await say([
+              '「聂伯。」老更夫拍拍身边的木凳，「打更的，全城睡得最少的人。女王陛下睡几个时辰？我梆子底下数得清——比我还少。」',
+              '「坐。宵禁的规矩我不敢破，可借你半盏灯的亮，还是敢的。」',
+            ]);
+            fx({ sp: 2 });
+            await say(['灯下坐了一炷香的工夫。梆声一下一下，听着听着，连日的紧绷竟松开了些。（斗气 +2）']);
+            return;
+          }
+          if (S.flags.alleyDone && !S.flags.nieAlley) {
+            setFlag('nieAlley');
+            await say([
+              '「怀表的事，我听说了。」聂伯的声音低了下去，「艾德温那孩子，每夜三更都要等我的梆子响过才吹灯——他说是跟更声学的守时。」',
+              '「那晚我在楼上看得真真的：巷口进了三个『走路的』，脚跟不着地。我梆子敲得山响，也没能把他们敲回头。」他攥紧了梆子，「老人家的梆子，到底只能敲给活人听。」',
+            ]);
+            return;
+          }
+          if (S.flags.part2 && !S.flags.nieNews) {
+            setFlag('nieNews');
+            await say([
+              '「宵禁解了！」聂伯难得笑了，露出一口豁牙，「今夜起，梆子只报时辰，不催人回家——你听听，巷子里的狗叫，都欢实了！」',
+            ]);
+            return;
+          }
+          await say([
+            '「夜里的巷子，脚步声我分得出几百种。」聂伯眯眼望着巷子深处，「活人的脚步有重量，落了地还要弹一下。前些日子起，有些『脚步』没有重量——遇见了，别回头，跟我的梆声走。」',
+          ]);
+        },
+      },
+    },
+    actions: [
+      { text: '登上更楼，借着灯火望一望全城', when: () => !S.flags.nieView, run: async () => {
+        setFlag('nieView');
+        await say([
+          '更楼的灯火不高，但够望见两样东西：南面下城区，慈幼堂的窗纸透着一点暖黄；东面仓场的方向，雪地上压着深深浅浅的车辙，一直延向城西。',
+          '聂伯在楼下念叨：「仓场的车，专拣三更出。老朽人微言轻——可梆子底下，什么都记着呢。」',
+        ]);
+      } },
+    ],
   },
 
   palace_hall: {
@@ -3333,6 +4403,9 @@ const WORLD = {
         if (S.flags.deserterClue) lines.push(
           '你呈上溃兵什长抄录的调令：三个月间，三支千人队以「北境换防」之名被调离城防——粮饷却在中途被巴洛克的私库账房截留。',
           '「北境无战报，无哨塔，无一兵接防。」你一字一句，「大人调空的，是星塔的守军。」');
+        if (S.flags.granaryClue) lines.push(
+          '你呈上娄伯抄了三夜的仓簿：进仓的粮一石未少，出仓的车队却夜夜不息——八车七车，尽数运进了巴洛克的私库。',
+          '「兵是他调空的，粮是他搬空的。」下城赈粥棚里那锅一天稀过一天的粥，就是这本账的注脚。满朝文武，鸦雀无声。');
         lines.push(
           '「陛下明鉴，此乃家徽——」',
           '「你的家徽，」女王缓缓起身，声音不高，大殿却安静得可怕，「是只睁开的眼睛。而先王的家徽，是合拢的手。」',
@@ -3633,10 +4706,14 @@ const WORLD = {
       '卡雅眯眼望着海面：「潮头不对。这一带的浪，三天前就该转向了。」',
     ],
     brief: '咸风扑面的海岬。崖下涛声低沉，界碑指向南方的潮歌湾。',
-    roam: { en: 'deepone', chance: 0.22, intro: '路边水洼忽然荡开一圈涟漪——湿漉漉的灰绿身影从礁石阴影里立了起来。' },
+    roam: {
+      en: 'deepone', chance: 0.22, intro: '路边水洼忽然荡开一圈涟漪——湿漉漉的灰绿身影从礁石阴影里立了起来。',
+      byTime: { night: { en: 'wraith', chance: 0.3, intro: '入夜后的海岬只剩涛声。雾从崖下漫上官道，立成一个没有脸的赶海人，与你同路了很久。' } },
+    },
     exits: {
       n: { to: 'whitestone_gate', label: '回白石城', flavor: '你沿官道折返。两日后，白石城的白墙重新出现在地平线上。' },
       s: { to: 'tidesong_harbor', label: '南 · 潮歌湾', flavor: '你踏上下坡的官道。转过最后一道山梁，一片桅杆如林的渔港在暮色里亮起灯火。' },
+      w: { to: 'tide_cliff', label: '西 · 望潮崖', flavor: '你踏上岬角西侧的崖径。涛声在耳边一路涨高，崖台的木栏出现在风里。' },
       e: {
         to: 'golden_road', label: '东 · 金穗平原方向', flavor: '你踏上东去的岔道。风里的咸味渐渐淡去，远处，麦浪的金黄在地平线上铺开。',
         req: s => s.flags.part3, lock: '丰收之印的传闻还在远方——先取海洋之印',
@@ -3665,6 +4742,8 @@ const WORLD = {
     exits: {
       n: { to: 'coast_road', label: '回海风岬', flavor: '你出了小镇，沿官道折回海风岬。涛声在身后一声声送行。' },
       e: { to: 'lighthouse', label: '东 · 潮歌灯塔', flavor: '你沿海堤向东。暮色里，一座半斜的白塔立在礁岩尽头，塔顶黑着，像一只闭上的眼。' },
+      w: { to: 'salt_sheds', label: '西 · 盐灶滩', flavor: '你沿海湾折向西北。晒盐的铸铁大锅在荒滩上一排排泛着白霜。' },
+      s: { to: 'sea_mother_shrine', label: '南 · 海母祠', flavor: '你走上渔港南端的小丘。石头祠的贝串门帘在风里轻轻晃着。' },
     },
     rest: { cost: 6, label: '在渔家客栈休整' },
     actions: [
@@ -3709,7 +4788,259 @@ const WORLD = {
                   '「还有件小事，白送：祭坛前若摆着不该摆的东西，别碰。海收东西，也收手。」',
                   '你与艾莉娅对视一眼。等你回过神，街角的货车已经空了，只留下一枚带着咸味的旧铜钱。',
                 ]);
-              } }, ['potion', 'potion_big', 'amulet', 'tide_weave']);
+              } }, ['potion', 'potion_big', 'amulet', 'tide_weave', 'torch']);
+        },
+      },
+    },
+  },
+
+  /* ---- 第三部扩写 · 官道与渔港外围 ---- */
+  tide_cliff: {
+    name: '南海官道 · 望潮崖', ch: '第三部 · 海洋之印', sub: '小节一 · 南下潮歌湾', bg: BG + 'sea.svg', mood: 'dark',
+    wild: true,
+    desc: [
+      '官道在岬角西侧分出一条崖径，尽头是一方探出海面的老崖台。台边的木栏换过几茬新木——总有人特地绕上来，就为看一眼海。',
+      '崖下，本该退去的潮悬在半途：浪头黑得发闷，一线一线往礁石上舔，舔完又缩回去，像在试探什么。',
+      '台角立着半截风磨的旗杆，杆上没有旗，只拴着一串褪色的铜铃——渔人管这叫「听风铃」，铃不响，出海就得再等等。',
+    ],
+    brief: '探出海面的老崖台。崖下的潮黑得发闷，涨退之间像在试探。',
+    roam: {
+      en: 'brinehusk', chance: 0.2, fleeTo: 'coast_road', intro: '盐白的礁缝里立起一具窸窣作响的身影——滩上晒着的「东西」，未必都是鱼。',
+      byTime: { night: { en: 'wraith', chance: 0.3, intro: '入夜后的崖台只剩涛声。雾从崖底爬上来，拧出一个没有脸的望潮人，与你并肩立了很久。' } },
+    },
+    exits: {
+      e: { to: 'coast_road', label: '回海风岬', flavor: '你沿崖径折回官道。听风铃在身后轻轻磕了两声，又哑了。' },
+      s: { to: 'salt_sheds', label: '南 · 盐灶滩', flavor: '你顺着崖径下到滩头。一排排熬盐的大锅在荒滩上泛着白霜。' },
+    },
+    onEnter: async () => {
+      if (!ev('cliffVisit')) return;
+      await say([
+        '你凭栏而立。黑浪退开的一瞬，崖下的深水里极快地掠过一道白影——像一袭袍角。等你想看清，浪已经合拢了。',
+        '「潮信乱了……」艾莉娅望着那线悬着的黑潮，「老渔人说三天前该转向的潮，到现在还没转。这不像天时——像有什么东西，在海底下攥着潮头。」',
+      ]);
+    },
+    actions: [
+      { text: '凭栏细看崖下悬着的黑潮', when: () => !S.flags.cliffView, run: async () => {
+        setFlag('cliffView');
+        await say([
+          '你盯着那线黑潮看了半炷香。涨，退，再涨——每次都比上一次高出一指宽，像一口被慢慢焐开的锅。',
+          '索恩把巨斧往栏上一搭：「俺爹说过，海不守规矩，八成是有人在不守规矩的海底下点灯。」',
+        ]);
+      } },
+      { text: '拾取界碑座下的平安铜钱', when: () => !S.flags.cliffCoins, run: async () => {
+        setFlag('cliffCoins');
+        fx({ gold: 3 });
+        await say([
+          '崖台的界碑座下压着几枚旧铜钱，是渔人求平安丢的，被浪磨得发亮。你只拾走三枚，其余的还给他们。（金币 +3）',
+        ]);
+      } },
+    ],
+  },
+
+  salt_sheds: {
+    name: '盐灶滩', ch: '第三部 · 海洋之印', sub: '小节一 · 南下潮歌湾', bg: BG + 'sea.svg', mood: 'warm',
+    wild: true, checkpoint: true,
+    desc: [
+      '月牙形的一弯荒滩上，几十口熬盐的铸铁大锅一排排架在石灶上，锅沿结着厚厚的盐霜，白得像落了一层不化的雪。',
+      '滩上的盐工棚塌了大半，只剩最里头一间还整着：火塘是热的，锅里的卤水咕嘟着——三十年了，还有人在这儿晒盐。',
+    ],
+    brief: '架着几十口熬盐大锅的荒滩。最里头的盐棚里，火塘还热着。',
+    rest: { cost: 1, label: '在盐棚的火塘边暖暖身子' },
+    roam: {
+      en: 'brinehusk', chance: 0.22, fleeTo: 'tidesong_harbor', intro: '盐堆后面挪出一具盐白的身影，一步一步走得很规矩——像还在上工。',
+      byTime: { night: { en: 'wraith', chance: 0.3, intro: '入夜后的盐滩泛着幽幽的白。雾贴着卤水池爬过来，立成一个没有脸的挑盐工。' } },
+    },
+    exits: {
+      n: { to: 'tide_cliff', label: '北 · 回望潮崖', flavor: '你踏上崖径折回北面。听风铃的声音顺着风飘下来。' },
+      s: { to: 'old_dockyard', label: '南 · 老船坞', flavor: '你沿滩涂南行。半沉的船台斜插进泥里，桐油的味道远远飘来。' },
+      e: { to: 'tidesong_harbor', label: '东 · 回渔港', flavor: '你离开盐滩，渔港的灯火在桅杆间一盏盏亮起来。' },
+    },
+    actions: [
+      { text: '摘下盐仓梁上的干货袋', when: () => !S.flags.saltLoft, run: async () => {
+        setFlag('saltLoft');
+        fx({ gold: 4 });
+        await say([
+          '盐仓的房梁上吊着一只防潮的油布袋——老盐工的规矩，工钱挂在梁上，人到哪天算到哪天。袋子里的钱干爽得很。（金币 +4）',
+        ]);
+      } },
+      { text: '帮卤叔翻一帘盐', when: () => !S.flags.saltTurn, run: async () => {
+        setFlag('saltTurn');
+        fx({ rep: 1, item: 'clam_skewer' });
+        await say([
+          '你学着把盐卤耙拢、起盐、码垛。卤叔往你手里塞了一串烤得滋滋作响的贝串：「盐是百味之首。肯弯腰的人，到哪儿都饿不死。」',
+          '（声望 +1，获得：烤贝串 ×1）',
+        ]);
+      } },
+    ],
+    npcs: {
+      lu: {
+        name: '老盐工卤叔', img: null, role: '盐灶滩最后一个晒盐人',
+        talk: async () => {
+          if (!S.flags.saltMet) {
+            setFlag('saltMet');
+            give('clam_skewer');
+            await say([
+              '火塘边坐着个背驼得像盐堆的老头，手里一把盐耙磨得只剩半截。「卤叔。姓什么忘了，盐卤吃多了，人都带咸味。」',
+              '他往你手里塞了一串刚出锅的烤贝串：「进滩的就是客。拿着。」',
+              '「盐场三十年前就散了工——灯塔一黑，海不守规矩，滩上夜里走的东西比人多。就我赖着不走：盐是百味之首，世道再乱，汤不能淡。」',
+              '（获得：烤贝串 ×1）',
+            ]);
+            return;
+          }
+          if (S.flags.lampLit && !S.flags.saltLamp) {
+            setFlag('saltLamp');
+            await say([
+              '「灯亮了！」卤叔往火塘里狠狠添了把柴，火苗蹿起老高，「你看着——今夜起，俺这几十口锅，连夜翻盐！盐滩的夜，还给人！」',
+            ]);
+            return;
+          }
+          for (;;) {
+            const i = await choose([
+              { text: '买一串烤贝串（1金币）', req: s => s.gold >= 1, lock: '金币不足' },
+              { text: '道谢告辞' },
+            ]);
+            if (i !== 0) return;
+            fx({ gold: -1, item: 'clam_skewer' });
+            await say(['卤叔麻利地撸下一串滋滋作响的贝串，粗盐粒还挂在壳上：「趁热。咸鲜的东西，凉了就委屈了。」（获得：烤贝串 ×1）']);
+          }
+        },
+      },
+    },
+  },
+
+  old_dockyard: {
+    name: '老船坞', ch: '第三部 · 海洋之印', sub: '小节一 · 南下潮歌湾', bg: BG + 'harbor.svg', mood: 'warm',
+    desc: [
+      '一弯半沉的船台斜插进滩涂，台上还架着一条造了一半的渔船，龙骨蒙着湿帆布——桐油的味道隔着老远就闻得到。',
+      '工棚门楣上钉着一块褪色的木牌：「潮记船坞」。棚里的工具按大小挂了一墙，一件不缺，像主人只是出去解了个手。',
+    ],
+    brief: '半沉的船台与造了一半的渔船。桐油味漫在滩涂上。',
+    exits: {
+      n: { to: 'salt_sheds', label: '北 · 回盐灶滩', flavor: '你离开船坞。盐滩上的大锅在暮色里白成一片。' },
+      e: { to: 'sea_mother_shrine', label: '东 · 海母祠', flavor: '你踏着滩涂东行。小丘上，石头祠的贝串门帘轻轻晃着。' },
+    },
+    actions: [
+      { text: '帮潮叔给新船的龙骨刷桐油', when: () => !S.flags.dockOil, run: async () => {
+        setFlag('dockOil');
+        fx({ rep: 1 });
+        await say([
+          '你接过油刷，沿着龙骨一路刷下去。桐油封住木纹的那一瞬，整条船像是终于喘出了一口气。',
+          '「心细。」潮叔头也不抬，「这条船，带着你的手艺下水。」（声望 +1）',
+        ]);
+      } },
+      { text: '翻看工棚墙上的旧货单', when: () => !S.flags.dockLedger, run: async () => {
+        setFlag('dockLedger');
+        await say([
+          '货单摞了厚厚一沓，最底下的一张已经脆黄。三十年间，每一页都记着同一笔进项：「鸦羽车，货照收，人不见。」',
+          '你想起渔港街角那辆漆成鸦羽色的货车——三十年，一位从不露面的老主顾。',
+        ]);
+      } },
+      { text: '撬开船台立柱下的旧工具箱', when: () => !S.flags.dockChest, run: async () => {
+        setFlag('dockChest');
+        fx({ gold: 5 });
+        await say([
+          '船台的立柱下压着一只旧工具箱，锁早锈死了。里头是几枚工钱和一把磨得只剩半截的凿子——船匠的家当，失主怕是等不到了。（金币 +5）',
+        ]);
+      } },
+    ],
+    npcs: {
+      chao: {
+        name: '造船的潮叔', img: null, role: '潮记船坞的船匠 · 卡雅的舅舅',
+        talk: async () => {
+          if (!S.flags.dockMet) {
+            setFlag('dockMet');
+            await say([
+              '「潮叔。船坞传到我是第四代。」他拍着那条半成的船身，「这条船，是给灯塔上的老祈修的补给船——料齐了三十年，就是没人敢出海送。」',
+              '「不是船不行，是海不行。灯一黑，出海的船就得跟水里的『东西』讲道理。讲不过的，都留在海底了。」',
+            ]);
+            return;
+          }
+          if (S.flags.kaya && !S.flags.dockKaya) {
+            setFlag('dockKaya');
+            await say([
+              '「卡雅那丫头跟你们一路？」潮叔手里的刨子顿了顿，「她阿公走了以后，她见着船坞就绕道。你们带她多走几趟海——海这东西，跟人一样，得处。」',
+            ]);
+            return;
+          }
+          if (S.flags.lampLit && !S.flags.dockLamp) {
+            setFlag('dockLamp');
+            await say([
+              '潮叔把最后一道桐油刷上船帮，直起腰望着灯塔的方向：「船修好了。今夜就推下水——灯亮着，海就认得这条路了。」',
+              '他难得地笑了。刀刻似的皱纹里，盛着三十年没盛过的东西。',
+            ]);
+            return;
+          }
+          await say([
+            '「桐油要刷三道，急不得。」潮叔眯眼削着木销子，「船跟人一样——糊弄了它，它就糊弄你的命。」',
+          ]);
+        },
+      },
+    },
+  },
+
+  sea_mother_shrine: {
+    name: '海母祠', ch: '第三部 · 海洋之印', sub: '小节一 · 南下潮歌湾', bg: BG + 'inn.svg', mood: 'warm',
+    rest: { cost: 1, label: '在祠里的蒲团上打个盹' },
+    desc: [
+      '渔港南端的小丘上蹲着一间石头祠，没有门，只挂一幅贝串的门帘。祠里供的不是像，是一面砌满小灯龛的墙——几千盏祈愿灯的龛位，密密麻麻排了整面墙。',
+      '亮着的灯龛不到一成。每盏灯下压着一张纸条，写的都是同一类话：「愿他回航」「愿网不空」「愿浪下的人，走得稳些」。',
+    ],
+    brief: '砌满祈愿灯龛的石头小祠。亮着的灯，不到一成。',
+    exits: {
+      n: { to: 'tidesong_harbor', label: '北 · 回渔港', flavor: '你掀帘出祠。渔港的桅杆林就在丘下，灯火次第。' },
+      w: { to: 'old_dockyard', label: '西 · 老船坞', flavor: '你沿小丘西侧下到滩涂。桐油味顺着风漫过来。' },
+      e: { to: 'fog_boardwalk', label: '东 · 海雾栈道', flavor: '你绕过祠后的小径。一条钉在崖腰的栈道钻进了雾里。' },
+    },
+    onEnter: async () => {
+      if (!ev('momShrine')) return;
+      await say([
+        '门帘一掀，一个盘坐在灯墙前的白发老妪头也不回：「进来吧。脚步这么轻——不是来讨风的，是来还愿的。」',
+      ]);
+    },
+    actions: [
+      { text: '点一盏祈愿灯（1金币）', when: () => !S.flags.shrineLamp, req: s => s.gold >= 1, lock: '金币不足', run: async () => {
+        setFlag('shrineLamp');
+        fx({ gold: -1, sp: 2 });
+        await say([
+          '你把一盏小灯嵌进空龛，火苗颤了颤，站稳了。祝婆婆朝着灯的方向合了合掌。',
+          '灯墙深处，仿佛有几千盏看不见的灯，跟着你这盏一块亮了一瞬。（斗气 +2）',
+        ]);
+      } },
+    ],
+    npcs: {
+      zhu: {
+        name: '庙祝祝婆婆', img: null, role: '海母祠的守灯人 · 瞎了三十年的老妪',
+        talk: async () => {
+          if (S.sideQuests.shipwall === 'active' && S.flags.coveWords) {
+            finishSide('shipwall');
+            fx({ gold: 5, rep: 1, item: 'sea_rope' });
+            await say([
+              '「念吧。」她朝你伸出手，像要接住每一个字。你把船壁上那行浅浅的刻痕，一个字一个字地念给她听。',
+              '「『灯要是亮着，我就能看见回家的路。』」她跟着念完，安静了很久，忽然笑了：「灶生。我儿的小名。三十年了，头一回有人把他捎回家。」',
+              '她从灯墙最中央的龛里取下一束红绳——那是全祠最早的一盏祈愿灯下压着的东西：「他出海那天我亲手系的。如今物归原主——系它的人说了，把它送给带他回家的人。」',
+              '（报酬：金币 +5，声望 +1，获得：海母祠的红绳 · 生命上限+3）',
+            ]);
+            return;
+          }
+          if (S.sideQuests.shipwall === 'active') {
+            await say([
+              '「沉船湾……长顺号的船壁上，刻满了正字。」祝婆婆的手指在膝头一下一下地数着，「我儿灶生失踪的那条船。」',
+              '「你若去了，替我把船壁最后一行浅浅的字念给浪听一遍——也念回来给我。我瞎了眼，可我认得他的刀法。」',
+            ]);
+            return;
+          }
+          if (S.sideQuests.shipwall === 'done') {
+            await say([
+              '「灯墙我虽看不见，可哪盏亮着，我心里有数。」祝婆婆朝你坐的方向偏了偏头，「你那盏，一直亮着呢。」',
+            ]);
+            return;
+          }
+          await say([
+            '「婆婆这双眼，是三十年前哭坏的。」祝婆婆的声音又轻又稳，「那一年长顺号没回来——一船的男人，连同我的灶生。」',
+            '「渔行的人说，沉船湾的船骸里有面刻满「正」字的船壁——有人在那条船上，活了很久很久。」',
+            '「求你件事。你若去沉船湾，替我看一眼那面墙。最后一行的字，替我念回来——三十年了，总得有人替他，把话说完。」',
+          ]);
+          sideQuest('shipwall');
         },
       },
     },
@@ -3726,6 +5057,7 @@ const WORLD = {
     exits: {
       w: { to: 'tidesong_harbor', label: '回渔港', flavor: '你沿海堤折回渔港，灯火在身后一盏盏亮起。' },
       s: { to: 'reef_shoal', label: '南 · 礁滩', flavor: '你踏上退潮后露出的礁滩。水洼间荧光点点，浪沫在脚边碎开。' },
+      sw: { to: 'fog_boardwalk', label: '西南 · 海雾栈道', flavor: '你踏上崖腰的栈道。雾从崖下漫上来，淹过栈面半寸。' },
     },
     onEnter: async () => {
       if (S.flags.kaya || !ev('kayaAmbush')) return;   // 战败可重试，直到救下卡雅
@@ -3780,6 +5112,18 @@ const WORLD = {
             finishSide('glowweeds');
             return;
           }
+          if (S.flags.perchRod && !S.flags.rodDone) {
+            setFlag('rodDone');
+            finishSide('grandrod');
+            fx({ gold: 4, rep: 1, sp: 2 });
+            await say([
+              '老祈双手接过那根鲸骨节拼的旧竿，摩挲着缠柄的布条，好一会儿没说话。',
+              '「老哥的竿子……」他把竿子端正挂上塔壁的挂钩，跟自己那把旧竿并排，「他总说要把竿子留给『认得的娃』——娃认得，竿也认得。」',
+              '他从窗台的小铁盒里摸出四枚金币，不由分说塞过来：「钓台替他守着，竿子替他收着。这两样，他都托付对人了。」',
+              '（报酬：金币 +4，声望 +1，斗气 +2）',
+            ]);
+            return;
+          }
           if (S.sideQuests.glowweeds === 'active') {
             await say([`「荧藻凑齐三株再回来。」老祈掰着手指，「礁滩背阴的石缝、沉船湾的船板底、还有潮汐洞窟的水线旁——都长着。看它们自己发亮的就是。」`, `「你如今手里有 ${(S.items.glowweed || 0)} 株。」`]);
             return;
@@ -3830,7 +5174,10 @@ const WORLD = {
       '滩涂深处，几具搁浅的破船板歪在礁石间。再往南，海雾里的石柱轮廓渐渐清晰。',
     ],
     brief: '一望无际的退潮礁滩。水洼荧光点点，海雾里的石柱轮廓隐约可见。',
-    roam: { en: ['deepone', 'reefcrab'], chance: 0.3, fleeTo: 'lighthouse', intro: '水洼忽然齐齐荡开涟漪——滩涂上的东西醒了。' },
+    roam: {
+      en: ['deepone', 'reefcrab'], chance: 0.3, fleeTo: 'lighthouse', intro: '水洼忽然齐齐荡开涟漪——滩涂上的东西醒了。',
+      byTime: { night: { en: 'wraith', chance: 0.25, intro: '入夜后的礁滩静得反常。雾从水洼里立起来——没脸的，连潮声都替它让路。' } },
+    },
     exits: {
       n: { to: 'lighthouse', label: '回灯塔', flavor: '你踏上来路。灯塔的光在身后一圈圈扫过夜海。' },
       e: { to: 'shipwreck_cove', label: '东 · 沉船湾', flavor: '你踏着礁石向东。几具巨大的船骸在浪线间横陈，像退潮留下来的骨头。' },
@@ -3861,6 +5208,7 @@ const WORLD = {
     brief: '龙骨朝天的沉船群。船壁上刻满层层叠叠的求生痕迹。',
     exits: {
       w: { to: 'reef_shoal', label: '回礁滩', flavor: '你离开沉船湾，礁滩的荧光在暮色里重新亮起。' },
+      e: { to: 'whale_beach', label: '东 · 鲸骨滩', flavor: '你踏着礁石向东。浪声忽然变了调，像一杆收不回来的号角。' },
     },
     onEnter: async () => {
       if (S.flags.coveDone) return;   // 战败可重试
@@ -3880,6 +5228,15 @@ const WORLD = {
       ]);
     },
     actions: [
+      { text: '把船壁最后一行的刻痕念给浪听，也记在心里', when: () => S.sideQuests.shipwall === 'active' && !S.flags.coveWords, run: async () => {
+        setFlag('coveWords');
+        await say([
+          '你借着塔光，凑近那面刻满「正」字的船壁。三十七道刻痕之下，最后一行浅浅的刻痕被盐渍洇得发暗——',
+          '『灯要是亮着，我就能看见回家的路。——愿见字者代我望一眼』',
+          '你放轻了呼吸，把这一行字一个字一个字地念出声。浪声恰好低了下去，像整片海都在听。卡雅摘下斗笠，朝海的方向默默行了个渔家的礼。',
+          '（把这句话带回去吧——海母祠的祝婆婆还等着。）',
+        ]);
+      } },
       { text: '翻检船板底下堆积的海藻', when: () => S.sideQuests.glowweeds === 'active' && !S.flags.weed_cove, run: async () => {
         setFlag('weed_cove');
         fx({ item: 'glowweed' });
@@ -3888,6 +5245,7 @@ const WORLD = {
           '你把它起出来，荧光把四周的船骸照出一圈淡淡的轮廓。（获得：荧藻）',
         ]);
       } },
+      treasureAction('smuggler'),
     ],
   },
 
@@ -3900,6 +5258,7 @@ const WORLD = {
     brief: '潮声回荡的洞窟。水线旁的荧藻长成一圈星图。',
     exits: {
       e: { to: 'reef_shoal', label: '回礁滩', flavor: '你退出洞窟，潮声在背后一声声低了下去。' },
+      w: { to: 'sunken_hamlet', label: '西 · 淹水坳', flavor: '你绕过洞窟西侧的礁壁。退潮线以下，半个村子泡在水里。' },
     },
     onEnter: async () => {
       if (S.flags.caveDone) return;   // 战败可重试
@@ -3925,7 +5284,204 @@ const WORLD = {
           '水线旁的荧藻星图里，有一株格外亮。你连水带根把它起出来——洞里的潮声，仿佛跟着暗了一瞬。（获得：荧藻）',
         ]);
       } },
+      { text: '举光照向水线之上的洞顶', needsLight: true, when: () => !S.flags.caveGleam, run: async () => {
+        if (!await payLight()) return;
+        setFlag('caveGleam');
+        fx({ gold: 4 });
+        await say([
+          '你把光抬高。洞顶倒悬的钟乳石之间，刻痕一道叠着一道——是半幅潮路图：几代人的笔迹接着刻，潮路蜿蜒，尽头是一座小小的灯塔。',
+          '灯塔旁边还刻着一行小字：「潮从路来，不问昼夜。」笔锋收尾的一挑，和潮路石阶上的刻痕出自同一只手——刻图的人家，世代都守着这条海路。',
+          '石缝里卡着一只被潮水顶上来的旧钱袋，绳结早朽了。（金币 +4。卡雅盯着那半幅图看了很久，什么也没说。）',
+        ]);
+      } },
     ],
+  },
+
+  /* ---- 第三部扩写 · 礁滩外围 ---- */
+  fog_boardwalk: {
+    name: '海雾栈道', ch: '第三部 · 海洋之印', sub: '小节二 · 灯塔与礁滩', bg: BG + 'sea.svg', mood: 'dark',
+    wild: true,
+    desc: [
+      '一条钉在崖腰的老栈道，从渔港南端一路探向灯塔。木板被海风啃得发白，雾从崖下漫上来，淹过栈面半寸——走一步，雾里就荡开一圈。',
+      '栈道尽头的礁岩上，灯塔的白塔黑着。雾里偶尔传来木板「吱呀」的轻响，像有人在你前头十几步，不紧不慢地走着。',
+    ],
+    brief: '钉在崖腰的雾中栈道。雾里有木板轻响，像有人走在前头。',
+    roam: {
+      en: 'deepone', chance: 0.25, fleeTo: 'sea_mother_shrine', intro: '雾里那串「脚步」忽然近了——木板间立起一具滴水的灰绿身影，鳃盖开合的声音像破风箱。',
+      byTime: { night: { en: 'wraith', chance: 0.3, intro: '入夜后的栈道只剩你一个人的脚步声——和身后那串没有重量的、慢半拍的脚步。' } },
+    },
+    exits: {
+      w: { to: 'sea_mother_shrine', label: '西 · 回海母祠', flavor: '你退出栈道。祠里的灯墙隔着雾，晕出一点暖黄。' },
+      ne: { to: 'lighthouse', label: '东北 · 潮歌灯塔', flavor: '你踏着雾往东北去。白塔的轮廓一点一点从雾里析出来。' },
+    },
+    actions: [
+      { text: '低头看栈板底面的鱼汛刻痕', when: () => !S.flags.boardMark, run: async () => {
+        setFlag('boardMark');
+        await say([
+          '你蹲身翻看几块松动的栈板。板底刻着密密的短杠——渔人记鱼汛的老法子。刻到三十年前，短杠忽然断了，最后一道刻得很深，旁边一个小字：「灯」。',
+        ]);
+      } },
+      { text: '从雾里捞回一只挂断的皮囊', when: () => !S.flags.boardPouch, run: async () => {
+        setFlag('boardPouch');
+        fx({ gold: 4 });
+        await say([
+          '栈栏上挂着一只被风扯断绳的皮囊。里头是几枚铜钱和半块干硬的鱼饼——主人多半在雾里走散了。你把皮囊挂回最显眼的栈栏结上。（金币 +4）',
+        ]);
+      } },
+    ],
+  },
+
+  whale_beach: {
+    name: '鲸骨滩', ch: '第三部 · 海洋之印', sub: '小节二 · 灯塔与礁滩', bg: BG + 'sea.svg', mood: 'dark',
+    checkpoint: true,
+    desc: [
+      '滩涂尽头横着一副巨大的鲸骨，肋骨拱成一道半塌的穹门，脊柱在沙里铺出十几丈——猎鲸人的老话：鲸落海底，养活万物三十年。',
+      '鲸头骨前的沙里立着一方矮矮的祭台，台面上厚厚一层凝结的鲸油，油里的灯芯还是新的。三十年了，祭火没人敢断。',
+    ],
+    brief: '肋骨穹门下的巨鲸骸与猎鲸人的祭台。祭油里的灯芯还是新的。',
+    roam: {
+      en: ['deepone', 'reefcrab'], chance: 0.25, fleeTo: 'shipwreck_cove', intro: '鲸骨的阴影里挪出湿漉漉的影子——滩上的「住户」，早把巨骸当成了家。',
+      byTime: { night: { en: 'lampfish', chance: 0.3, intro: '入夜后的鲸骨滩，一点冷光贴着沙面游过来——灯眼鮟鱇提着它的「灯」，出来觅食了。' } },
+    },
+    exits: {
+      w: { to: 'shipwreck_cove', label: '西 · 回沉船湾', flavor: '你离开鲸骨滩。沉船的龙骨在浪线间重新露出来。' },
+      s: { to: 'reef_perch', label: '南 · 孤礁钓台', flavor: '你踏着退潮的沙脊南行。孤礁上，半间遮棚伏在浪线外。' },
+    },
+    onEnter: async () => {
+      if (!ev('whaleVisit')) return;
+      await say([
+        '鲸肋穹门下，风声呜呜地转，像一杆收不回来的号角。卡雅放轻了脚步：「阿公说，过鲸骨滩不许吹口哨——会把它当成同类的呼唤。」',
+      ]);
+    },
+    actions: [
+      { text: '往祭台上添一勺鲸油，续上祭火', when: () => !S.flags.whaleRite, run: async () => {
+        setFlag('whaleRite');
+        fx({ sp: 2 });
+        await say([
+          '你舀起一勺鲸油，把灯芯拨亮。火苗窜起来的一瞬，穿堂的海风恰好停了。',
+          '老猎鲸人说，祭火亮着，鲸王的魂就还认得这片海。（斗气 +2）',
+        ]);
+      } },
+      { text: '在鲸骨缝隙间拾捡旧币', when: () => !S.flags.whaleCoins, run: async () => {
+        setFlag('whaleCoins');
+        fx({ gold: 5 });
+        await say([
+          '鲸肋的缝隙里卡着几十年里渔人许愿投的旧币，被盐和油裹得发亮。你拾走五枚，其余的还给海。（金币 +5）',
+        ]);
+      } },
+      treasureAction('crab'),
+    ],
+  },
+
+  reef_perch: {
+    name: '孤礁钓台', ch: '第三部 · 海洋之印', sub: '小节二 · 灯塔与礁滩', bg: BG + 'sea.svg', mood: 'warm',
+    rest: { cost: 0, label: '在钓台的遮棚下打个小盹' },
+    desc: [
+      '一块退潮才露出脊背的孤礁上，搭着半间拿破船板拼的遮棚，棚柱上拴竿的铁环磨出了深槽——有人在这里，钓了一辈子的鱼。',
+      '棚下的石面上刻着一副棋盘，棋子是两种贝壳，一盘棋下到一半，再没人来下完它。',
+    ],
+    brief: '孤礁上的旧钓台。石面的棋局下到一半，再没人来下完。',
+    exits: {
+      n: { to: 'whale_beach', label: '北 · 回鲸骨滩', flavor: '你踏上沙脊折回。鲸肋穹门的影子横在滩上。' },
+    },
+    onEnter: async () => {
+      if (!ev('perchVisit')) return;
+      await say([
+        '遮棚的柱子上，拿刀一道一道刻着水深和潮时，字迹从工整到潦草，最后几年只剩下记号。',
+        '刻痕的末尾是一行小字：「潮路我记下了，交给认得的娃。」',
+      ]);
+    },
+    actions: [
+      { text: '收拾钓台上阿公留下的旧竿', when: () => !S.flags.perchRod, run: async () => {
+        setFlag('perchRod');
+        sideQuest('grandrod');
+        await say([
+          '遮棚深处立着一根用鲸骨节拼的老钓竿，缠柄的布条磨得发亮。卡雅接过竿子的手顿了顿：「这竿子……是阿公的。他最后出海前说过，要把竿子留给『认得的娃』。」',
+          '她把竿子仔细捆好，背在身后，声音低低的：「替我背回去吧——灯塔上的老祈阿公，跟他钓了一辈子鱼。」',
+          '（支线接取：阿公的旧竿——把钓竿带回潮歌灯塔，交给守塔人老祈。）',
+        ]);
+      } },
+      { text: '撬开棚柱下的浮桶', when: () => !S.flags.perchBarrel, run: async () => {
+        setFlag('perchBarrel');
+        fx({ gold: 4 });
+        await say([
+          '浮桶的盖板钉死了，撬开来是半桶盐渍的鱼饵和一只油纸包——包里是几枚被线穿好的铜钱，鱼咬钩的日子，钓主就往包里添一枚。（金币 +4）',
+        ]);
+      } },
+    ],
+  },
+
+  sunken_hamlet: {
+    name: '淹水坳', ch: '第三部 · 海洋之印', sub: '小节二 · 灯塔与礁滩', bg: BG + 'sea.svg', mood: 'dark',
+    wild: true,
+    desc: [
+      '退潮线以下，泡着半个村子：屋脊东倒西歪地露出水面，门楣上齐齐一道深色的水线，往上是一圈一圈的旧痕——三十年，海一寸一寸地往门里进。',
+      '最高的那户人家屋顶上还晾着一件衣裳，被风雨洗得只剩布筋。烟囱却是热的——这村子里，还住着人。',
+    ],
+    brief: '泡在退潮线以下的半个村子。烟囱里，还冒着最后一缕热烟。',
+    roam: {
+      en: 'deepone', chance: 0.28, fleeTo: 'sea_cave', intro: '水巷深处荡开一圈涟漪——「村道」上巡游的住户，并不欢迎访客。',
+      byTime: { night: { en: 'lampfish', chance: 0.35, intro: '入夜后的淹水坳，好几盏冷光在水巷里游弋——它们提着灯，挨家挨户地「查户」。' } },
+    },
+    exits: {
+      e: { to: 'sea_cave', label: '东 · 回潮汐洞窟', flavor: '你蹚出水巷。洞窟的潮声在礁壁那头接住了你。' },
+    },
+    actions: [
+      { text: '对照门楣上的水位刻痕', when: () => !S.flags.hamletMarks, run: async () => {
+        setFlag('hamletMarks');
+        await say([
+          '你挨家数过去：门楣上的水线一年高过一年，头十年涨得慢，近十年涨得急——跟灯塔熄灭的年头，对得严丝合缝。',
+          '索恩把斧头往水里一杵：「不是海在涨。是水里的东西，在往岸上拱。」',
+        ]);
+      } },
+      { text: '捞取水巷拐角的浮箱', when: () => !S.flags.hamletBox, run: async () => {
+        setFlag('hamletBox');
+        fx({ gold: 6 });
+        await say([
+          '水巷拐角卡着一只半沉的浮箱，掀开来是逃水患的人家来不及带走的家当：几枚铜钱，一把铜钥匙，还有一张浸烂的合家画像。（金币 +6）',
+        ]);
+      } },
+    ],
+    npcs: {
+      hai: {
+        name: '守屋的海爷', img: null, role: '淹水坳最后一家不搬的住户',
+        talk: async () => {
+          if (!S.flags.hamletMet) {
+            setFlag('hamletMet');
+            give('fish_soup');
+            await say([
+              '「海爷。姓什么？海抬走他家谱那年就忘了。」老头坐在屋顶改成的门槛上，脚底下就是水，「村里人嫌海进门槛，都搬了。我不搬——我儿子海生打白石城捎信回来说『攒够钱就回来修屋』。屋塌了，他回来住哪儿？」',
+              '他掀开屋里的小锅，舀出一碗滚烫的鱼骨汤塞给你：「进门的都是客。汤是潮歌湾的规矩——鲜字当头。」',
+              '（获得：鱼骨汤 ×1）',
+            ]);
+            return;
+          }
+          if (S.flags.lampLit && !S.flags.hamletLamp) {
+            setFlag('hamletLamp');
+            await say([
+              '「灯亮了。」海爷望着灯塔的方向，忽然用脚尖磕了磕门楣的水线，「你看着——灯亮着，海就不敢再进这门一寸。」',
+            ]);
+            return;
+          }
+          if (S.flags.part3 && !S.flags.hamletSea) {
+            setFlag('hamletSea');
+            await say([
+              '「大印重燃那夜，」海爷眯眼听着潮，「潮声顺了。老伙计们都这么说——海把三十年的账，认了。」',
+            ]);
+            return;
+          }
+          for (;;) {
+            const i = await choose([
+              { text: '再来一碗鱼骨汤（1金币）', req: s => s.gold >= 1, lock: '金币不足' },
+              { text: '道谢告辞' },
+            ]);
+            if (i !== 0) return;
+            fx({ gold: -1, item: 'fish_soup' });
+            await say(['海爷从小锅里又舀出一碗，汤面上的油花映着灯塔方向的天光：「慢点喝，烫——鲜东西都烫。」（获得：鱼骨汤 ×1）']);
+          }
+        },
+      },
+    },
   },
 
   sea_temple_hall: {
@@ -3938,6 +5494,8 @@ const WORLD = {
     brief: '半塌穹顶下的前殿。深蓝色的祭坛光从殿门深处漫出来。',
     exits: {
       n: { to: 'reef_shoal', label: '回礁滩', flavor: '你退回海路。身后的神殿沉回海雾里，涛声重新围拢过来。' },
+      w: { to: 'spring_gallery', label: '西 · 咏泉回廊', flavor: '你踏着浅水走向西侧回廊。泉水的暖意顺着水波漫过来。' },
+      e: { to: 'tide_stairs', label: '东 · 潮路石阶', flavor: '你绕到殿东侧。一道石阶没入浅水，阶面上刻痕密布。' },
       down: { to: 'tide_altar', label: '下 · 潮汐祭坛', flavor: '你踏着没过脚踝的浅水走向殿门深处。深蓝的光一寸寸淹上你的膝盖。' },
     },
     rest: { cost: 0, label: '在咏泉边整备' },
@@ -3964,6 +5522,72 @@ const WORLD = {
           '前殿的壁画被海气洇得发暗，但笔意仍在：七位先王点燃七印，锁链垂进海底的深渊。第三位先王的符文是一顶潮汐的冠冕，冠下刻着一行小字——',
           '『潮起潮落，皆是大地呼吸。吾随潮声沉眠，听潮者，听吾。』',
           '艾莉娅指尖抚过字痕：「先王的气息就在潮声里。等下在祭坛前，用心听。」',
+        ]);
+      } },
+    ],
+  },
+
+  /* ---- 第三部扩写 · 神殿两翼 ---- */
+  spring_gallery: {
+    name: '海底神殿 · 咏泉回廊', ch: '第三部 · 海洋之印', sub: '小节三 · 大退潮之夜', bg: BG + 'sunken.svg', mood: 'holy',
+    desc: [
+      '前殿西侧的回廊塌了一半，另一半还架在水上。廊柱的波纹刻饰间嵌着一圈圈贝饰，三百年了，光底下还泛着虹。',
+      '回廊尽头，咏泉的源头从一尊倒立的石像掌心里涌出来，落地成潭。潭底的沙年年翻新——先王的活水，不肯让任何东西在这座殿里烂掉。',
+    ],
+    brief: '架在水上的半塌回廊。咏泉的源头从石像掌心里涌出来。',
+    exits: {
+      e: { to: 'sea_temple_hall', label: '回前殿', flavor: '你沿回廊折回前殿。深蓝的光从殿门深处漫出来。' },
+    },
+    actions: [
+      { text: '在泉眼里掬一捧活水', when: () => !S.flags.galleryWater, run: async () => {
+        setFlag('galleryWater');
+        fx({ sp: 3 });
+        await say([
+          '活水离了泉眼还是温的，捧到唇边，一股暖流顺着喉咙一路熨到四肢百骸——三百年的朝圣者说的「洗尘」，原来是这个意思。（斗气 +3）',
+        ]);
+      } },
+      { text: '探一探石像基座的壁龛', when: () => !S.flags.galleryNiche, run: async () => {
+        setFlag('galleryNiche');
+        fx({ gold: 8, item: 'potion' });
+        await say([
+          '石像基座上有朝圣者砌的小龛，龛里是历代人留下的「过路钱」：钱币摞着钱币，最上头端端正正压着一瓶封蜡完好的药——留给「走得最远的那个人」。',
+          '（金币 +8，获得：生命药水 ×1）',
+        ]);
+      } },
+      { text: '读廊柱上的朝圣刻名', when: () => !S.flags.galleryNames, run: async () => {
+        setFlag('galleryNames');
+        await say([
+          '廊柱上刻满了名字，笔画深深浅浅，从三百年前排到三十年前。最近的一个名字旁边，有人用小字补了一句：「灯熄那年，止。」',
+          '艾莉娅指尖停在那一行上，轻声说：「朝圣的路，也是跟着灯塔断的。」',
+        ]);
+      } },
+    ],
+  },
+
+  tide_stairs: {
+    name: '海底神殿 · 潮路石阶', ch: '第三部 · 海洋之印', sub: '小节三 · 大退潮之夜', bg: BG + 'sunken.svg', mood: 'dark',
+    desc: [
+      '前殿东侧，一道石阶没进浅水里，一级一级沉向殿下的深水。阶面上刻着细密的纹路：水路的走向、暗礁的位置、潮头转向的日子——是一幅刻进石头里的潮路图。',
+      '刻痕的岔口上，有人用不同刀法补刻过几笔，深的深浅的浅，像一家人几代人接着刻同一张图。',
+    ],
+    brief: '没入浅水的石阶。阶面刻着一幅几代人接着刻的潮路图。',
+    exits: {
+      w: { to: 'sea_temple_hall', label: '回前殿', flavor: '你踏上回前殿的石阶。深蓝的光在前殿门洞里静静淌着。' },
+    },
+    onEnter: async () => {
+      if (!ev('stairsVisit')) return;
+      await say([
+        '卡雅在石阶前猛地站住了。她伸手抚过阶面的刻痕，声音有点发紧：「这刀法……跟我家那张半张的潮路图，是一路的。」',
+        '「阿公说，图传自先王守殿的人。」她的指尖顺着一条水路慢慢划下去，「原来『守』的，从来不只是殿——是路。」',
+      ]);
+    },
+    actions: [
+      { text: '拓下阶面的潮路刻痕', when: () => !S.flags.tidePath, run: async () => {
+        setFlag('tidePath');
+        fx({ sp: 2 });
+        await say([
+          '你用炭条把阶面的潮路仔细拓下来。深水里，隐约有大鱼贴着阶侧游过，不攻，也不躲——像在验看你拓的手法。（斗气 +2）',
+          '卡雅把拓片仔细收好：「等回了港，跟我家那张对一对。」',
         ]);
       } },
     ],
@@ -4124,7 +5748,7 @@ const WORLD = {
                   '「守穗人树林里的老婆婆知道得最清楚。她家的规矩老得很，也灵得很。」兜帽朝北偏了偏，「顺着她的农谚走，祭坛认这个。」',
                   '你与艾莉娅对视一眼。街角只剩下一枚带着麦香的旧铜钱。',
                 ]);
-              } }, ['potion', 'potion_big', 'amulet', 'harvest_charm']);
+              } }, ['potion', 'potion_big', 'amulet', 'harvest_charm', 'torch']);
         },
       },
     },
@@ -4369,7 +5993,7 @@ const WORLD = {
                   '「还有件事白送你：东北边那座营地的影蚀，不抢粮、不抓人，天天往地底下挖。你猜，他们想挖通到哪儿？」',
                   '你与艾莉娅对视一眼。等你回过神，界碑旁只剩下一小堆烧尽的篝火。',
                 ]);
-              } }, ['potion', 'potion_big', 'amulet']);
+              } }, ['potion', 'potion_big', 'amulet', 'torch']);
         },
       },
     },
@@ -4992,7 +6616,7 @@ const WORLD = {
               ]);
             }
           }
-          await shopLoop('「影渊脚下的最后一单，」渡鸦把货箱摊开，「护符和药水，比后悔便宜。」', null, ['potion', 'potion_big', 'amulet']);
+          await shopLoop('「影渊脚下的最后一单，」渡鸦把货箱摊开，「护符和药水，比后悔便宜。」', null, ['potion', 'potion_big', 'amulet', 'torch']);
         },
       },
     },
@@ -5471,6 +7095,26 @@ const TRAVEL_EVENTS = [
         '粗粝的调子在浪声里荡开，一遍又一遍。你不知怎么听懂了些——呼吸沉了下来，斗气在经脉里缓缓流转。（斗气 +2）',
       ]);
       fx({ sp: 2 });
+    },
+  },
+  {
+    id: 'tideglass',
+    when: () => S.flags.part3,
+    intro: '退潮的滩线上，一段浮木旁卧着一只封着蜡的细颈瓶，瓶里卷着一张油纸笺。',
+    run: async () => {
+      const i = await choose([
+        { text: '拾起瓶子，读一读油纸笺' },
+        { text: '把它放回滩线原处' },
+      ]);
+      if (i === 0) {
+        fx({ gold: 2, sp: 1 });
+        await say([
+          '蜡封一挑就开。油纸笺上是一笔稚拙的字：「阿爹出海第七天，平安。妹替他还愿。」——是一封没能寄出的报平安的信。',
+          '你把纸笺照原样卷好塞回瓶里，往海的深处轻轻送了一程，又在浮木边拾了两枚被浪磨圆的旧钱。（金币 +2，斗气 +1）',
+        ]);
+      } else {
+        await say(['你把瓶子扶正，让蜡封朝着海。有些信，该由海自己送达。']);
+      }
     },
   },
   {

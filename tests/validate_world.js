@@ -38,5 +38,11 @@ for (const [id, loc] of Object.entries(WORLD)) {
 if (!Array.isArray(TRAVEL_EVENTS) || !TRAVEL_EVENTS.length) errs.push('TRAVEL_EVENTS 为空或缺失');
 else for (const t of TRAVEL_EVENTS) if (typeof t.run !== 'function' || !t.intro) errs.push(`旅途事件字段不全: ${t.id || '?'}`);
 
+/* 物品「翻阅」资源（藏宝图线索文本 / 迷雾古图地图）指向的文件必须存在 */
+for (const [id, it] of Object.entries(ITEMS)) {
+  if (it.view && !fs.existsSync(path.join(__dirname, '..', it.view))) errs.push(`物品翻阅图缺失: ${id} -> ${it.view}`);
+  if (!it.read && !it.view && it.desc && it.desc.includes('行囊中可随时翻')) errs.push(`物品声称可翻阅但无内容: ${id}`);
+}
+
 if (errs.length) { console.error('✗ 世界一致性校验失败：\n' + errs.join('\n')); process.exit(1); }
 console.log(`✓ 全图一致性校验通过：${Object.keys(WORLD).length} 处地点，${TRAVEL_EVENTS.length} 条旅途事件，出口/方位/敌人/物品引用完整`);

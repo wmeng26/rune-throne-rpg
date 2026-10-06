@@ -1,0 +1,188 @@
+<svg viewBox="0 0 1468 1315" width="1468" height="1315" xmlns="http://www.w3.org/2000/svg" font-family="'Microsoft YaHei','PingFang SC',sans-serif"><rect x="0" y="0" width="1468" height="1315" fill="#0b0c14"/>
+<text x="734" y="40" text-anchor="middle" fill="#e8d9a0" font-size="26" letter-spacing="6">第一部 · 晨曦之印 —— 艾尔多兰行记图</text>
+<text x="734" y="64" text-anchor="middle" fill="#8a8ca0" font-size="13">共 33 处地点 · 布局由游戏出口数据推导（手工种子 + 方向保真抛光）· node tools/gen_part1_map.js 重新生成</text>
+<line x1="646" y1="694" x2="646" y2="586" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="646" y1="694" x2="822" y2="694" stroke="#3c3e52" stroke-width="2"/>
+<line x1="646" y1="694" x2="118" y2="1126" stroke="#3c3e52" stroke-width="2"/>
+<line x1="646" y1="694" x2="646" y2="910" stroke="#3c3e52" stroke-width="2"/>
+<line x1="822" y1="694" x2="646" y2="694" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="822" y1="694" x2="822" y2="1018" stroke="#3c3e52" stroke-width="2"/>
+<line x1="118" y1="1126" x2="646" y2="694" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="118" y1="1126" x2="118" y2="1018" stroke="#3c3e52" stroke-width="2"/>
+<line x1="822" y1="1018" x2="822" y2="694" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="646" y1="910" x2="646" y2="586" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="646" y1="910" x2="470" y2="910" stroke="#3c3e52" stroke-width="2"/>
+<line x1="646" y1="910" x2="822" y2="910" stroke="#3c3e52" stroke-width="2"/>
+<line x1="646" y1="910" x2="470" y2="694" stroke="#3c3e52" stroke-width="2"/>
+<line x1="646" y1="910" x2="822" y2="802" stroke="#3c3e52" stroke-width="2"/>
+<line x1="470" y1="910" x2="646" y2="910" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="470" y1="910" x2="470" y2="802" stroke="#3c3e52" stroke-width="2"/>
+<line x1="470" y1="910" x2="118" y2="802" stroke="#3c3e52" stroke-width="2"/>
+<line x1="470" y1="802" x2="470" y2="910" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="822" y1="910" x2="646" y2="910" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="822" y1="910" x2="1350" y2="910" stroke="#3c3e52" stroke-width="2"/>
+<line x1="822" y1="910" x2="822" y2="802" stroke="#3c3e52" stroke-width="2"/>
+<line x1="822" y1="910" x2="118" y2="1018" stroke="#3c3e52" stroke-width="2"/>
+<line x1="822" y1="910" x2="822" y2="1126" stroke="#3c3e52" stroke-width="2"/>
+<line x1="118" y1="802" x2="470" y2="910" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="118" y1="802" x2="118" y2="910" stroke="#3c3e52" stroke-width="2"/>
+<line x1="118" y1="802" x2="118" y2="694" stroke="#3c3e52" stroke-width="2"/>
+<line x1="118" y1="694" x2="118" y2="802" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="118" y1="910" x2="118" y2="802" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="118" y1="910" x2="118" y2="1018" stroke="#3c3e52" stroke-width="2"/>
+<line x1="118" y1="1018" x2="118" y2="910" stroke="#3c3e52" stroke-width="2"/>
+<line x1="118" y1="1018" x2="822" y2="910" stroke="#3c3e52" stroke-width="2"/>
+<line x1="118" y1="1018" x2="118" y2="1126" stroke="#3c3e52" stroke-width="2"/>
+<line x1="822" y1="1126" x2="822" y2="910" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="822" y1="1126" x2="294" y2="1018" stroke="#3c3e52" stroke-width="2"/>
+<line x1="1350" y1="910" x2="822" y2="910" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="1350" y1="910" x2="1350" y2="802" stroke="#3c3e52" stroke-width="2"/>
+<line x1="1350" y1="802" x2="1350" y2="910" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="470" y1="694" x2="646" y2="910" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="470" y1="694" x2="294" y2="694" stroke="#3c3e52" stroke-width="2"/>
+<line x1="294" y1="694" x2="470" y2="694" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="294" y1="694" x2="294" y2="1018" stroke="#3c3e52" stroke-width="2"/>
+<line x1="294" y1="1018" x2="294" y2="694" stroke="#3c3e52" stroke-width="2"/>
+<line x1="294" y1="1018" x2="822" y2="1126" stroke="#3c3e52" stroke-width="2"/>
+<line x1="822" y1="802" x2="646" y2="910" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="822" y1="802" x2="1174" y2="802" stroke="#3c3e52" stroke-width="2"/>
+<line x1="822" y1="802" x2="998" y2="694" stroke="#3c3e52" stroke-width="2"/>
+<line x1="1174" y1="802" x2="822" y2="802" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="1174" y1="802" x2="1350" y2="694" stroke="#3c3e52" stroke-width="2"/>
+<line x1="1350" y1="694" x2="1174" y2="802" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="1350" y1="694" x2="1350" y2="802" stroke="#3c3e52" stroke-width="2"/>
+<line x1="998" y1="694" x2="822" y2="802" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="998" y1="694" x2="998" y2="586" stroke="#3c3e52" stroke-width="2"/>
+<line x1="998" y1="586" x2="998" y2="694" stroke="#3c3e52" stroke-width="2"/>
+<line x1="998" y1="586" x2="822" y2="586" stroke="#3c3e52" stroke-width="2"/>
+<line x1="998" y1="586" x2="998" y2="478" stroke="#3c3e52" stroke-width="2"/>
+<line x1="998" y1="586" x2="1174" y2="694" stroke="#3c3e52" stroke-width="2"/>
+<line x1="998" y1="478" x2="998" y2="586" stroke="#3c3e52" stroke-width="2"/>
+<line x1="998" y1="478" x2="822" y2="478" stroke="#3c3e52" stroke-width="2"/>
+<line x1="998" y1="478" x2="998" y2="370" stroke="#3c3e52" stroke-width="2"/>
+<line x1="822" y1="586" x2="998" y2="586" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="822" y1="478" x2="998" y2="478" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="998" y1="370" x2="998" y2="478" stroke="#3c3e52" stroke-width="2"/>
+<line x1="998" y1="370" x2="998" y2="262" stroke="#3c3e52" stroke-width="2"/>
+<line x1="998" y1="262" x2="998" y2="370" stroke="#3c3e52" stroke-width="2"/>
+<line x1="998" y1="262" x2="822" y2="262" stroke="#3c3e52" stroke-width="2"/>
+<line x1="822" y1="262" x2="998" y2="262" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="822" y1="262" x2="822" y2="154" stroke="#3c3e52" stroke-width="2"/>
+<line x1="822" y1="262" x2="822" y2="370" stroke="#566" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="822" y1="370" x2="822" y2="262" stroke="#566" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="822" y1="154" x2="822" y2="262" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="822" y1="154" x2="646" y2="154" stroke="#3c3e52" stroke-width="2"/>
+<line x1="646" y1="154" x2="822" y2="154" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<line x1="998" y1="154" x2="998" y2="262" stroke="#2e3044" stroke-width="1.4" stroke-dasharray="2 4"/>
+<rect x="570" y="663" width="152" height="62" rx="8" fill="#3a2f1e" stroke="#c98227" stroke-width="1.6" />
+<text x="646" y="690" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">荒废烽燧</text>
+<text x="646" y="707" text-anchor="middle" fill="#b8ac86" font-size="11">南下古道</text>
+<text x="714" y="677" text-anchor="end" font-size="11" fill="#c9b06a">⚠ 💾 👤</text>
+<rect x="746" y="670" width="152" height="48" rx="8" fill="#3a2f1e" stroke="#c98227" stroke-width="1.6" />
+<text x="822" y="699" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">白花泉</text>
+<text x="890" y="684" text-anchor="end" font-size="11" fill="#c9b06a">🏕</text>
+<rect x="42" y="1102" width="152" height="48" rx="8" fill="#3a2f1e" stroke="#c98227" stroke-width="1.6" />
+<text x="118" y="1131" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">石桥渡</text>
+<text x="186" y="1116" text-anchor="end" font-size="11" fill="#c9b06a">🏕 👤</text>
+<rect x="746" y="994" width="152" height="48" rx="8" fill="#3a2f1e" stroke="#c98227" stroke-width="1.6" />
+<text x="822" y="1023" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">荒石料场</text>
+<text x="890" y="1008" text-anchor="end" font-size="11" fill="#c9b06a">⚠ 👤</text>
+<rect x="570" y="886" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="646" y="915" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">林中岔路</text>
+<text x="714" y="900" text-anchor="end" font-size="11" fill="#c9b06a">⚠ 💾</text>
+<rect x="394" y="879" width="152" height="62" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="470" y="906" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">商队歇脚处</text>
+<text x="470" y="923" text-anchor="middle" fill="#b8ac86" font-size="11">林道</text>
+<text x="538" y="893" text-anchor="end" font-size="11" fill="#c9b06a">👤</text>
+<rect x="394" y="778" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="470" y="807" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">鸦眠坡</text>
+<text x="538" y="792" text-anchor="end" font-size="11" fill="#c9b06a">⚠</text>
+<rect x="746" y="886" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="822" y="915" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">隐秘小径</text>
+<text x="890" y="900" text-anchor="end" font-size="11" fill="#c9b06a">⚠ ❖</text>
+<rect x="42" y="778" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="118" y="807" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">雾泽湖畔</text>
+<rect x="42" y="670" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="118" y="699" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">雾泽湖心洲</text>
+<rect x="42" y="886" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="118" y="915" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">湖畔沼泽</text>
+<text x="186" y="900" text-anchor="end" font-size="11" fill="#c9b06a">⚠ 👤</text>
+<rect x="42" y="994" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="118" y="1023" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">蕨语谷</text>
+<text x="186" y="1008" text-anchor="end" font-size="11" fill="#c9b06a">⚠</text>
+<rect x="746" y="1102" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="822" y="1131" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">林中古祠</text>
+<rect x="1274" y="886" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="1350" y="915" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">废弃猎屋</text>
+<rect x="1274" y="778" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="1350" y="807" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">高脚瞭望塔</text>
+<text x="1418" y="792" text-anchor="end" font-size="11" fill="#c9b06a">⚠</text>
+<rect x="394" y="670" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="470" y="699" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">采药人小屋</text>
+<text x="538" y="684" text-anchor="end" font-size="11" fill="#c9b06a">🏕 💾 👤</text>
+<rect x="218" y="670" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="294" y="699" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">林间蜂场</text>
+<text x="362" y="684" text-anchor="end" font-size="11" fill="#c9b06a">👤</text>
+<rect x="218" y="994" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="294" y="1023" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">苔藓谷</text>
+<text x="362" y="1008" text-anchor="end" font-size="11" fill="#c9b06a">🏕</text>
+<rect x="746" y="778" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="822" y="807" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">黄昏营地</text>
+<text x="890" y="792" text-anchor="end" font-size="11" fill="#c9b06a">🏕 💾</text>
+<rect x="1098" y="778" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="1174" y="807" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">湮没的伐木场</text>
+<rect x="1274" y="670" width="152" height="48" rx="8" fill="#1c2e1f" stroke="#5f9e63" stroke-width="1.6" />
+<text x="1350" y="699" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">浆果坡</text>
+<rect x="922" y="670" width="152" height="48" rx="8" fill="#232a44" stroke="#8ea2e0" stroke-width="1.6" />
+<text x="998" y="699" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">朝圣古道</text>
+<text x="1066" y="684" text-anchor="end" font-size="11" fill="#c9b06a">⚠ 👤</text>
+<rect x="922" y="562" width="152" height="48" rx="8" fill="#232a44" stroke="#8ea2e0" stroke-width="1.6" />
+<text x="998" y="591" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">圣殿石阶</text>
+<text x="1066" y="576" text-anchor="end" font-size="11" fill="#c9b06a">💾</text>
+<rect x="922" y="454" width="152" height="48" rx="8" fill="#232a44" stroke="#8ea2e0" stroke-width="1.6" />
+<text x="998" y="483" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">石兽灯庭</text>
+<text x="1066" y="468" text-anchor="end" font-size="11" fill="#c9b06a">💾</text>
+<rect x="746" y="562" width="152" height="48" rx="8" fill="#232a44" stroke="#8ea2e0" stroke-width="1.6" />
+<text x="822" y="591" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">荒废的果园梯田</text>
+<text x="890" y="576" text-anchor="end" font-size="11" fill="#c9b06a">⚠</text>
+<rect x="746" y="454" width="152" height="48" rx="8" fill="#232a44" stroke="#8ea2e0" stroke-width="1.6" />
+<text x="822" y="483" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">香客寮遗址</text>
+<text x="890" y="468" text-anchor="end" font-size="11" fill="#c9b06a">👤</text>
+<rect x="922" y="346" width="152" height="48" rx="8" fill="#232a44" stroke="#8ea2e0" stroke-width="1.6" />
+<text x="998" y="375" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">圣殿大门</text>
+<rect x="922" y="238" width="152" height="48" rx="8" fill="#232a44" stroke="#8ea2e0" stroke-width="1.6" />
+<text x="998" y="267" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">圣殿大殿</text>
+<text x="1066" y="252" text-anchor="end" font-size="11" fill="#c9b06a">👤</text>
+<rect x="746" y="231" width="152" height="62" rx="8" fill="#232a44" stroke="#8ea2e0" stroke-width="1.6" />
+<text x="822" y="258" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">僧舍废墟</text>
+<text x="822" y="275" text-anchor="middle" fill="#b8ac86" font-size="11">圣殿回廊</text>
+<rect x="746" y="339" width="152" height="62" rx="8" fill="#232a44" stroke="#8ea2e0" stroke-width="1.6" />
+<text x="822" y="366" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">守殿人寝陵</text>
+<text x="822" y="383" text-anchor="middle" fill="#b8ac86" font-size="11">圣殿地宫</text>
+<rect x="746" y="130" width="152" height="48" rx="8" fill="#232a44" stroke="#8ea2e0" stroke-width="1.6" />
+<text x="822" y="159" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">钟塔残基</text>
+<rect x="570" y="130" width="152" height="48" rx="8" fill="#232a44" stroke="#8ea2e0" stroke-width="1.6" />
+<text x="646" y="159" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">不冻泉石窟</text>
+<rect x="922" y="130" width="152" height="48" rx="8" fill="#403116" stroke="#ffd76a" stroke-width="1.6" />
+<text x="998" y="159" text-anchor="middle" fill="#f0e6c8" font-size="14" font-weight="bold">晨曦祭坛</text>
+<rect x="570" y="562" width="152" height="48" rx="8" fill="#23242e" stroke="#6b6d7c" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="646" y="591" text-anchor="middle" fill="#9a9cae" font-size="14" font-weight="bold">灰岭镇口</text>
+<text x="646" y="623" text-anchor="middle" fill="#6b6d7c" font-size="11">序章风雨之夜</text>
+<rect x="1098" y="663" width="152" height="62" rx="8" fill="#23242e" stroke="#6b6d7c" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="1174" y="690" text-anchor="middle" fill="#9a9cae" font-size="14" font-weight="bold">岔路</text>
+<text x="1174" y="707" text-anchor="middle" fill="#77798a" font-size="11">霜脊山北麓</text>
+<text x="1242" y="677" text-anchor="end" font-size="11" fill="#c9b06a">⚠ 💾</text>
+<text x="1174" y="738" text-anchor="middle" fill="#6b6d7c" font-size="11">第二部星辰之印</text>
+<rect x="30" y="1193" width="1408" height="92" rx="8" fill="#101120" stroke="#2b2c40"/>
+<text x="50" y="1217" fill="#8a8ca0" font-size="12">小节：</text>
+<rect x="94" y="1205" width="14" height="14" rx="3" fill="#3a2f1e" stroke="#c98227"/>
+<text x="114" y="1217" fill="#c8c9d8" font-size="12">一 · 南下古道</text>
+<rect x="244" y="1205" width="14" height="14" rx="3" fill="#1c2e1f" stroke="#5f9e63"/>
+<text x="264" y="1217" fill="#c8c9d8" font-size="12">二 · 迷雾森林</text>
+<rect x="394" y="1205" width="14" height="14" rx="3" fill="#232a44" stroke="#8ea2e0"/>
+<text x="414" y="1217" fill="#c8c9d8" font-size="12">三 · 符文圣殿</text>
+<rect x="544" y="1205" width="14" height="14" rx="3" fill="#403116" stroke="#ffd76a"/>
+<text x="564" y="1217" fill="#c8c9d8" font-size="12">四 · 晨曦重燃</text>
+<text x="50" y="1241" fill="#8a8ca0" font-size="12">徽标：⚠ 野外遭遇　🏕 可休息　💾 存档点　👤 有 NPC　❖ 藏宝图埋宝处　　虚线边 = 上/下楼　点线边 = 「回」折返捷径　虚线框 = 邻接章节入口</text>
+<text x="50" y="1263" fill="#66687e" font-size="11">主线：灰岭镇口 → 南下古道 → 迷雾森林（救下艾莉娅）→ 朝圣古道 → 符文圣殿三重试炼 → 晨曦祭坛 → 东北下山道（第二部）</text>
+<text x="50" y="1281" fill="#66687e" font-size="11">环路：古道—泉—料场 / 岔路—猎屋—瞭望塔—浆果坡—伐木场 / 湖—沼泽—蕨谷—渡口 / 祠—苔谷—蜂场—药屋</text></svg>
