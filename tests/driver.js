@@ -73,6 +73,14 @@ globalThis.topUp = function () {
     const gWell2 = S.gold, spWell = S.sp;
     await WORLD.grayridge_well.actions.find(a => a.text.includes('井口深处')).run();
     assert(S.flags.wellGleam && (S.items.torch || 0) === 1 && S.gold === gWell2 + 3 && S.sp === spWell, '黑暗探索·古井：火把照见井底的铁箍石门（-1火把，+3金币，井底下有路）');
+    // 序章横向扩写：灰岭铁匠铺（镇北）
+    await move('grayridge_street');
+    await move('grayridge_forge');
+    assert(!!WORLD.grayridge_forge, '新地点「灰岭铁匠铺」：四指老铁匠与不收钱的炉边条凳');
+    await WORLD.grayridge_forge.npcs.tong.talk();
+    assert(S.flags.tongMet, '铁匠佟叔：铁吃火，不吃邪——灰岭镇唯一还开着的铺子');
+    await WORLD.grayridge_forge.actions.find(a => a.text.includes('披风')).run();
+    assert(S.flags.forgeWarm, '铁匠铺：炉边烘透湿披风（生命+4）');
     await move('grayridge_street');
     await move('inn_hall');
     setChoices('愿闻其详');
@@ -135,6 +143,16 @@ globalThis.topUp = function () {
     await move('south_road');
     await WORLD.south_road.npcs.zhao.talk();
     assert(S.flags.zhaoMet, '烽燧下赵老汉：白花泉与石桥渡的指引');
+    // 第一部横向扩写：烧炭人的窑棚（古道东南岔沟）——接【重燃窑火】（此刻无火种）
+    await move('charcoal_kiln');
+    assert(!!WORLD.charcoal_kiln && WORLD.charcoal_kiln.wild, '新地点「烧炭人的窑棚」：连阴雨浇熄的窑火（荒野路途）');
+    await WORLD.charcoal_kiln.npcs.kuang.talk();
+    assert(S.flags.kuangMet && S.sideQuests.kilnfire === 'active', '支线【重燃窑火】接取：邝伯的腰腿下不了沟底');
+    await WORLD.charcoal_kiln.actions.find(a => a.text.includes('松柴')).run();
+    assert(S.flags.kilnWood, '窑棚：掀开塌棚，拾一捆干透的松柴');
+    await WORLD.charcoal_kiln.actions.find(a => a.text.includes('引火')).run();
+    assert(!S.flags.kilnLit && S.sideQuests.kilnfire === 'active', '没有火种，干柴也白搭（需火把或「星火引灯」——两样都还没有）');
+    await move('south_road');
     // 新地点：石桥渡——守渡老兵吴钩
     await move('stone_ford');
     assert(!!WORLD.stone_ford, '新地点「石桥渡」：断桥、湍溪与守渡的老兵');
@@ -154,6 +172,14 @@ globalThis.topUp = function () {
     await WORLD.forest_cross.actions.find(a => a.text.includes('老橡树')).run();
     await WORLD.forest_cross.actions.find(a => a.text.includes('路牌')).run();
     assert(S.flags.oakMarks && S.flags.signClean, '林中岔路：老橡树的旅人刻痕（+3金币）与路牌苔衣下的旧话');
+    // 第一部横向扩写：指路石林（岔路东北）
+    await move('waystone_glade');
+    assert(!!WORLD.waystone_glade && S.events.waystoneVisit, '新地点「指路石林」：刻满行旅账的立石与「闻低语勿应声」的告示');
+    await WORLD.waystone_glade.actions.find(a => a.text.includes('养神')).run();
+    assert(S.flags.wayRest, '指路石林：平石上闭目养神（斗气+2，狼群在石林外绕行）');
+    await WORLD.waystone_glade.actions.find(a => a.text.includes('刻在石上')).run();
+    assert(S.flags.wayMarked, '指路石林：把来路也刻上石（行旅的账又厚一层）');
+    await move('forest_cross');
 
     // 小节二「迷雾森林」：采药支线
     await move('hermit_hut');
@@ -234,6 +260,16 @@ globalThis.topUp = function () {
     assert(S.flags.amanFish && (S.items.roast_fish || 0) === 3, '湖底账清，鱼肯上钩：阿满添一条烤鱼');
     await WORLD.lakeside_marsh.actions.find(a => a.text.includes('鸭蛋')).run();
     assert(S.flags.reedEggs, '苇丛鸭蛋（生命+2，留两枚的老规矩）');
+    // 第一部横向扩写：湖西苇花滩（晒网的蒲婶）
+    await move('reed_flats');
+    assert(!!WORLD.reed_flats, '新地点「湖西 · 苇花滩」：补了又补的旧渔网与吐泡的螺蛳木盆');
+    await WORLD.reed_flats.npcs.pu.talk();
+    assert(S.flags.puMet, '蒲婶：湖心洲一夜空了船桅，只剩老船夫还在渡');
+    await WORLD.reed_flats.actions.find(a => a.text.includes('螺蛳')).run();
+    assert(S.flags.puSnails, '苇花滩：浅水里摸螺蛳（生命+2）');
+    const gReed = S.items.roast_fish || 0;
+    await WORLD.reed_flats.actions.find(a => a.text.includes('收进棚')).run();
+    assert(S.flags.puNet && (S.items.roast_fish || 0) === gReed + 1, '苇花滩：帮蒲婶收网（声望+1，烤鱼+1）');
     await move('mist_lake');
     await move('forest_road');
     await move('forest_cross');
@@ -278,6 +314,11 @@ globalThis.topUp = function () {
     await move('hermit_hut');
     await WORLD.hermit_hut.npcs.margo.talk();
     assert(S.sideQuests.herb === 'done', '支线【月下香草】完成（+8金币，2药水）');
+    // 支线【重燃窑火】兑现：星火引灯入膛（斗气光源闯的关）
+    await move('charcoal_kiln');
+    const gKiln = S.gold, spKiln = S.sp;
+    await WORLD.charcoal_kiln.actions.find(a => a.text.includes('引火')).run();
+    assert(S.flags.kilnLit && S.sideQuests.kilnfire === 'done' && (S.items.charcoal_bread || 0) === 2 && S.gold === gKiln + 5 && S.sp === spKiln - 2, '支线【重燃窑火】完成：星火入膛，窑火重燃（斗气-2，炭烤麦饼×2，金币+5，声望+1）');
 
     // 新地点：湮没的伐木场（黄昏营地东侧）
     await move('logger_camp');
@@ -487,6 +528,14 @@ globalThis.topUp = function () {
     setChoices('撕掉委托');
     await WORLD.road_town.actions.find(a => a.text.includes('委托木板')).run();
     assert(!S.bounty, '扩写：委托撕掉不做，木板恢复空明');
+    // 第二部横向扩写：镇东旱沟·说书人的窝棚（支线【瞎话先生的晚饭】）
+    await move('dry_gully');
+    assert(!!WORLD.dry_gully && WORLD.dry_gully.wild, '新地点「旱沟 · 说书人的窝棚」：盲眼的说书人（荒野路途）');
+    await WORLD.dry_gully.npcs.blind.talk();
+    assert(S.flags.blindMet && S.sideQuests.stories === 'active', '支线【瞎话先生的晚饭】接取：一段压箱底的星塔故事换一口热食');
+    await WORLD.dry_gully.actions.find(a => a.text.includes('热食')).run();
+    assert(S.flags.starStory && S.sideQuests.stories === 'done', '支线【瞎话先生的晚饭】完成：星盘机关认「晨」字——星塔谜题旁路（声望+1，斗气+2）');
+    await move('road_town');
 
     // 新地点：封冻的银矿（隘口西侧）
     await move('spur_fork');
@@ -578,6 +627,15 @@ globalThis.topUp = function () {
     await move('whitestone_gate');
     assert(S.flags.inCity, '白石城：出示符文入城');
     await move('whitestone_street');
+    // 第二部横向扩写：南当铺（押票上的戍卫营什长哨——第五部兑现）
+    await move('pawnshop_row');
+    assert(!!WORLD.pawnshop_row, '新地点「南当铺」：顶到房梁的旧物架与不开价的九爷');
+    await WORLD.pawnshop_row.npcs.jiu.talk();
+    assert(S.flags.jiuMet && S.sideQuests.whistle === 'active', '支线【当票上的铜哨】接取：戍卫营雷什长押哨北上换防，再没回来');
+    const gPawn = S.gold;
+    await WORLD.pawnshop_row.actions.find(a => a.text.includes('赎下')).run();
+    assert(S.flags.whistleBought && S.items.old_whistle === 1 && S.gold === gPawn - 8, '替雷什长赎下铜哨（-8金币，老兵的铜哨·斗气上限+2）');
+    await move('whitestone_street');
     await move('west_alley');
     assert(S.items.watch === 1, '支线【宵禁下的失踪】：小巷战胜利获得怀表');
     // 扩写：城西老井 + 宵禁更楼（更夫与巷子的账）
@@ -627,6 +685,28 @@ globalThis.topUp = function () {
     setChoices('买一碗', '告辞');
     await WORLD.king_square.npcs.kang.talk();
     assert((S.items.hot_soup || 0) >= 1, '扩写：康婆摊上买到热姜汤（新消耗品·回复7）');
+    await move('city_market');
+
+    // 第二部横向扩写：城东车马行 + 城西寻马（支线【受惊的驮马】）
+    await move('stable_row');
+    assert(!!WORLD.stable_row, '新地点「城东车马行」：并排能停八挂大车的空棚');
+    await WORLD.stable_row.npcs.yuan.talk();
+    assert(S.flags.yuanMet && S.sideQuests.horse === 'active', '支线【受惊的驮马】接取：宵禁的锣一响，青鬃驮马惊进了城西');
+    await move('city_market');
+    const gFeed = S.gold;
+    setChoices('炒麦粒', '告辞');
+    await WORLD.city_market.npcs.raven.talk();
+    assert((S.items.roast_wheat || 0) === 1 && S.gold === gFeed - 2, '车马行支线：渡鸦处买一包炒麦粒（-2金币，惊马只认手稳的）');
+    await move('whitestone_street');
+    await move('west_alley');
+    await WORLD.west_alley.actions.find(a => a.text.includes('青鬃驮马')).run();
+    assert(S.flags.horseFollow && (S.items.roast_wheat || 0) === 0, '城西小巷：一把炒麦粒稳住惊马——先喂食，后摸鼻梁');
+    await move('whitestone_street');
+    await move('city_market');
+    await move('stable_row');
+    const gHorseQ = S.gold;
+    await WORLD.stable_row.actions.find(a => a.text.includes('牵青鬃驮马')).run();
+    assert(S.flags.horseSafe && S.sideQuests.horse === 'done' && S.gold === gHorseQ + 8, '支线【受惊的驮马】完成：青鬃归槽（+8金币，声望+1）');
     await move('city_market');
 
     // 新增：卫戍营房（城防情报 + 切磋赌彩头）
@@ -736,6 +816,12 @@ globalThis.topUp = function () {
 
     await move('coast_road');
     assert(WORLD.coast_road && WORLD.coast_road.sub === '小节一 · 南下潮歌湾' && WORLD.coast_road.wild, '新小节「南下潮歌湾」：海风岬已接入');
+    // 第三部横向扩写：鸥岩（岬角西南的海鸥礁脊）
+    await move('gull_rock');
+    assert(!!WORLD.gull_rock && S.events.gullVisit && WORLD.gull_rock.wild, '新地点「鸥岩」：千万只海鸥的礁脊与「海有数」的贝壳字（荒野路途）');
+    await WORLD.gull_rock.actions.find(a => a.text.includes('鸥蛋')).run();
+    assert(S.flags.gullEggs, '鸥岩：掏一窝鸥蛋只取其一（生命+3——跟海借的，拿一份留一份）');
+    await move('coast_road');
     // 扩写·官道与渔港外围：望潮崖 → 盐灶滩 → 老船坞 → 海母祠 → 海雾栈道
     await move('tide_cliff');
     assert(!!WORLD.tide_cliff && S.events.cliffVisit && WORLD.tide_cliff.wild, '扩写「望潮崖」：悬而未退的黑潮与听风铃（荒野路途）');
@@ -779,6 +865,12 @@ globalThis.topUp = function () {
     setChoices('传闻', '告辞');
     await WORLD.tidesong_harbor.npcs.raven.talk();
     assert(S.flags.tideHint, '渡鸦传闻：海底神殿的告诫');
+    // 第三部横向扩写：结网坊（支线【骨梭落了水】）
+    await move('net_loft');
+    assert(!!WORLD.net_loft, '新地点「结网坊」：按网眼分捕的里手艺铺');
+    await WORLD.net_loft.npcs.qiu.talk();
+    assert(S.flags.qiuMet && S.sideQuests.shuttle === 'active', '支线【骨梭落了水】接取：秋姑娘传的骨梭卷进了礁滩石缝');
+    await move('tidesong_harbor');
 
     // 灯塔：卡雅遇袭（默认选0=冲进战团）→ 入队；接取荧藻支线
     await move('lighthouse');
@@ -793,6 +885,9 @@ globalThis.topUp = function () {
     await move('reef_shoal');
     await WORLD.reef_shoal.actions.find(a => a.text.includes('荧藻')).run();
     assert(S.flags.weed_reef && (S.items.glowweed || 0) === 1, '荧藻之一：礁滩背阴石缝');
+    // 支线【骨梭落了水】：潮线下的石缝里摸回骨梭
+    await WORLD.reef_shoal.actions.find(a => a.text.includes('骨梭')).run();
+    assert(S.flags.shuttleFound && S.items.bone_shuttle === 1, '退潮礁滩：潜进潮线石缝，摸回秋姑的骨梭');
     await move('shipwreck_cove');
     assert(S.items.whale_lance === 1, '新地点「沉船湾」：礁蟹败退，取得鲸骨长枪（攻+3）');
     await WORLD.shipwreck_cove.actions.find(a => a.text.includes('最后一行')).run();
@@ -843,6 +938,14 @@ globalThis.topUp = function () {
     assert(S.flags.lampLit && S.items.tide_pearl === 1 && S.sideQuests.glowweeds === 'done', '支线【灯塔的荧藻】完成：灯塔重亮（+10金币，深海珍珠·生命上限+5）');
     await WORLD.lighthouse.npcs.keeper.talk();
     assert(S.sideQuests.grandrod === 'done', '支线【阿公的旧竿】完成：旧竿挂上塔壁（+4金币，声望+1，斗气+2）');
+    // 扩写：骨梭交还结网坊（第三部支线收束）
+    await move('tidesong_harbor');
+    await move('net_loft');
+    const gShuttle = S.gold;
+    await WORLD.net_loft.actions.find(a => a.text.includes('交还')).run();
+    assert(S.flags.shuttleBack && S.sideQuests.shuttle === 'done' && S.gold === gShuttle + 6 && (S.items.clam_skewer || 0) >= 1, '支线【骨梭落了水】完成：梭子回了线篓（+6金币，声望+1，烤贝串×1）');
+    await move('tidesong_harbor');
+    await move('lighthouse');
     // 回海母祠：把最后一行念给祝婆婆（栈道环路：灯塔→栈道→祠）
     await move('fog_boardwalk');
     await move('sea_mother_shrine');
@@ -934,6 +1037,14 @@ globalThis.topUp = function () {
     assert(!!WORLD.thresh_floor && WORLD.thresh_floor.rest.cost === 0, '新地点「打谷场」：车三爷的火堆，出门人免费歇脚');
     await WORLD.thresh_floor.actions.find(a => a.text.includes('连枷')).run();
     assert(S.flags.threshLoot, '打谷场：翻晒连枷与谷耙（+3金币）');
+    // 第四部横向扩写：田头谷神庙（打谷场北）
+    await move('field_shrine');
+    assert(S.events.shrineVisit, '新地点「田头谷神庙」：庄稼人自己捏的泥胎谷神与「开罐还愿」的陶罐');
+    await WORLD.field_shrine.actions.find(a => a.text.includes('一炷香')).run();
+    assert(S.flags.shrineIncense, '谷神庙：上一炷香（斗气+2）');
+    await WORLD.field_shrine.actions.find(a => a.text.includes('麦饼')).run();
+    assert(S.flags.shrineBread && (S.items.roast_wheat || 0) === 1, '谷神庙：供碗里的麦饼（炒麦粒+1——吃了记得回来还愿）');
+    await move('thresh_floor');
     await move('irrigation_sluice');
     await WORLD.irrigation_sluice.actions.find(a => a.text.includes('老芦苇')).run();
     await WORLD.irrigation_sluice.actions.find(a => a.text.includes('老芦苇')).run();
@@ -951,14 +1062,24 @@ globalThis.topUp = function () {
     await WORLD.wheat_maze.actions.find(a => a.text.includes('迷宫')).run();
     assert(S.flags.mazeWon && (S.items.malt_candy || 0) === 2, '麦垛迷宫：照孩子的口诀「左直左」找到心儿里的宝（+4金币，麦芽糖×2）');
     await move('gleaner_camp');
+    const wheatBeforeGlean = S.items.roast_wheat || 0;
     await WORLD.gleaner_camp.npcs.qian.talk();
-    assert(S.flags.qianMet && (S.items.roast_wheat || 0) === 2, '新地点「拾穗人的窝棚」：荞婶的炒麦粒与三十年前「行商拉粮」旧话');
+    assert(S.flags.qianMet && (S.items.roast_wheat || 0) === wheatBeforeGlean + 2, '新地点「拾穗人的窝棚」：荞婶的炒麦粒与三十年前「行商拉粮」旧话');
     await move('scarecrow_field');
     await WORLD.scarecrow_field.actions.find(a => a.text.includes('稻草人')).run();
     assert(S.flags.scareWheat, '稻草人小径：怀揣新麦的草人与孩子的字条（声望+1）');
     await move('locust_fields');
     await WORLD.locust_fields.actions.find(a => a.text.includes('苇笛')).run();
     assert(S.flags.reedPlayed && S.sideQuests.reeds === 'done', '支线【苇笛驱蝗】完成：三声笛音退了螟阵（+5金币，声望+1）');
+    await move('harvest_village');
+    // 第四部横向扩写：村口鸽楼（支线【迷路的信鸽】——北边军鸽）
+    await move('dove_tower');
+    assert(!!WORLD.dove_tower, '新地点「村口鸽楼」：歪着半边尖顶的石砌鸽楼');
+    await WORLD.dove_tower.npcs.hui.talk();
+    assert(S.flags.huiMet && S.sideQuests.pigeon === 'active', '支线【迷路的信鸽】接取：北边戍堡的军鸽，饿得抓不住梁');
+    const gDove = S.gold, wheatDove = S.items.roast_wheat || 0;
+    await WORLD.dove_tower.actions.find(a => a.text.includes('麦粒')).run();
+    assert(S.flags.pigeonFed && S.sideQuests.pigeon === 'done' && S.gold === gDove + 4 && (S.items.roast_wheat || 0) === wheatDove - 1, '支线【迷路的信鸽】完成：喂食取信——「替儿给谷神庙上一炷香」（金币+4，声望+1）');
     await move('harvest_village');
     await move('granary_row');
     const gGran = S.gold;
@@ -1001,7 +1122,18 @@ globalThis.topUp = function () {
 
     console.log('—— 系统 · 队伍与成长 v2 ——');
     // 世界扩展总断言：新地点 / 新装备 / 旅途事件 / 地图总览
-    assert(Object.keys(WORLD).length === 139, '世界扩展：地点增至 139 处（第一~三部大扩写 38 处 + 第四部 9 处 + 第五部 8 处 + 第六部 8 处 + 终部扩写 5 处：鸦记货栈/回望台/折旗坡/地牢/无光前厅）');
+    assert(Object.keys(WORLD).length === 155, '世界扩展：地点增至 155 处（第一~三部大扩写 38 处 + 第四部 9 处 + 第五部 8 处 + 第六部 8 处 + 终部扩写 5 处 + 各部主地图横向扩写 16 处）');
+    // —— 各部主地图横向扩写：新地点 / 新 NPC / 新支线 / 新物品 ——
+    assert(WORLD.grayridge_forge && WORLD.charcoal_kiln && WORLD.reed_flats && WORLD.waystone_glade, '序章/一部横向扩写：灰岭铁匠铺 / 烧炭人的窑棚 / 苇花滩 / 指路石林');
+    assert(WORLD.dry_gully && WORLD.pawnshop_row && WORLD.stable_row, '第二部横向扩写：旱沟说书人 / 南当铺 / 城东车马行');
+    assert(WORLD.net_loft && WORLD.gull_rock, '第三部横向扩写：结网坊 / 鸥岩');
+    assert(WORLD.dove_tower && WORLD.field_shrine, '第四部横向扩写：村口鸽楼 / 田头谷神庙');
+    assert(WORLD.ridge_grave && WORLD.scrap_tent, '第五部横向扩写：无名什长墓 / 拾荒窝棚');
+    assert(WORLD.gate_shrine && WORLD.bell_foundry, '第六部横向扩写：道旁香客祠 / 废弃的铸钟坊');
+    assert(WORLD.last_farm && WORLD.last_farm.npcs.tongcouple && WORLD.last_farm.actions.some(a => a.text.includes('名册页')), '终部横向扩写：谷口最后一户（名册页支线兑现）');
+    assert(WORLD.grayridge_forge.npcs.tong && WORLD.charcoal_kiln.npcs.kuang && WORLD.reed_flats.npcs.pu && WORLD.dry_gully.npcs.blind && WORLD.pawnshop_row.npcs.jiu && WORLD.stable_row.npcs.yuan && WORLD.net_loft.npcs.qiu && WORLD.gull_rock && WORLD.dove_tower.npcs.hui && WORLD.ridge_grave && WORLD.scrap_tent.npcs.nail && WORLD.gate_shrine.npcs.lane && WORLD.bell_foundry.npcs.ya, '横向扩写 NPC 十二位：佟叔/邝伯/蒲婶/瞎话先生/九爷/老辕头/秋姑/灰豆/锈钉/跛脚香客/哑姑/佟家老两口');
+    assert(ITEMS.charcoal_bread && HEALS.charcoal_bread === 7 && ITEMS.old_whistle && ITEMS.old_whistle.spMax === 2 && ITEMS.foundry_qing && ITEMS.foundry_qing.maxHp === 3 && ITEMS.bone_shuttle, '横向扩写物品：炭烤麦饼（+7）/ 老兵的铜哨（斗气上限+2）/ 铸坊的铜磬（生命上限+3）/ 秋姑的骨梭');
+    assert(SIDE_QUESTS.kilnfire && SIDE_QUESTS.stories && SIDE_QUESTS.whistle && SIDE_QUESTS.horse && SIDE_QUESTS.shuttle && SIDE_QUESTS.pigeon && SIDE_QUESTS.farmson, '横向扩写支线七条：重燃窑火 / 瞎话先生的晚饭 / 当票上的铜哨 / 受惊的驮马 / 骨梭落了水 / 迷路的信鸽 / 谷口的名字');
     assert(ITEMS.rite_blade && ITEMS.rite_blade.atk === 2 && ITEMS.mist_pearl && ITEMS.mist_pearl.maxHp === 3, '探索装备：咏祭礼剑（攻+2）/ 雾泽明珠（生命上限+3）');
     assert(ITEMS.logger_axe && ITEMS.logger_axe.atk === 2 && ITEMS.reed_charm && ITEMS.reed_charm.spMax === 3, '第一部扩写装备：伐木斧（攻+2）/ 苇编哨（斗气上限+3）');
     assert(ITEMS.honey && ITEMS.roast_fish && ITEMS.glassbead && HEALS.honey === 6 && HEALS.roast_fish === 8, '第一部扩写消耗品与信物：林间蜂蜜（+6）/ 湖畔烤鱼（+8）/ 雾蓝玻璃珠');
@@ -1025,7 +1157,7 @@ globalThis.topUp = function () {
     assert(WORLD.coast_road.roam.byTime && WORLD.reef_shoal.roam.byTime && WORLD.tide_cliff.roam.byTime && WORLD.fog_boardwalk.roam.byTime && WORLD.sunken_hamlet.roam.byTime.night.en === 'lampfish', '时间制游荡·海洋篇：官道/礁滩/崖台/栈道入夜换「没脸的」，淹水坳入夜换灯眼鮟鱇');
     assert(S.flags.tidePath && S.flags.dockLedger, '第三部暗线加深：卡雅家传潮路图（石阶拓印）· 渡鸦三十年老主顾（船坞货单）');
     assert(WORLD.forest_deep.roam.byTime && WORLD.forest_deep.roam.byTime.night.en === 'wraith' && WORLD.south_road.roam.byTime.night.en === 'wraith' && WORLD.crow_ridge.roam.byTime.night.chance < WORLD.crow_ridge.roam.chance, '时间制游荡：夜晚野外换「没脸的」上场（白天是狼群/雾鸦，鸦眠坡入夜反而安静）');
-    assert(Array.isArray(TAVERN_RUMORS) && TAVERN_RUMORS.length >= 35 && Array.isArray(BOUNTIES) && BOUNTIES.length >= 27, '酒馆系统：传闻池 35+ 条（天数/剧情解锁），委托池 27 式（讨伐/采办 + 5 式秘窟差事，按天轮换）');
+    assert(Array.isArray(TAVERN_RUMORS) && TAVERN_RUMORS.length >= 40 && Array.isArray(BOUNTIES) && BOUNTIES.length >= 27, '酒馆系统：传闻池 40+ 条（天数/剧情解锁，含横向扩写的说书人/当票/信鸽/铸钟坊），委托池 27 式（讨伐/采办 + 5 式秘窟差事，按天轮换）');
     assert(Object.keys(DUNGEONS).length === 4 && DUNGEON_TASKS.length === 16, '副本系统：4 座秘窟（井底·无回廊/星髓深巷/覆阵窟/无光地牢）+ 16 式掘客委托（深入/清剿/讨伐/寻物）');
     assert(SIDE_QUESTS.duglamp && SIDE_QUESTS.vetag && SIDE_QUESTS.warroll && SIDE_QUESTS.namepage, '秘窟支线：井下的行灯/深巷的工牌/坑底的名册/缴名巷的名字（入口掘客承接，第 2 层据点寻获信物）');
     assert(BOUNTIES.some(b => b.type === 'kill' && b.en === 'well_husk') && BOUNTIES.some(b => b.type === 'fetch' && b.item === 'relic_shard'), '随机委托进副本：酒馆委托板可刷出井祟讨伐/残片收购等秘窟差事');
@@ -1061,7 +1193,8 @@ globalThis.topUp = function () {
     assert(DIRS.sw === '↙ 西南' && DIRS.ne === '↗ 东北', '方位扩展：西南 / 东北');
     openMap();
     const mapHtml = document.querySelector('#modal-content').innerHTML;
-    assert(mapHtml.includes('行记图') && mapHtml.includes('已踏足 100 / 139 处'), '世界地图总览：全境 139 处地点随探索点亮（此处已踏足 100 处）');
+    const seenNow = Object.keys(WORLD).filter(id => (S.visits[id] || 0) > 0).length;
+    assert(mapHtml.includes('行记图') && mapHtml.includes(`已踏足 ${seenNow} / 155 处`), `世界地图总览：全境 155 处地点随探索点亮（此处已踏足 ${seenNow} 处）`);
     closeModal();
     assert(Array.isArray(ENEMIES.wolves.units) && ENEMIES.wolves.units.length === 2, '遭遇制敌人：狼群以「头狼 + 灰狼」小组登场');
     assert(!!ENEMIES.starlord.moves && ENEMIES.starlord.moves.some(m => m.type === 'stun'), 'BOSS动作库：噬星斩/黑月护壁/星穹锁链（意图制）');
@@ -1101,6 +1234,17 @@ globalThis.topUp = function () {
     const gWine = S.gold;
     await WORLD.vet_stall.actions.find(a => a.text.includes('浊酒')).run();
     assert(S.gold === gWine - 1, '酒摊浊酒：一枚钱一碗暖（-1金币）');
+    // 第五部横向扩写：界碑后的无名什长墓（支线【当票上的铜哨】兑现）
+    await move('ridge_grave');
+    assert(!!WORLD.ridge_grave && S.events.graveVisit, '新地点「无名什长墓」：木碑上锈死的铜哨扣与年年有人扫的坟头');
+    await WORLD.ridge_grave.actions.find(a => a.text.includes('拔净')).run();
+    assert(S.flags.graveWeed, '什长墓：拔净碑前荒草（声望+1）');
+    await WORLD.ridge_grave.actions.find(a => a.text.includes('铜哨系在木碑')).run();
+    assert(S.flags.whistleHung && !S.items.old_whistle, '无名什长墓：雷什长的铜哨系上碑扣——哨孔里的风，像一哨人在应卯');
+    await move('vet_stall');
+    const gCai = S.gold;
+    await WORLD.vet_stall.npcs.cai.talk();
+    assert(S.flags.caiWhistle && S.sideQuests.whistle === 'done' && S.gold === gCai + 10, '支线【当票上的铜哨】完成：蔡伯替老战友补上票钱（+10金币，声望+1）');
     await move('war_road');
     await move('deserter_hollow');
     await WORLD.deserter_hollow.npcs.mute.talk();
@@ -1114,6 +1258,15 @@ globalThis.topUp = function () {
     assert(S.flags.drillSp, '新地点「演武场旧址」：二百斤石锁举过三寸，风里一声喝彩（斗气+2）');
     await move('rust_field');
     assert(WORLD.rust_field && WORLD.rust_field.sub === '小节二 · 荒原与碑林', '新小节「荒原与碑林」：铁锈荒原已接入');
+    // 第五部横向扩写：拾荒窝棚（收摊子的少年锈钉）
+    await move('scrap_tent');
+    assert(!!WORLD.scrap_tent && WORLD.scrap_tent.wild, '新地点「拾荒窝棚」：帐布拼了七八层的窝棚与擦得锃亮的箭头（荒野路途）');
+    await WORLD.scrap_tent.npcs.nail.talk();
+    assert(S.flags.nailMet, '锈钉：打完仗总得有人把地上的铁收拢——影蚀往地底砸桩子的旁证');
+    const gNail = S.gold;
+    await WORLD.scrap_tent.actions.find(a => a.text.includes('箭头')).run();
+    assert(S.flags.nailBought && S.gold === gNail - 3, '拾荒窝棚：买一支磨好的箭头（-3金币，生命+2）');
+    await move('rust_field');
     await move('memorial_grove');
     await WORLD.memorial_grove.npcs.veteran.talk();
     assert(S.sideQuests.warname === 'active', '支线【碑林的名字】接取');
@@ -1229,6 +1382,20 @@ globalThis.topUp = function () {
     await move('dusk_path');
     await WORLD.dusk_path.actions.find(a => a.text.includes('神龛边采安神草')).run();
     assert((S.items.calm_herb || 0) === 1, '神龛边：安神草其一（沾香火气，药性最足）');
+    // 第六部横向扩写：道旁香客祠 + 废弃的铸钟坊
+    await move('gate_shrine');
+    assert(!!WORLD.gate_shrine, '新地点「道旁香客祠」：无字神位与插不进新香的香脚杆');
+    await WORLD.gate_shrine.npcs.lane.talk();
+    assert(S.flags.laneMet, '跛脚香客：贴崖听了三十年的钟调子——三口钟次序旁路');
+    await WORLD.gate_shrine.actions.find(a => a.text.includes('续一炷香')).run();
+    assert(S.flags.laneIncense, '香客祠：续一炷香（斗气+1，烟直心也直）');
+    await move('bell_foundry');
+    assert(!!WORLD.bell_foundry, '新地点「废弃的铸钟坊」：齐人高的姊妹钟泥模');
+    await WORLD.bell_foundry.npcs.ya.talk();
+    assert(S.flags.yaMet, '哑姑：铸钟匠家最后一人——「与人换了价的祸，铸钟人赔不起」');
+    await WORLD.bell_foundry.actions.find(a => a.text.includes('掸灰')).run();
+    assert(S.flags.yaHelp, '铸钟坊：帮哑姑给钟模掸灰补泥（斗气+2）');
+    await move('dusk_path');
     await move('abbey_gate');
     assert(S.flags.abbeyOpen, '山门：击退影蚀辅祭，修士开门（战斗）');
     assert(S.items.tmap_relic === 1, '战斗掉落：辅祭袖袋里的圣物龛图（熏黄皮纸，指向龛室地砖）');
@@ -1307,6 +1474,16 @@ globalThis.topUp = function () {
     assert(getEndings().includes('ending_bell_warden'), '第六部收尾「晚祷的回声」录入');
     assert(S.quest === 'q_abyss', '主线推进：最后一印在底下——影渊谷口开启');
     assert(SKILLS.knell && SKILLS.knell.reqFlag === 'rune6' && S.flags.rune6, '符文技能：暮钟长鸣（全体魔法）随暮钟之印解锁');
+    // 扩写：钟响三声——回铸钟坊告诉哑姑（铸坊的铜磬）
+    await move('bell_lower');
+    await move('vespers_hall');
+    await move('abbey_gate');
+    await move('dusk_path');
+    await move('bell_foundry');
+    await WORLD.bell_foundry.npcs.ya.talk();
+    assert(S.flags.yaBell && S.items.foundry_qing === 1, '哑姑的答复：钟响三声是完钟的礼数（铸坊的铜磬·生命上限+3）');
+    await move('dusk_path');
+    await move('abbey_gate');
 
     console.log('—— 终部 · 深渊之印 ——');
     topUp();
@@ -1352,6 +1529,20 @@ globalThis.topUp = function () {
     assert(S.flags.cageClear && S.flags.messengerFreed, '新地点「影渊地牢」：狱卒败退，救出女王亲信营信使罗经（声望+1）');
     await WORLD.dungeon_cage.npcs.luo.talk();
     assert(S.flags.luoGuide, '信使罗经：交出接头的暗号与进谷路线（「这条路线，我三天里用脚量出来的」）');
+    // 扩写：谷口最后一户——把地牢的名册页捎给佟家老两口（支线【谷口的名字】）
+    await move('last_farm');
+    assert(!!WORLD.last_farm, '新地点「谷口 · 最后一户」：要塞墙下锄得整整齐齐的菜畦');
+    await WORLD.last_farm.npcs.tongcouple.talk();
+    assert(S.flags.farmMet && S.sideQuests.farmson === 'active', '支线【谷口的名字】接取：佟家老两口的独苗石儿被征进要塞当苦力');
+    await WORLD.last_farm.npcs.tongcouple.talk();
+    assert(S.flags.farmsonNews, '老两口听说了地牢的事——「锅是热的，门不闩」');
+    await WORLD.last_farm.actions.find(a => a.text.includes('热汤')).run();
+    assert(S.flags.farmSoup, '谷口农舍：一碗滚烫的山蘑汤（生命+6）');
+    // 模拟无光地牢搜出的名册页（本流程未下探影渊秘窟，直接置入信物）
+    S.items.name_pages = 1;
+    const gFarm = S.gold;
+    await WORLD.last_farm.actions.find(a => a.text.includes('名册页')).run();
+    assert(S.flags.farmsonDone && S.sideQuests.farmson === 'done' && S.gold === gFarm + 6, '支线【谷口的名字】完成：名册页上「佟石」两个字，替一位母亲放下石头（+6金币，声望+2）');
     await move('fortress_court');
     await WORLD.fortress_court.actions.find(a => a.text.includes('号角')).run();
     assert(S.flags.queenAid && S.items.queen_aegis === 1, '女王线·兑现：白石城戍卫营入谷佯攻（女王的护心镜·受伤-2）');
@@ -1379,7 +1570,7 @@ globalThis.topUp = function () {
     assert(WORLD.throne_hall.desc.length > 0 && S.loc === 'throne_hall', '通关后重访：王座空置，艾尔多兰继续行走');
     openMap();
     const endHtml = document.querySelector('#modal-content').innerHTML;
-    assert(endHtml.includes('已踏足 139 / 139 处'), '世界地图总览·终局：全境 139 处地点随主线与扩写尽数点亮（139 / 139）');
+    assert(endHtml.includes('已踏足 155 / 155 处'), '世界地图总览·终局：全境 155 处地点随主线与扩写尽数点亮（155 / 155）');
     closeModal();
 
     console.log('\n★ 冒烟测试全部通过：' + passed + ' 项断言 ✓');

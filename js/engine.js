@@ -32,7 +32,7 @@ const rnd = n => Math.floor(Math.random() * n);
 const sleepMs = ms => new Promise(r => { if (FAST || document.hidden) r(); else setTimeout(r, ms); });
 
 /* 可饮用的回复品：id → 回复量（战斗/行囊通用） */
-const HEALS = { potion: 10, potion_big: 25, honey: 6, roast_fish: 8, smoked_meat: 9, hot_soup: 7, clam_skewer: 8, fish_soup: 9, roast_wheat: 5, malt_candy: 6, roast_mushroom: 6 };
+const HEALS = { potion: 10, potion_big: 25, honey: 6, roast_fish: 8, smoked_meat: 9, hot_soup: 7, clam_skewer: 8, fish_soup: 9, roast_wheat: 5, malt_candy: 6, roast_mushroom: 6, charcoal_bread: 7 };
 
 /* ================= 同伴战斗单位 =================
  * 同伴是独立单位：生命/斗气随主角等级成长（上限由等级推导，存档只存当前值）。

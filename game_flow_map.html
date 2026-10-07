@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>符文王座 · 暗影觉醒 —— 游戏流程总览 & 全境地图</title>
+<style>
+:root{--bg:#0b0c14;--panel:#101120;--line:#2b2c40;--ink:#f0e6c8;--dim:#8a8ca0;--gold:#e8d9a0;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif;}
+.wrap{max-width:1560px;margin:0 auto;padding:20px 18px 40px;}
+header{text-align:center;padding:14px 0 6px;}
+h1{margin:0;font-size:26px;letter-spacing:5px;color:var(--gold);font-weight:700;}
+.sub{margin-top:8px;color:var(--dim);font-size:13px;}
+.sub b{color:#c8c9d8;}
+/* 流程卡 */
+.flow{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin:18px 0 8px;}
+@media(max-width:1280px){.flow{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:760px){.flow{grid-template-columns:repeat(2,1fr);}}
+.fcard{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--ac);border-radius:10px;padding:12px 12px 10px;cursor:pointer;transition:transform .15s,box-shadow .15s,opacity .15s;position:relative;}
+.fcard:hover{transform:translateY(-3px);box-shadow:0 6px 22px rgba(0,0,0,.5);}
+.fcard.active{box-shadow:0 0 0 2px var(--ac),0 8px 26px rgba(0,0,0,.55);background:linear-gradient(180deg,var(--fl),var(--panel) 70%);}
+.flow.muted .fcard:not(.active){opacity:.38;}
+.fchead{display:flex;align-items:baseline;gap:7px;}
+.fnum{font-size:11px;color:var(--ac);border:1px solid var(--ac);border-radius:4px;padding:0 5px;white-space:nowrap;}
+.ftitle{font-size:14.5px;font-weight:700;color:var(--ink);flex:1;}
+.flocs{font-size:11px;color:var(--dim);white-space:nowrap;}
+.fregion{margin-top:6px;font-size:12px;color:var(--ac);opacity:.95;}
+.fgoal{margin-top:5px;font-size:12px;color:#c8c9d8;line-height:1.55;}
+.beat{margin-top:7px;font-size:12px;line-height:1.5;color:#a7a9bd;display:flex;gap:6px;}
+.beat .bsub{color:var(--ac);white-space:nowrap;font-weight:700;flex-shrink:0;}
+.fmeta{margin-top:7px;font-size:11.5px;color:#b8ac86;line-height:1.5;display:flex;gap:6px;align-items:baseline;}
+.fmeta .mk{flex-shrink:0;color:#77798e;border:1px solid #3a3b52;border-radius:3px;padding:0 4px;font-size:10px;}
+/* 章节筛选 */
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 6px;}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);color:#c8c9d8;font-size:12.5px;padding:5px 11px;border-radius:999px;cursor:pointer;font-family:inherit;}
+.chip i{width:11px;height:11px;border-radius:3px;background:var(--fl);border:1.5px solid var(--ac);}
+.chip b{color:var(--dim);font-weight:400;font-size:11px;}
+.chip.active{border-color:var(--ac);color:var(--ink);box-shadow:0 0 0 1px var(--ac);}
+.chip.allbtn.active{box-shadow:0 0 0 1px var(--gold);border-color:var(--gold);}
+/* 地图 */
+.mapbox{position:relative;margin-top:8px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0b0c14;}
+.mapbox svg{display:block;width:100%;height:auto;cursor:grab;touch-action:none;}
+.mapbox svg.grabbing{cursor:grabbing;}
+.edge{stroke:#3c3e52;stroke-width:2;}
+.ed-dash{stroke:#566;stroke-dasharray:5 4;}
+.ed-weak{stroke:#2e3044;stroke-width:1.4;stroke-dasharray:2 4;}
+.node{cursor:pointer;}
+.nbox{fill:#1a1b26;stroke:#55586e;stroke-width:1.5;}
+.node[data-ch="0"] .nbox{fill:#23242e;stroke:#9a9cae;}
+.node[data-ch="1"] .nbox{fill:#3a2f1e;stroke:#c98227;}
+.node[data-ch="2"] .nbox{fill:#1e2440;stroke:#7f92d8;}
+.node[data-ch="3"] .nbox{fill:#14283a;stroke:#4fa3c7;}
+.node[data-ch="4"] .nbox{fill:#2e3216;stroke:#b9b34a;}
+.node[data-ch="5"] .nbox{fill:#33201d;stroke:#c26b4a;}
+.node[data-ch="6"] .nbox{fill:#241a36;stroke:#9b7fd0;}
+.node[data-ch="7"] .nbox{fill:#160d1e;stroke:#6d4f96;}
+.nname{fill:#f0e6c8;font-size:13.5px;font-weight:bold;}
+.nsub{fill:#b8ac86;font-size:10.5px;}
+.nbadge{fill:#c9b06a;font-size:10.5px;}
+svg.filtered .node{opacity:.1;transition:opacity .2s;}
+svg.filtered .node.on{opacity:1;}
+svg.filtered .node.on .nbox{stroke-width:2.4;filter:drop-shadow(0 0 5px rgba(255,255,255,.25));}
+svg.filtered .edge{opacity:.05;transition:opacity .2s;}
+svg.filtered .edge.on{opacity:.85;}
+.hint{margin-top:10px;color:#66687e;font-size:12px;text-align:center;line-height:1.8;}
+.hint em{color:#9a9cae;font-style:normal;}
+/* tooltip */
+#tip{position:fixed;pointer-events:none;background:#151623;border:1px solid #3c3e52;border-radius:8px;padding:9px 12px;font-size:12.5px;color:#e8e2c8;box-shadow:0 8px 24px rgba(0,0,0,.6);opacity:0;transition:opacity .12s;z-index:50;max-width:260px;line-height:1.6;}
+#tip .t1{font-weight:700;color:var(--gold);}
+#tip .t2{color:#8a8ca0;font-size:11.5px;}
+#tip .t3{color:#c9b06a;font-size:11px;}
+@media print{.chips{display:none}}
+</style></head><body>
+<div class="wrap">
+  <header>
+    <h1>符文王座 · 暗影觉醒 —— 游戏流程总览 &amp; 全境地图</h1>
+    <div class="sub">西方幻想 · 自由探索文字RPG · 全七章完整收官　共 <b>155 地点</b> · <b>49</b> 种敌人 · <b>28</b> 条支线 · <b>8</b> 张藏宝图 · <b>4</b> 座秘窟副本 · <b>15</b> 种结局 · 单周目约 <b>270~330</b> 分钟</div>
+  </header>
+  <div class="flow" id="flow">
+<div class="fcard" data-ch="0" style="--ac:#b9bccf;--fl:#23242e">
+    <div class="fchead"><span class="fnum">序</span>
+      <span class="ftitle">风雨之夜</span><span class="flocs">7 地点</span></div>
+    <div class="fregion">灰岭镇</div>
+    <div class="fgoal">风雨之夜投宿黑鸦旅店；地窖惊变后替死者启程。</div>
+    <div class="beat"><span class="bsub">暮雨投宿</span><span class="btxt">灰岭镇口投宿黑鸦旅店；集市备货，古井与地窖藏着第一桩怪事。</span></div><div class="beat"><span class="bsub">子夜惊变</span><span class="btxt">影蚀刺客夜袭——客商塞德里克临终托付「晨曦之痕」碎片与迷雾古图；击杀刺客（首场 BOSS 战），天亮解锁南下古道与山口小径。</span></div>
+    <div class="fmeta"><span class="mk">BOSS</span>影蚀刺客（旅店地窖）</div>
+    <div class="fmeta"><span class="mk">收获</span>晨曦之痕碎片 · 迷雾古图</div>
+  </div>
+<div class="fcard" data-ch="1" style="--ac:#c98227;--fl:#3a2f1e">
+    <div class="fchead"><span class="fnum">第一部</span>
+      <span class="ftitle">晨曦之印</span><span class="flocs">36 地点</span></div>
+    <div class="fregion">南下古道 → 迷雾森林 → 符文圣殿</div>
+    <div class="fgoal">南寻三百年前熄灭的晨曦符文，重燃第一印。</div>
+    <div class="beat"><span class="bsub">南下古道</span><span class="btxt">荒废烽燧、白花泉、石桥渡、荒石料场——狼群与雾中魅影把守官道。</span></div><div class="beat"><span class="bsub">迷雾森林</span><span class="btxt">雾林救援商队获先手（哥布林掠袭者）；黄昏营地 ✦艾莉娅入队（传授照明术「星火引灯」）。</span></div><div class="beat"><span class="bsub">符文圣殿</span><span class="btxt">石兽灯庭（被蚀的石兽）、智慧回廊、勇气之影——三过其二方可承符文。</span></div><div class="beat"><span class="bsub">晨曦重燃</span><span class="btxt">晨曦祭坛重燃符文 ✦索恩入队；【第一部 · 完】。</span></div>
+    <div class="fmeta"><span class="mk">BOSS</span>被蚀的石兽 · 勇气之影（圣殿试炼）</div>
+    <div class="fmeta"><span class="mk">收获</span>晨曦之痕（符文重燃，斗气上限+4）</div>
+  </div>
+<div class="fcard" data-ch="2" style="--ac:#7f92d8;--fl:#1e2440">
+    <div class="fchead"><span class="fnum">第二部</span>
+      <span class="ftitle">星辰之印</span><span class="flocs">31 地点</span></div>
+    <div class="fregion">霜脊山道 → 官道驿镇 → 白石城</div>
+    <div class="fgoal">北上白石城，抢在影蚀之前保住王室秘藏的星辰之印。</div>
+    <div class="beat"><span class="bsub">霜脊山道</span><span class="btxt">灰岭镇东的山口小径直通风口山神祠——两部地图自此连成一张网。</span></div><div class="beat"><span class="bsub">官道北行</span><span class="btxt">官道驿镇的委托板与传闻；空营矿村的矿灯之谜（何十斤的家书要送回灰岭）。</span></div><div class="beat"><span class="bsub">白石城中</span><span class="btxt">宵禁下的白石城：城西老井、官仓、慈幼堂——三条证据链当庭揭发内应。</span></div><div class="beat"><span class="bsub">星塔之夜</span><span class="btxt">月晦之夜影蚀领主亲取星辰之印——赶到星塔观星台决战。【第二部 · 完】。</span></div>
+    <div class="fmeta"><span class="mk">BOSS</span>影蚀领主 · 噬星者（星塔观星台）</div>
+    <div class="fmeta"><span class="mk">收获</span>星辰之印 · 技能解锁线开启</div>
+  </div>
+<div class="fcard" data-ch="3" style="--ac:#4fa3c7;--fl:#14283a">
+    <div class="fchead"><span class="fnum">第三部</span>
+      <span class="ftitle">海洋之印</span><span class="flocs">20 地点</span></div>
+    <div class="fregion">潮歌湾</div>
+    <div class="fgoal">南下潮歌湾，等一场大退潮，走进海底神殿。</div>
+    <div class="beat"><span class="bsub">南下潮歌湾</span><span class="btxt">渔港、盐灶滩、老船坞——船坞货单上「鸦羽车」的老主顾埋着渡鸦暗线。</span></div><div class="beat"><span class="bsub">灯塔与礁滩</span><span class="btxt">潮歌灯塔 ✦卡雅入队；望潮崖、沉船湾、鲸骨滩各有潮路线索（卡雅家传半图暗线）。</span></div><div class="beat"><span class="bsub">大退潮之夜</span><span class="btxt">大退潮海路自现 → 海底神殿咏泉回廊，潮祭司镇守第三印。【第三部 · 完】。</span></div>
+    <div class="fmeta"><span class="mk">BOSS</span>影蚀潮祭司 · 溟汐（海底神殿）</div>
+    <div class="fmeta"><span class="mk">收获</span>海洋之印 · 技能【潮汐之刃】</div>
+  </div>
+<div class="fcard" data-ch="4" style="--ac:#b9b34a;--fl:#2e3216">
+    <div class="fchead"><span class="fnum">第四部</span>
+      <span class="ftitle">丰收之印</span><span class="flocs">17 地点</span></div>
+    <div class="fregion">金穗平原</div>
+    <div class="fgoal">东行金穗平原，解蝗灾与腐穗背后的第四印之谋。</div>
+    <div class="beat"><span class="bsub">金穗平原</span><span class="btxt">穗安村安顿，田垄间蝗群与稻草人怀里揣着麦穗的怪谈。</span></div><div class="beat"><span class="bsub">磨坊与守穗人</span><span class="btxt">老磨坊的磨盘刻痕指向丰年祭坛农谚；泥沼腐行者盘踞水路。</span></div><div class="beat"><span class="bsub">丰年祭</span><span class="btxt">丰年祭坛决战腐穗巨灵，金穗重熟。【第四部 · 完】。</span></div>
+    <div class="fmeta"><span class="mk">BOSS</span>腐穗巨灵 · 饕穰（丰年祭坛）</div>
+    <div class="fmeta"><span class="mk">收获</span>丰收之印 · 技能【穗浪千重】（全体）</div>
+  </div>
+<div class="fcard" data-ch="5" style="--ac:#c26b4a;--fl:#33201d">
+    <div class="fchead"><span class="fnum">第五部</span>
+      <span class="ftitle">战争之印</span><span class="flocs">17 地点</span></div>
+    <div class="fregion">战痕古战场</div>
+    <div class="fgoal">北行战痕古战场，从亡者地界夺回战旗之下的第五印。</div>
+    <div class="beat"><span class="bsub">北望古战场</span><span class="btxt">铁锈荒原、界碑驿棚——荒原的亡者不得安眠。</span></div><div class="beat"><span class="bsub">荒原与碑林</span><span class="btxt">碑林石龛、折戟丘、哨塔——溃兵营地的调令与白石城的情报指向同一只手。</span></div><div class="beat"><span class="bsub">战旗高台</span><span class="btxt">战旗台上影蚀战将拄断矛而起，一战定旗。【第五部 · 完】。</span></div>
+    <div class="fmeta"><span class="mk">BOSS</span>影蚀战将 · 断矛（战旗台）</div>
+    <div class="fmeta"><span class="mk">收获</span>战争之印 · 技能【战号之锋】</div>
+  </div>
+<div class="fcard" data-ch="6" style="--ac:#9b7fd0;--fl:#241a36">
+    <div class="fchead"><span class="fnum">第六部</span>
+      <span class="ftitle">暮钟之印</span><span class="flocs">16 地点</span></div>
+    <div class="fregion">暮色修道院</div>
+    <div class="fgoal">西行暮色修道院，登上为长夜计时的钟楼。</div>
+    <div class="beat"><span class="bsub">暮色山道</span><span class="btxt">山门、墓园、荒烽哨——风里有不属于钟的钟声。</span></div><div class="beat"><span class="bsub">晚课与静室</span><span class="btxt">修道院静室歇脚；僧舍的守殿人暗记（需光亮）指向「与人换了价的祸」。</span></div><div class="beat"><span class="bsub">钟楼之夜</span><span class="btxt">钟楼顶层圣咏者夜祷，哑钟重新鸣响。【第六部 · 完】。</span></div>
+    <div class="fmeta"><span class="mk">BOSS</span>影蚀圣咏者 · 夜祷（钟楼顶层）</div>
+    <div class="fmeta"><span class="mk">收获</span>暮钟之印 · 技能【暮钟长鸣】（全体）</div>
+  </div>
+<div class="fcard" data-ch="7" style="--ac:#a678e0;--fl:#160d1e">
+    <div class="fchead"><span class="fnum">终</span>
+      <span class="ftitle">深渊之印</span><span class="flocs">11 地点</span></div>
+    <div class="fregion">影渊要塞</div>
+    <div class="fgoal">最后一印不在途中，在底下——走进黑曜石要塞。</div>
+    <div class="beat"><span class="bsub">影渊谷口</span><span class="btxt">谷口旧货栈整备；独石桥影渊桥头守将拦路。</span></div><div class="beat"><span class="bsub">王座与黎明</span><span class="btxt">无光前厅 → 内庭 → 王座大厅，决战暗影君主莫格拉斯。</span></div><div class="beat"><span class="bsub">终局裁定</span><span class="btxt">三条暗线在此收束（渡鸦真身 / 女王莉安娜 / 卡雅潮路图）；侵蚀值与关键抉择决定 8 种章节收尾 + 5 种终局。</span></div>
+    <div class="fmeta"><span class="mk">BOSS</span>影渊桥头守将 → 暗影君主 · 莫格拉斯（王座大厅）</div>
+    <div class="fmeta"><span class="mk">收获</span>深渊之印 · 结局收集</div>
+  </div>
+  </div>
+  <div class="chips" id="chips">
+    <button class="chip allbtn active" data-ch="-1" style="--ac:#e8d9a0;--fl:#23242e">🗺 全境一览</button>
+    <button class="chip" data-ch="0" style="--ac:#b9bccf;--fl:#23242e"><i></i>序章 <b>7</b></button><button class="chip" data-ch="1" style="--ac:#c98227;--fl:#3a2f1e"><i></i>第一部 <b>36</b></button><button class="chip" data-ch="2" style="--ac:#7f92d8;--fl:#1e2440"><i></i>第二部 <b>31</b></button><button class="chip" data-ch="3" style="--ac:#4fa3c7;--fl:#14283a"><i></i>第三部 <b>20</b></button><button class="chip" data-ch="4" style="--ac:#b9b34a;--fl:#2e3216"><i></i>第四部 <b>17</b></button><button class="chip" data-ch="5" style="--ac:#c26b4a;--fl:#33201d"><i></i>第五部 <b>17</b></button><button class="chip" data-ch="6" style="--ac:#9b7fd0;--fl:#241a36"><i></i>第六部 <b>16</b></button><button class="chip" data-ch="7" style="--ac:#a678e0;--fl:#160d1e"><i></i>终部 <b>11</b></button>
+  </div>
+  <div class="mapbox" id="mapbox">
+    <svg id="map" viewBox="0 0 4532 1796" xmlns="http://www.w3.org/2000/svg" font-family="'Microsoft YaHei','PingFang SC',sans-serif"><g id="fig"><rect x="0" y="0" width="4532" height="1796" fill="#0b0c14"/>
+<line class="edge ed-strong" data-ch="0" x1="976" y1="1173" x2="976" y2="1067"/>
+<line class="edge ed-strong" data-ch="-1" x1="976" y1="1173" x2="976" y2="1279"/>
+<line class="edge ed-strong" data-ch="-1" x1="976" y1="1173" x2="1492" y2="1279"/>
+<line class="edge ed-strong" data-ch="0" x1="976" y1="1173" x2="804" y2="1173"/>
+<line class="edge ed-strong" data-ch="0" x1="804" y1="1173" x2="804" y2="1067"/>
+<line class="edge ed-strong" data-ch="0" x1="804" y1="1173" x2="804" y2="1279"/>
+<line class="edge ed-weak" data-ch="0" x1="804" y1="1173" x2="976" y2="1173"/>
+<line class="edge ed-strong" data-ch="0" x1="804" y1="1067" x2="804" y2="1173"/>
+<line class="edge ed-weak" data-ch="0" x1="804" y1="1279" x2="804" y2="1173"/>
+<line class="edge ed-strong" data-ch="0" x1="976" y1="1067" x2="976" y2="1173"/>
+<line class="edge ed-dash" data-ch="0" x1="976" y1="1067" x2="976" y2="749"/>
+<line class="edge ed-dash" data-ch="0" x1="976" y1="1067" x2="976" y2="1385"/>
+<line class="edge ed-dash" data-ch="0" x1="976" y1="1385" x2="976" y2="1067"/>
+<line class="edge ed-dash" data-ch="0" x1="976" y1="749" x2="976" y2="1067"/>
+<line class="edge ed-weak" data-ch="-1" x1="976" y1="1279" x2="976" y2="1173"/>
+<line class="edge ed-strong" data-ch="1" x1="976" y1="1279" x2="804" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="976" y1="1279" x2="1320" y2="1279"/>
+<line class="edge ed-strong" data-ch="1" x1="976" y1="1279" x2="632" y2="1279"/>
+<line class="edge ed-strong" data-ch="1" x1="976" y1="1279" x2="1148" y2="1385"/>
+<line class="edge ed-weak" data-ch="1" x1="1148" y1="1385" x2="976" y2="1279"/>
+<line class="edge ed-strong" data-ch="1" x1="1320" y1="1279" x2="1320" y2="1385"/>
+<line class="edge ed-weak" data-ch="1" x1="1320" y1="1279" x2="976" y2="1279"/>
+<line class="edge ed-strong" data-ch="1" x1="632" y1="1279" x2="632" y2="1173"/>
+<line class="edge ed-weak" data-ch="1" x1="632" y1="1279" x2="976" y2="1279"/>
+<line class="edge ed-weak" data-ch="1" x1="1320" y1="1385" x2="1320" y2="1279"/>
+<line class="edge ed-strong" data-ch="1" x1="804" y1="961" x2="976" y2="855"/>
+<line class="edge ed-weak" data-ch="-1" x1="804" y1="961" x2="976" y2="1173"/>
+<line class="edge ed-strong" data-ch="1" x1="804" y1="961" x2="976" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="804" y1="961" x2="460" y2="855"/>
+<line class="edge ed-strong" data-ch="1" x1="804" y1="961" x2="1148" y2="749"/>
+<line class="edge ed-strong" data-ch="1" x1="804" y1="961" x2="804" y2="643"/>
+<line class="edge ed-strong" data-ch="1" x1="460" y1="855" x2="460" y2="643"/>
+<line class="edge ed-weak" data-ch="1" x1="460" y1="855" x2="804" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="460" y1="855" x2="288" y2="855"/>
+<line class="edge ed-weak" data-ch="1" x1="460" y1="643" x2="460" y2="855"/>
+<line class="edge ed-strong" data-ch="1" x1="976" y1="961" x2="976" y2="855"/>
+<line class="edge ed-strong" data-ch="1" x1="976" y1="961" x2="1148" y2="1067"/>
+<line class="edge ed-strong" data-ch="1" x1="976" y1="961" x2="1320" y2="961"/>
+<line class="edge ed-weak" data-ch="1" x1="976" y1="961" x2="804" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="976" y1="961" x2="632" y2="1173"/>
+<line class="edge ed-strong" data-ch="1" x1="288" y1="855" x2="288" y2="643"/>
+<line class="edge ed-strong" data-ch="1" x1="288" y1="855" x2="632" y2="1067"/>
+<line class="edge ed-weak" data-ch="1" x1="288" y1="855" x2="460" y2="855"/>
+<line class="edge ed-strong" data-ch="1" x1="288" y1="855" x2="116" y2="855"/>
+<line class="edge ed-weak" data-ch="1" x1="288" y1="643" x2="288" y2="855"/>
+<line class="edge ed-weak" data-ch="1" x1="116" y1="855" x2="288" y2="855"/>
+<line class="edge ed-weak" data-ch="1" x1="632" y1="1067" x2="288" y2="855"/>
+<line class="edge ed-strong" data-ch="1" x1="632" y1="1067" x2="632" y2="1173"/>
+<line class="edge ed-strong" data-ch="1" x1="632" y1="1173" x2="632" y2="1067"/>
+<line class="edge ed-strong" data-ch="1" x1="632" y1="1173" x2="976" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="632" y1="1173" x2="632" y2="1279"/>
+<line class="edge ed-weak" data-ch="1" x1="1148" y1="1067" x2="976" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="1148" y1="1067" x2="632" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="1320" y1="961" x2="1320" y2="749"/>
+<line class="edge ed-weak" data-ch="1" x1="1320" y1="961" x2="976" y2="961"/>
+<line class="edge ed-weak" data-ch="1" x1="1320" y1="749" x2="1320" y2="961"/>
+<line class="edge ed-weak" data-ch="1" x1="1148" y1="749" x2="804" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="804" y1="643" x2="632" y2="643"/>
+<line class="edge ed-weak" data-ch="1" x1="804" y1="643" x2="804" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="632" y1="643" x2="632" y2="961"/>
+<line class="edge ed-weak" data-ch="1" x1="632" y1="643" x2="804" y2="643"/>
+<line class="edge ed-strong" data-ch="1" x1="632" y1="961" x2="632" y2="643"/>
+<line class="edge ed-strong" data-ch="1" x1="632" y1="961" x2="1148" y2="1067"/>
+<line class="edge ed-strong" data-ch="1" x1="976" y1="855" x2="1492" y2="1173"/>
+<line class="edge ed-weak" data-ch="1" x1="976" y1="855" x2="804" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="976" y1="855" x2="1148" y2="855"/>
+<line class="edge ed-weak" data-ch="1" x1="1148" y1="855" x2="976" y2="855"/>
+<line class="edge ed-strong" data-ch="1" x1="1148" y1="855" x2="1320" y2="643"/>
+<line class="edge ed-strong" data-ch="1" x1="1320" y1="643" x2="1320" y2="749"/>
+<line class="edge ed-weak" data-ch="1" x1="1320" y1="643" x2="1148" y2="855"/>
+<line class="edge ed-strong" data-ch="1" x1="1492" y1="1173" x2="1664" y2="1067"/>
+<line class="edge ed-weak" data-ch="1" x1="1492" y1="1173" x2="976" y2="855"/>
+<line class="edge ed-strong" data-ch="1" x1="1664" y1="1067" x2="1836" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="1664" y1="1067" x2="1492" y2="1173"/>
+<line class="edge ed-strong" data-ch="1" x1="1664" y1="1067" x2="1320" y2="1067"/>
+<line class="edge ed-strong" data-ch="-1" x1="1664" y1="1067" x2="2008" y2="1279"/>
+<line class="edge ed-strong" data-ch="1" x1="1836" y1="961" x2="1836" y2="855"/>
+<line class="edge ed-strong" data-ch="1" x1="1836" y1="961" x2="1664" y2="1067"/>
+<line class="edge ed-strong" data-ch="1" x1="1836" y1="961" x2="1492" y2="961"/>
+<line class="edge ed-weak" data-ch="1" x1="1320" y1="1067" x2="1664" y2="1067"/>
+<line class="edge ed-weak" data-ch="1" x1="1492" y1="961" x2="1836" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="1836" y1="855" x2="1836" y2="749"/>
+<line class="edge ed-strong" data-ch="1" x1="1836" y1="855" x2="1836" y2="961"/>
+<line class="edge ed-strong" data-ch="1" x1="1836" y1="749" x2="1836" y2="855"/>
+<line class="edge ed-strong" data-ch="1" x1="1836" y1="749" x2="1664" y2="749"/>
+<line class="edge ed-strong" data-ch="1" x1="1664" y1="749" x2="1664" y2="537"/>
+<line class="edge ed-weak" data-ch="1" x1="1664" y1="749" x2="1836" y2="749"/>
+<line class="edge ed-dash" data-ch="1" x1="1664" y1="749" x2="1664" y2="855"/>
+<line class="edge ed-dash" data-ch="1" x1="1664" y1="855" x2="1664" y2="749"/>
+<line class="edge ed-weak" data-ch="1" x1="1664" y1="537" x2="1664" y2="749"/>
+<line class="edge ed-strong" data-ch="1" x1="1664" y1="537" x2="1492" y2="537"/>
+<line class="edge ed-weak" data-ch="1" x1="1492" y1="537" x2="1664" y2="537"/>
+<line class="edge ed-weak" data-ch="1" x1="1836" y1="537" x2="1836" y2="749"/>
+<line class="edge ed-strong" data-ch="2" x1="2008" y1="1279" x2="2008" y2="1067"/>
+<line class="edge ed-weak" data-ch="-1" x1="2008" y1="1279" x2="1664" y2="1067"/>
+<line class="edge ed-strong" data-ch="2" x1="2008" y1="1279" x2="2180" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="2008" y1="1279" x2="1836" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="2180" y1="1279" x2="2008" y2="1067"/>
+<line class="edge ed-strong" data-ch="2" x1="2180" y1="1279" x2="1492" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="2180" y1="1279" x2="2352" y2="1279"/>
+<line class="edge ed-weak" data-ch="2" x1="2180" y1="1279" x2="2008" y2="1279"/>
+<line class="edge ed-weak" data-ch="2" x1="2352" y1="1279" x2="2180" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="1320" y1="1173" x2="1664" y2="961"/>
+<line class="edge ed-weak" data-ch="2" x1="1320" y1="1173" x2="1836" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="2008" y1="1067" x2="2352" y2="749"/>
+<line class="edge ed-weak" data-ch="2" x1="2008" y1="1067" x2="2008" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="2008" y1="1067" x2="2180" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="2008" y1="1067" x2="1836" y2="1173"/>
+<line class="edge ed-strong" data-ch="2" x1="2008" y1="1067" x2="1664" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="1836" y1="1279" x2="2008" y2="1067"/>
+<line class="edge ed-strong" data-ch="2" x1="1836" y1="1279" x2="1836" y2="1385"/>
+<line class="edge ed-weak" data-ch="2" x1="1836" y1="1279" x2="2008" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="1836" y1="1279" x2="1320" y2="1173"/>
+<line class="edge ed-strong" data-ch="2" x1="1492" y1="1279" x2="2180" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="1492" y1="1279" x2="1664" y2="1173"/>
+<line class="edge ed-strong" data-ch="-1" x1="1492" y1="1279" x2="976" y2="1173"/>
+<line class="edge ed-strong" data-ch="2" x1="1664" y1="1173" x2="1664" y2="961"/>
+<line class="edge ed-strong" data-ch="2" x1="1664" y1="1173" x2="1664" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="1664" y1="1173" x2="1492" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="1664" y1="1279" x2="1664" y2="1173"/>
+<line class="edge ed-strong" data-ch="2" x1="1664" y1="1279" x2="2008" y2="1067"/>
+<line class="edge ed-strong" data-ch="2" x1="1836" y1="1385" x2="1836" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="1664" y1="961" x2="1664" y2="1173"/>
+<line class="edge ed-strong" data-ch="2" x1="1664" y1="961" x2="1320" y2="1173"/>
+<line class="edge ed-strong" data-ch="2" x1="1836" y1="1173" x2="2008" y2="1067"/>
+<line class="edge ed-strong" data-ch="2" x1="1836" y1="1173" x2="2180" y2="1279"/>
+<line class="edge ed-strong" data-ch="2" x1="2352" y1="749" x2="2352" y2="643"/>
+<line class="edge ed-strong" data-ch="2" x1="2352" y1="749" x2="2180" y2="1279"/>
+<line class="edge ed-strong" data-ch="-1" x1="2352" y1="749" x2="2352" y2="1173"/>
+<line class="edge ed-strong" data-ch="2" x1="2352" y1="643" x2="2352" y2="537"/>
+<line class="edge ed-strong" data-ch="2" x1="2352" y1="643" x2="2352" y2="749"/>
+<line class="edge ed-strong" data-ch="2" x1="2352" y1="643" x2="2524" y2="643"/>
+<line class="edge ed-strong" data-ch="2" x1="2352" y1="643" x2="2180" y2="643"/>
+<line class="edge ed-strong" data-ch="2" x1="2352" y1="643" x2="2524" y2="537"/>
+<line class="edge ed-strong" data-ch="2" x1="2352" y1="643" x2="2180" y2="749"/>
+<line class="edge ed-weak" data-ch="2" x1="2524" y1="537" x2="2352" y2="643"/>
+<line class="edge ed-strong" data-ch="2" x1="2180" y1="643" x2="2180" y2="537"/>
+<line class="edge ed-weak" data-ch="2" x1="2180" y1="643" x2="2352" y2="643"/>
+<line class="edge ed-strong" data-ch="2" x1="2180" y1="643" x2="2008" y2="643"/>
+<line class="edge ed-strong" data-ch="2" x1="2524" y1="643" x2="2524" y2="431"/>
+<line class="edge ed-strong" data-ch="2" x1="2524" y1="643" x2="2524" y2="855"/>
+<line class="edge ed-strong" data-ch="2" x1="2524" y1="643" x2="2696" y2="643"/>
+<line class="edge ed-weak" data-ch="2" x1="2524" y1="643" x2="2352" y2="643"/>
+<line class="edge ed-weak" data-ch="2" x1="2524" y1="855" x2="2524" y2="643"/>
+<line class="edge ed-weak" data-ch="2" x1="2180" y1="749" x2="2352" y2="643"/>
+<line class="edge ed-strong" data-ch="2" x1="2180" y1="749" x2="2008" y2="855"/>
+<line class="edge ed-weak" data-ch="2" x1="2524" y1="431" x2="2524" y2="643"/>
+<line class="edge ed-strong" data-ch="2" x1="2524" y1="431" x2="2696" y2="431"/>
+<line class="edge ed-strong" data-ch="2" x1="2696" y1="643" x2="2524" y2="643"/>
+<line class="edge ed-strong" data-ch="2" x1="2180" y1="537" x2="2180" y2="643"/>
+<line class="edge ed-strong" data-ch="2" x1="2696" y1="431" x2="2524" y2="431"/>
+<line class="edge ed-strong" data-ch="2" x1="2008" y1="855" x2="2180" y2="749"/>
+<line class="edge ed-strong" data-ch="2" x1="2008" y1="643" x2="2180" y2="643"/>
+<line class="edge ed-weak" data-ch="2" x1="2352" y1="537" x2="2352" y2="643"/>
+<line class="edge ed-strong" data-ch="2" x1="2352" y1="537" x2="2008" y2="537"/>
+<line class="edge ed-weak" data-ch="2" x1="2008" y1="537" x2="2352" y2="537"/>
+<line class="edge ed-weak" data-ch="2" x1="2352" y1="431" x2="2352" y2="537"/>
+<line class="edge ed-strong" data-ch="2" x1="2180" y1="325" x2="2352" y2="537"/>
+<line class="edge ed-dash" data-ch="2" x1="2180" y1="325" x2="2180" y2="219"/>
+<line class="edge ed-dash" data-ch="2" x1="2180" y1="219" x2="2180" y2="113"/>
+<line class="edge ed-dash" data-ch="2" x1="2180" y1="219" x2="2180" y2="325"/>
+<line class="edge ed-dash" data-ch="2" x1="2180" y1="113" x2="2180" y2="219"/>
+<line class="edge ed-weak" data-ch="-1" x1="2352" y1="1173" x2="2352" y2="749"/>
+<line class="edge ed-strong" data-ch="3" x1="2352" y1="1173" x2="2524" y2="1491"/>
+<line class="edge ed-strong" data-ch="-1" x1="2352" y1="1173" x2="2868" y2="1279"/>
+<line class="edge ed-strong" data-ch="3" x1="2352" y1="1173" x2="2180" y2="1173"/>
+<line class="edge ed-strong" data-ch="3" x1="2352" y1="1173" x2="2008" y2="1385"/>
+<line class="edge ed-weak" data-ch="3" x1="2008" y1="1385" x2="2352" y2="1173"/>
+<line class="edge ed-weak" data-ch="3" x1="2524" y1="1491" x2="2352" y2="1173"/>
+<line class="edge ed-strong" data-ch="3" x1="2524" y1="1491" x2="2524" y2="1597"/>
+<line class="edge ed-strong" data-ch="3" x1="2524" y1="1491" x2="2868" y2="1385"/>
+<line class="edge ed-strong" data-ch="3" x1="2524" y1="1491" x2="2352" y2="1491"/>
+<line class="edge ed-strong" data-ch="3" x1="2524" y1="1491" x2="2352" y2="1385"/>
+<line class="edge ed-weak" data-ch="3" x1="2352" y1="1385" x2="2524" y2="1491"/>
+<line class="edge ed-strong" data-ch="3" x1="2180" y1="1173" x2="2352" y2="1491"/>
+<line class="edge ed-weak" data-ch="3" x1="2180" y1="1173" x2="2352" y2="1173"/>
+<line class="edge ed-strong" data-ch="3" x1="2352" y1="1491" x2="2180" y2="1173"/>
+<line class="edge ed-strong" data-ch="3" x1="2352" y1="1491" x2="2352" y2="1597"/>
+<line class="edge ed-strong" data-ch="3" x1="2352" y1="1491" x2="2524" y2="1491"/>
+<line class="edge ed-strong" data-ch="3" x1="2352" y1="1597" x2="2352" y2="1491"/>
+<line class="edge ed-strong" data-ch="3" x1="2352" y1="1597" x2="2524" y2="1597"/>
+<line class="edge ed-strong" data-ch="3" x1="2524" y1="1597" x2="2524" y2="1491"/>
+<line class="edge ed-strong" data-ch="3" x1="2524" y1="1597" x2="2696" y2="1597"/>
+<line class="edge ed-strong" data-ch="3" x1="2524" y1="1597" x2="2352" y2="1597"/>
+<line class="edge ed-strong" data-ch="3" x1="2868" y1="1385" x2="2868" y2="1491"/>
+<line class="edge ed-weak" data-ch="3" x1="2868" y1="1385" x2="2524" y2="1491"/>
+<line class="edge ed-strong" data-ch="3" x1="2868" y1="1385" x2="2696" y2="1597"/>
+<line class="edge ed-weak" data-ch="3" x1="2868" y1="1491" x2="2868" y2="1385"/>
+<line class="edge ed-strong" data-ch="3" x1="2868" y1="1491" x2="2868" y2="1597"/>
+<line class="edge ed-strong" data-ch="3" x1="2868" y1="1491" x2="3040" y2="1491"/>
+<line class="edge ed-strong" data-ch="3" x1="2868" y1="1491" x2="2696" y2="1279"/>
+<line class="edge ed-strong" data-ch="3" x1="3040" y1="1491" x2="3212" y2="1491"/>
+<line class="edge ed-weak" data-ch="3" x1="3040" y1="1491" x2="2868" y2="1491"/>
+<line class="edge ed-weak" data-ch="3" x1="2696" y1="1279" x2="2868" y2="1491"/>
+<line class="edge ed-strong" data-ch="3" x1="2696" y1="1279" x2="2524" y2="1279"/>
+<line class="edge ed-strong" data-ch="3" x1="2696" y1="1597" x2="2524" y2="1597"/>
+<line class="edge ed-strong" data-ch="3" x1="2696" y1="1597" x2="2868" y2="1385"/>
+<line class="edge ed-strong" data-ch="3" x1="3212" y1="1491" x2="3212" y2="1597"/>
+<line class="edge ed-strong" data-ch="3" x1="3212" y1="1491" x2="3040" y2="1491"/>
+<line class="edge ed-strong" data-ch="3" x1="3212" y1="1597" x2="3212" y2="1491"/>
+<line class="edge ed-strong" data-ch="3" x1="2524" y1="1279" x2="2696" y2="1279"/>
+<line class="edge ed-weak" data-ch="3" x1="2868" y1="1597" x2="2868" y2="1491"/>
+<line class="edge ed-strong" data-ch="3" x1="2868" y1="1597" x2="3040" y2="1597"/>
+<line class="edge ed-strong" data-ch="3" x1="2868" y1="1597" x2="2524" y2="1703"/>
+<line class="edge ed-dash" data-ch="3" x1="2868" y1="1597" x2="2868" y2="1703"/>
+<line class="edge ed-weak" data-ch="3" x1="2524" y1="1703" x2="2868" y2="1597"/>
+<line class="edge ed-weak" data-ch="3" x1="3040" y1="1597" x2="2868" y2="1597"/>
+<line class="edge ed-dash" data-ch="3" x1="2868" y1="1703" x2="2868" y2="1597"/>
+<line class="edge ed-strong" data-ch="-1" x1="2868" y1="1279" x2="2868" y2="961"/>
+<line class="edge ed-strong" data-ch="4" x1="2868" y1="1279" x2="3728" y2="1491"/>
+<line class="edge ed-weak" data-ch="-1" x1="2868" y1="1279" x2="2352" y2="1173"/>
+<line class="edge ed-strong" data-ch="4" x1="2868" y1="1279" x2="3040" y2="961"/>
+<line class="edge ed-strong" data-ch="4" x1="3728" y1="1491" x2="3728" y2="1385"/>
+<line class="edge ed-strong" data-ch="4" x1="3728" y1="1491" x2="3384" y2="1173"/>
+<line class="edge ed-strong" data-ch="4" x1="3728" y1="1491" x2="4072" y2="1491"/>
+<line class="edge ed-weak" data-ch="4" x1="3728" y1="1491" x2="2868" y2="1279"/>
+<line class="edge ed-strong" data-ch="4" x1="3728" y1="1491" x2="3900" y2="1385"/>
+<line class="edge ed-strong" data-ch="4" x1="3728" y1="1491" x2="3556" y2="1385"/>
+<line class="edge ed-strong" data-ch="4" x1="3728" y1="1491" x2="3728" y2="1173"/>
+<line class="edge ed-weak" data-ch="4" x1="3900" y1="1385" x2="3728" y2="1491"/>
+<line class="edge ed-weak" data-ch="4" x1="3384" y1="1173" x2="3728" y2="1491"/>
+<line class="edge ed-strong" data-ch="4" x1="3384" y1="1173" x2="3212" y2="961"/>
+<line class="edge ed-strong" data-ch="4" x1="3384" y1="1173" x2="3040" y2="1279"/>
+<line class="edge ed-strong" data-ch="4" x1="4072" y1="1491" x2="3728" y2="1385"/>
+<line class="edge ed-weak" data-ch="4" x1="4072" y1="1491" x2="3728" y2="1491"/>
+<line class="edge ed-dash" data-ch="4" x1="4072" y1="1491" x2="4072" y2="1385"/>
+<line class="edge ed-strong" data-ch="4" x1="3728" y1="1385" x2="3728" y2="1279"/>
+<line class="edge ed-weak" data-ch="4" x1="3728" y1="1385" x2="3728" y2="1491"/>
+<line class="edge ed-strong" data-ch="4" x1="3728" y1="1385" x2="4072" y2="1491"/>
+<line class="edge ed-strong" data-ch="4" x1="3728" y1="1385" x2="3556" y2="1279"/>
+<line class="edge ed-weak" data-ch="4" x1="3728" y1="1279" x2="3728" y2="1385"/>
+<line class="edge ed-strong" data-ch="4" x1="3040" y1="961" x2="3040" y2="855"/>
+<line class="edge ed-strong" data-ch="4" x1="3040" y1="961" x2="3040" y2="1067"/>
+<line class="edge ed-strong" data-ch="4" x1="3040" y1="961" x2="3212" y2="961"/>
+<line class="edge ed-strong" data-ch="4" x1="3040" y1="961" x2="3728" y2="1173"/>
+<line class="edge ed-strong" data-ch="4" x1="3040" y1="961" x2="2868" y2="1279"/>
+<line class="edge ed-weak" data-ch="4" x1="3040" y1="855" x2="3040" y2="961"/>
+<line class="edge ed-weak" data-ch="4" x1="3212" y1="961" x2="3040" y2="961"/>
+<line class="edge ed-strong" data-ch="4" x1="3212" y1="961" x2="3384" y2="1173"/>
+<line class="edge ed-weak" data-ch="4" x1="3040" y1="1067" x2="3040" y2="961"/>
+<line class="edge ed-strong" data-ch="4" x1="3040" y1="1067" x2="3212" y2="1279"/>
+<line class="edge ed-weak" data-ch="4" x1="3212" y1="1279" x2="3040" y2="1067"/>
+<line class="edge ed-strong" data-ch="4" x1="3212" y1="1279" x2="3040" y2="1279"/>
+<line class="edge ed-weak" data-ch="4" x1="3040" y1="1279" x2="3212" y2="1279"/>
+<line class="edge ed-strong" data-ch="4" x1="3040" y1="1279" x2="3384" y2="1173"/>
+<line class="edge ed-strong" data-ch="4" x1="3728" y1="1173" x2="3728" y2="1491"/>
+<line class="edge ed-strong" data-ch="4" x1="3728" y1="1173" x2="3040" y2="961"/>
+<line class="edge ed-strong" data-ch="4" x1="3556" y1="1385" x2="3728" y2="1491"/>
+<line class="edge ed-dash" data-ch="4" x1="4072" y1="1385" x2="4072" y2="1491"/>
+<line class="edge ed-strong" data-ch="4" x1="3556" y1="1279" x2="3728" y2="1385"/>
+<line class="edge ed-strong" data-ch="5" x1="2868" y1="961" x2="3728" y2="1067"/>
+<line class="edge ed-weak" data-ch="-1" x1="2868" y1="961" x2="2868" y2="1279"/>
+<line class="edge ed-strong" data-ch="-1" x1="2868" y1="961" x2="2524" y2="961"/>
+<line class="edge ed-strong" data-ch="5" x1="2868" y1="961" x2="2868" y2="643"/>
+<line class="edge ed-strong" data-ch="5" x1="2868" y1="961" x2="3040" y2="1173"/>
+<line class="edge ed-strong" data-ch="5" x1="3728" y1="1067" x2="3728" y2="961"/>
+<line class="edge ed-weak" data-ch="5" x1="3728" y1="1067" x2="2868" y2="961"/>
+<line class="edge ed-strong" data-ch="5" x1="3728" y1="1067" x2="4072" y2="1067"/>
+<line class="edge ed-strong" data-ch="5" x1="3728" y1="1067" x2="3556" y2="1067"/>
+<line class="edge ed-strong" data-ch="5" x1="3728" y1="1067" x2="3728" y2="855"/>
+<line class="edge ed-strong" data-ch="5" x1="3728" y1="1067" x2="3556" y2="961"/>
+<line class="edge ed-strong" data-ch="5" x1="3728" y1="1067" x2="3556" y2="1173"/>
+<line class="edge ed-weak" data-ch="5" x1="3556" y1="961" x2="3728" y2="1067"/>
+<line class="edge ed-weak" data-ch="5" x1="3556" y1="1067" x2="3728" y2="1067"/>
+<line class="edge ed-strong" data-ch="5" x1="3556" y1="1067" x2="3384" y2="1067"/>
+<line class="edge ed-strong" data-ch="5" x1="3556" y1="1067" x2="3212" y2="1173"/>
+<line class="edge ed-weak" data-ch="5" x1="4072" y1="1067" x2="3728" y2="1067"/>
+<line class="edge ed-strong" data-ch="5" x1="4072" y1="961" x2="4072" y2="1173"/>
+<line class="edge ed-strong" data-ch="5" x1="4072" y1="961" x2="4416" y2="961"/>
+<line class="edge ed-weak" data-ch="5" x1="4072" y1="961" x2="3728" y2="1067"/>
+<line class="edge ed-strong" data-ch="5" x1="3728" y1="855" x2="3900" y2="855"/>
+<line class="edge ed-weak" data-ch="5" x1="3728" y1="855" x2="3728" y2="1067"/>
+<line class="edge ed-weak" data-ch="5" x1="3728" y1="961" x2="3728" y2="1067"/>
+<line class="edge ed-strong" data-ch="5" x1="2868" y1="643" x2="2868" y2="431"/>
+<line class="edge ed-weak" data-ch="5" x1="2868" y1="643" x2="2868" y2="961"/>
+<line class="edge ed-weak" data-ch="5" x1="2868" y1="431" x2="2868" y2="643"/>
+<line class="edge ed-weak" data-ch="5" x1="3040" y1="1173" x2="2868" y2="961"/>
+<line class="edge ed-weak" data-ch="5" x1="3556" y1="1173" x2="3728" y2="1067"/>
+<line class="edge ed-weak" data-ch="5" x1="3384" y1="1067" x2="3556" y2="1067"/>
+<line class="edge ed-strong" data-ch="5" x1="3384" y1="1067" x2="3212" y2="1173"/>
+<line class="edge ed-weak" data-ch="5" x1="3212" y1="1173" x2="3556" y2="1067"/>
+<line class="edge ed-weak" data-ch="5" x1="4416" y1="961" x2="4072" y2="1067"/>
+<line class="edge ed-weak" data-ch="5" x1="4072" y1="1173" x2="4072" y2="1067"/>
+<line class="edge ed-weak" data-ch="5" x1="3900" y1="855" x2="3728" y2="855"/>
+<line class="edge ed-strong" data-ch="6" x1="2524" y1="961" x2="3212" y2="855"/>
+<line class="edge ed-strong" data-ch="6" x1="2524" y1="961" x2="2524" y2="1067"/>
+<line class="edge ed-weak" data-ch="-1" x1="2524" y1="961" x2="2868" y2="961"/>
+<line class="edge ed-strong" data-ch="6" x1="2524" y1="961" x2="2008" y2="749"/>
+<line class="edge ed-strong" data-ch="6" x1="2524" y1="961" x2="2696" y2="749"/>
+<line class="edge ed-weak" data-ch="6" x1="2696" y1="749" x2="2524" y2="961"/>
+<line class="edge ed-weak" data-ch="6" x1="2524" y1="1067" x2="2524" y2="961"/>
+<line class="edge ed-strong" data-ch="-1" x1="3212" y1="855" x2="3212" y2="537"/>
+<line class="edge ed-weak" data-ch="6" x1="3212" y1="855" x2="2524" y2="961"/>
+<line class="edge ed-strong" data-ch="6" x1="3212" y1="855" x2="3384" y2="855"/>
+<line class="edge ed-strong" data-ch="6" x1="3212" y1="855" x2="2696" y2="961"/>
+<line class="edge ed-strong" data-ch="6" x1="3040" y1="749" x2="3040" y2="643"/>
+<line class="edge ed-strong" data-ch="6" x1="3040" y1="749" x2="3212" y2="855"/>
+<line class="edge ed-strong" data-ch="6" x1="3040" y1="749" x2="3384" y2="749"/>
+<line class="edge ed-strong" data-ch="6" x1="3040" y1="749" x2="2868" y2="855"/>
+<line class="edge ed-weak" data-ch="6" x1="2868" y1="855" x2="3040" y2="749"/>
+<line class="edge ed-strong" data-ch="6" x1="2868" y1="855" x2="2696" y2="855"/>
+<line class="edge ed-strong" data-ch="6" x1="3040" y1="643" x2="3040" y2="749"/>
+<line class="edge ed-dash" data-ch="6" x1="3040" y1="643" x2="3040" y2="431"/>
+<line class="edge ed-dash" data-ch="6" x1="3040" y1="431" x2="3040" y2="643"/>
+<line class="edge ed-weak" data-ch="6" x1="2008" y1="749" x2="2524" y2="961"/>
+<line class="edge ed-strong" data-ch="6" x1="2008" y1="749" x2="1492" y2="749"/>
+<line class="edge ed-weak" data-ch="6" x1="1492" y1="749" x2="2008" y2="749"/>
+<line class="edge ed-strong" data-ch="6" x1="2696" y1="961" x2="2524" y2="749"/>
+<line class="edge ed-weak" data-ch="6" x1="2696" y1="961" x2="3212" y2="855"/>
+<line class="edge ed-weak" data-ch="6" x1="2524" y1="749" x2="2696" y2="961"/>
+<line class="edge ed-weak" data-ch="6" x1="3384" y1="855" x2="3212" y2="855"/>
+<line class="edge ed-strong" data-ch="6" x1="3384" y1="749" x2="3384" y2="537"/>
+<line class="edge ed-weak" data-ch="6" x1="3384" y1="749" x2="3040" y2="749"/>
+<line class="edge ed-weak" data-ch="6" x1="3384" y1="537" x2="3384" y2="749"/>
+<line class="edge ed-weak" data-ch="6" x1="2696" y1="855" x2="2868" y2="855"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="537" x2="3212" y2="431"/>
+<line class="edge ed-weak" data-ch="-1" x1="3212" y1="537" x2="3212" y2="855"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="537" x2="3556" y2="537"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="537" x2="3040" y2="537"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="537" x2="3384" y2="643"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="537" x2="2868" y2="749"/>
+<line class="edge ed-weak" data-ch="7" x1="2868" y1="749" x2="3212" y2="537"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="431" x2="3212" y2="325"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="431" x2="3212" y2="537"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="431" x2="3040" y2="325"/>
+<line class="edge ed-strong" data-ch="7" x1="3040" y1="537" x2="3212" y2="325"/>
+<line class="edge ed-strong" data-ch="7" x1="3040" y1="537" x2="3212" y2="537"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="325" x2="3212" y2="431"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="325" x2="3384" y2="325"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="325" x2="3040" y2="537"/>
+<line class="edge ed-strong" data-ch="7" x1="3212" y1="325" x2="2868" y2="537"/>
+<line class="edge ed-dash" data-ch="7" x1="3212" y1="325" x2="3212" y2="219"/>
+<line class="edge ed-dash" data-ch="7" x1="3212" y1="219" x2="3212" y2="325"/>
+<line class="edge ed-weak" data-ch="7" x1="3556" y1="537" x2="3212" y2="537"/>
+<line class="edge ed-weak" data-ch="7" x1="3384" y1="643" x2="3212" y2="537"/>
+<line class="edge ed-weak" data-ch="7" x1="3040" y1="325" x2="3212" y2="431"/>
+<line class="edge ed-weak" data-ch="7" x1="2868" y1="537" x2="3212" y2="325"/>
+<line class="edge ed-weak" data-ch="7" x1="3384" y1="325" x2="3212" y2="325"/>
+<g class="node" data-ch="0" data-name="灰岭镇口" data-sub="暮雨投宿" data-badges="" transform="translate(976,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">灰岭镇口</text>
+</g>
+<g class="node" data-ch="0" data-name="灰岭集市" data-sub="暮雨投宿" data-badges="👤" transform="translate(804,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">灰岭集市</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="0" data-name="灰岭铁匠铺" data-sub="暮雨投宿" data-badges="👤" transform="translate(804,1067)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">灰岭铁匠铺</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="0" data-name="灰岭古井" data-sub="暮雨投宿" data-badges="👤" transform="translate(804,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">灰岭古井</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="0" data-name="黑鸦旅店 · 大堂" data-sub="暮雨投宿" data-badges="👤" transform="translate(976,1067)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">黑鸦旅店</text>
+<text y="13" text-anchor="middle" class="nsub">大堂</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="0" data-name="黑鸦旅店 · 地窖" data-sub="暮雨投宿" data-badges="" transform="translate(976,1385)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">黑鸦旅店</text>
+<text y="13" text-anchor="middle" class="nsub">地窖</text>
+</g>
+<g class="node" data-ch="0" data-name="黑鸦旅店 · 客房" data-sub="子夜惊变" data-badges="🏕" transform="translate(976,749)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">黑鸦旅店</text>
+<text y="13" text-anchor="middle" class="nsub">客房</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">🏕</text>
+</g>
+<g class="node" data-ch="1" data-name="南下古道 · 荒废烽燧" data-sub="小节一 · 南下古道" data-badges="⚠ 💾 👤" transform="translate(976,1279)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">南下古道</text>
+<text y="13" text-anchor="middle" class="nsub">荒废烽燧</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠ 💾 👤</text>
+</g>
+<g class="node" data-ch="1" data-name="烧炭人的窑棚" data-sub="小节一 · 南下古道" data-badges="⚠ 👤" transform="translate(1148,1385)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">烧炭人的窑棚</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 👤</text>
+</g>
+<g class="node" data-ch="1" data-name="白花泉" data-sub="小节一 · 南下古道" data-badges="🏕" transform="translate(1320,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">白花泉</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕</text>
+</g>
+<g class="node" data-ch="1" data-name="石桥渡" data-sub="小节一 · 南下古道" data-badges="🏕 👤" transform="translate(632,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">石桥渡</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕 👤</text>
+</g>
+<g class="node" data-ch="1" data-name="荒石料场" data-sub="小节一 · 南下古道" data-badges="⚠ 👤" transform="translate(1320,1385)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">荒石料场</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 👤</text>
+</g>
+<g class="node" data-ch="1" data-name="林中岔路" data-sub="小节二 · 迷雾森林" data-badges="⚠ 💾" transform="translate(804,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">林中岔路</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 💾</text>
+</g>
+<g class="node" data-ch="1" data-name="林道 · 商队歇脚处" data-sub="小节二 · 迷雾森林" data-badges="👤" transform="translate(460,855)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">林道</text>
+<text y="13" text-anchor="middle" class="nsub">商队歇脚处</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="1" data-name="鸦眠坡" data-sub="小节二 · 迷雾森林" data-badges="⚠" transform="translate(460,643)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">鸦眠坡</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="1" data-name="隐秘小径" data-sub="小节二 · 迷雾森林" data-badges="⚠ ❖" transform="translate(976,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">隐秘小径</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ ❖</text>
+</g>
+<g class="node" data-ch="1" data-name="雾泽湖畔" data-sub="小节二 · 迷雾森林" data-badges="" transform="translate(288,855)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">雾泽湖畔</text>
+</g>
+<g class="node" data-ch="1" data-name="雾泽湖心洲" data-sub="小节二 · 迷雾森林" data-badges="" transform="translate(288,643)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">雾泽湖心洲</text>
+</g>
+<g class="node" data-ch="1" data-name="湖西 · 苇花滩" data-sub="小节二 · 迷雾森林" data-badges="⚠ 👤" transform="translate(116,855)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">湖西</text>
+<text y="13" text-anchor="middle" class="nsub">苇花滩</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠ 👤</text>
+</g>
+<g class="node" data-ch="1" data-name="湖畔沼泽" data-sub="小节二 · 迷雾森林" data-badges="⚠ 👤" transform="translate(632,1067)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">湖畔沼泽</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 👤</text>
+</g>
+<g class="node" data-ch="1" data-name="蕨语谷" data-sub="小节二 · 迷雾森林" data-badges="⚠" transform="translate(632,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">蕨语谷</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="1" data-name="林中古祠" data-sub="小节二 · 迷雾森林" data-badges="" transform="translate(1148,1067)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">林中古祠</text>
+</g>
+<g class="node" data-ch="1" data-name="废弃猎屋" data-sub="小节二 · 迷雾森林" data-badges="" transform="translate(1320,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">废弃猎屋</text>
+</g>
+<g class="node" data-ch="1" data-name="高脚瞭望塔" data-sub="小节二 · 迷雾森林" data-badges="⚠" transform="translate(1320,749)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">高脚瞭望塔</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="1" data-name="指路石林" data-sub="小节二 · 迷雾森林" data-badges="⚠" transform="translate(1148,749)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">指路石林</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="1" data-name="采药人小屋" data-sub="小节二 · 迷雾森林" data-badges="🏕 💾 👤" transform="translate(804,643)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">采药人小屋</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕 💾 👤</text>
+</g>
+<g class="node" data-ch="1" data-name="林间蜂场" data-sub="小节二 · 迷雾森林" data-badges="👤" transform="translate(632,643)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">林间蜂场</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="1" data-name="苔藓谷" data-sub="小节二 · 迷雾森林" data-badges="🏕" transform="translate(632,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">苔藓谷</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕</text>
+</g>
+<g class="node" data-ch="1" data-name="黄昏营地" data-sub="小节二 · 迷雾森林" data-badges="🏕 💾" transform="translate(976,855)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">黄昏营地</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕 💾</text>
+</g>
+<g class="node" data-ch="1" data-name="湮没的伐木场" data-sub="小节二 · 迷雾森林" data-badges="" transform="translate(1148,855)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">湮没的伐木场</text>
+</g>
+<g class="node" data-ch="1" data-name="浆果坡" data-sub="小节二 · 迷雾森林" data-badges="" transform="translate(1320,643)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">浆果坡</text>
+</g>
+<g class="node" data-ch="1" data-name="朝圣古道" data-sub="小节三 · 符文圣殿" data-badges="⚠ 👤" transform="translate(1492,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">朝圣古道</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 👤</text>
+</g>
+<g class="node" data-ch="1" data-name="圣殿石阶" data-sub="小节三 · 符文圣殿" data-badges="💾" transform="translate(1664,1067)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">圣殿石阶</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">💾</text>
+</g>
+<g class="node" data-ch="1" data-name="石兽灯庭" data-sub="小节三 · 符文圣殿" data-badges="💾" transform="translate(1836,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">石兽灯庭</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">💾</text>
+</g>
+<g class="node" data-ch="1" data-name="荒废的果园梯田" data-sub="小节三 · 符文圣殿" data-badges="⚠" transform="translate(1320,1067)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">荒废的果园梯田</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="1" data-name="香客寮遗址" data-sub="小节三 · 符文圣殿" data-badges="👤" transform="translate(1492,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">香客寮遗址</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="1" data-name="圣殿大门" data-sub="小节三 · 符文圣殿" data-badges="" transform="translate(1836,855)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">圣殿大门</text>
+</g>
+<g class="node" data-ch="1" data-name="圣殿大殿" data-sub="小节三 · 符文圣殿" data-badges="👤" transform="translate(1836,749)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">圣殿大殿</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="1" data-name="圣殿回廊 · 僧舍废墟" data-sub="小节三 · 符文圣殿" data-badges="" transform="translate(1664,749)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">圣殿回廊</text>
+<text y="13" text-anchor="middle" class="nsub">僧舍废墟</text>
+</g>
+<g class="node" data-ch="1" data-name="圣殿地宫 · 守殿人寝陵" data-sub="小节三 · 符文圣殿" data-badges="" transform="translate(1664,855)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">圣殿地宫</text>
+<text y="13" text-anchor="middle" class="nsub">守殿人寝陵</text>
+</g>
+<g class="node" data-ch="1" data-name="钟塔残基" data-sub="小节三 · 符文圣殿" data-badges="" transform="translate(1664,537)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">钟塔残基</text>
+</g>
+<g class="node" data-ch="1" data-name="不冻泉石窟" data-sub="小节三 · 符文圣殿" data-badges="" transform="translate(1492,537)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">不冻泉石窟</text>
+</g>
+<g class="node" data-ch="1" data-name="晨曦祭坛" data-sub="小节四 · 晨曦重燃" data-badges="" transform="translate(1836,537)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">晨曦祭坛</text>
+</g>
+<g class="node" data-ch="2" data-name="霜脊山北麓 · 岔路" data-sub="小节一 · 霜脊山道" data-badges="⚠ 💾" transform="translate(2008,1279)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">霜脊山北麓</text>
+<text y="13" text-anchor="middle" class="nsub">岔路</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠ 💾</text>
+</g>
+<g class="node" data-ch="2" data-name="官道驿镇" data-sub="小节一 · 霜脊山道" data-badges="🏕 👤" transform="translate(2180,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">官道驿镇</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕 👤</text>
+</g>
+<g class="node" data-ch="2" data-name="旱沟 · 说书人的窝棚" data-sub="小节一 · 霜脊山道" data-badges="⚠ 👤" transform="translate(2352,1279)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">旱沟</text>
+<text y="13" text-anchor="middle" class="nsub">说书人的窝棚</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠ 👤</text>
+</g>
+<g class="node" data-ch="2" data-name="封冻的银矿" data-sub="小节一 · 霜脊山道" data-badges="⚠ 👤" transform="translate(1320,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">封冻的银矿</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 👤</text>
+</g>
+<g class="node" data-ch="2" data-name="官道 · 溃兵营地" data-sub="小节二 · 官道北行" data-badges="⚠ 💾" transform="translate(2008,1067)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">官道</text>
+<text y="13" text-anchor="middle" class="nsub">溃兵营地</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠ 💾</text>
+</g>
+<g class="node" data-ch="2" data-name="白霜隘口" data-sub="小节一 · 霜脊山道" data-badges="❖" transform="translate(1836,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">白霜隘口</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">❖</text>
+</g>
+<g class="node" data-ch="2" data-name="风口山神祠" data-sub="小节一 · 霜脊山道" data-badges="🏕 👤" transform="translate(1492,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">风口山神祠</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕 👤</text>
+</g>
+<g class="node" data-ch="2" data-name="牧羊坡" data-sub="小节一 · 霜脊山道" data-badges="⚠ 🏕 👤" transform="translate(1664,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">牧羊坡</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 🏕 👤</text>
+</g>
+<g class="node" data-ch="2" data-name="荒烽哨" data-sub="小节二 · 官道北行" data-badges="⚠" transform="translate(1664,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">荒烽哨</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="2" data-name="雪谷野汤" data-sub="小节一 · 霜脊山道" data-badges="🏕 ❖" transform="translate(1836,1385)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">雪谷野汤</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕 ❖</text>
+</g>
+<g class="node" data-ch="2" data-name="空营矿村" data-sub="小节一 · 霜脊山道" data-badges="⚠ 🏕 💾 👤" transform="translate(1664,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">空营矿村</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 🏕 💾 👤</text>
+</g>
+<g class="node" data-ch="2" data-name="官道荒驿" data-sub="小节二 · 官道北行" data-badges="⚠" transform="translate(1836,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">官道荒驿</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="2" data-name="白石城门" data-sub="小节三 · 白石城中" data-badges="💾" transform="translate(2352,749)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">白石城门</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">💾</text>
+</g>
+<g class="node" data-ch="2" data-name="白石城 · 大街" data-sub="小节三 · 白石城中" data-badges="" transform="translate(2352,643)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">白石城</text>
+<text y="13" text-anchor="middle" class="nsub">大街</text>
+</g>
+<g class="node" data-ch="2" data-name="南当铺" data-sub="小节三 · 白石城中" data-badges="👤" transform="translate(2524,537)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">南当铺</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="2" data-name="白石城 · 城西小巷" data-sub="小节三 · 白石城中" data-badges="⚠" transform="translate(2180,643)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">白石城</text>
+<text y="13" text-anchor="middle" class="nsub">城西小巷</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="2" data-name="白石城 · 白石市集" data-sub="小节三 · 白石城中" data-badges="👤" transform="translate(2524,643)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">白石城</text>
+<text y="13" text-anchor="middle" class="nsub">白石市集</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="2" data-name="城东车马行" data-sub="小节三 · 白石城中" data-badges="👤" transform="translate(2524,855)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">城东车马行</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="2" data-name="白石城 · 下城区" data-sub="小节三 · 白石城中" data-badges="⚠ 👤" transform="translate(2180,749)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">白石城</text>
+<text y="13" text-anchor="middle" class="nsub">下城区</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠ 👤</text>
+</g>
+<g class="node" data-ch="2" data-name="白石城 · 卫戍营房" data-sub="小节三 · 白石城中" data-badges="👤" transform="translate(2524,431)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">白石城</text>
+<text y="13" text-anchor="middle" class="nsub">卫戍营房</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="2" data-name="白石城 · 铸像广场" data-sub="小节三 · 白石城中" data-badges="👤" transform="translate(2696,643)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">白石城</text>
+<text y="13" text-anchor="middle" class="nsub">铸像广场</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="2" data-name="白石城 · 城西老井" data-sub="小节三 · 白石城中" data-badges="" transform="translate(2180,537)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">白石城</text>
+<text y="13" text-anchor="middle" class="nsub">城西老井</text>
+</g>
+<g class="node" data-ch="2" data-name="白石城 · 官仓" data-sub="小节三 · 白石城中" data-badges="" transform="translate(2696,431)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">白石城</text>
+<text y="13" text-anchor="middle" class="nsub">官仓</text>
+</g>
+<g class="node" data-ch="2" data-name="白石城 · 慈幼堂" data-sub="小节三 · 白石城中" data-badges="👤" transform="translate(2008,855)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">白石城</text>
+<text y="13" text-anchor="middle" class="nsub">慈幼堂</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="2" data-name="白石城 · 宵禁更楼" data-sub="小节三 · 白石城中" data-badges="👤" transform="translate(2008,643)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">白石城</text>
+<text y="13" text-anchor="middle" class="nsub">宵禁更楼</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="2" data-name="王宫大殿" data-sub="小节三 · 白石城中" data-badges="👤" transform="translate(2352,537)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">王宫大殿</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="2" data-name="王宫藏书阁" data-sub="小节三 · 白石城中" data-badges="" transform="translate(2008,537)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">王宫藏书阁</text>
+</g>
+<g class="node" data-ch="2" data-name="王宫后花园" data-sub="小节三 · 白石城中" data-badges="" transform="translate(2352,431)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">王宫后花园</text>
+</g>
+<g class="node" data-ch="2" data-name="星塔 · 塔底" data-sub="小节四 · 星塔之夜" data-badges="" transform="translate(2180,325)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">星塔</text>
+<text y="13" text-anchor="middle" class="nsub">塔底</text>
+</g>
+<g class="node" data-ch="2" data-name="星塔 · 中层星厅" data-sub="小节四 · 星塔之夜" data-badges="" transform="translate(2180,219)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">星塔</text>
+<text y="13" text-anchor="middle" class="nsub">中层星厅</text>
+</g>
+<g class="node" data-ch="2" data-name="星塔 · 观星台" data-sub="小节四 · 星塔之夜" data-badges="" transform="translate(2180,113)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">星塔</text>
+<text y="13" text-anchor="middle" class="nsub">观星台</text>
+</g>
+<g class="node" data-ch="3" data-name="南海官道 · 海风岬" data-sub="小节一 · 南下潮歌湾" data-badges="⚠ 💾" transform="translate(2352,1173)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">南海官道</text>
+<text y="13" text-anchor="middle" class="nsub">海风岬</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠ 💾</text>
+</g>
+<g class="node" data-ch="3" data-name="鸥岩" data-sub="小节一 · 南下潮歌湾" data-badges="⚠" transform="translate(2008,1385)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">鸥岩</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="3" data-name="潮歌湾 · 渔港小镇" data-sub="小节一 · 南下潮歌湾" data-badges="🏕 💾 👤" transform="translate(2524,1491)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">潮歌湾</text>
+<text y="13" text-anchor="middle" class="nsub">渔港小镇</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">🏕 💾 👤</text>
+</g>
+<g class="node" data-ch="3" data-name="结网坊" data-sub="小节一 · 南下潮歌湾" data-badges="👤" transform="translate(2352,1385)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">结网坊</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="3" data-name="南海官道 · 望潮崖" data-sub="小节一 · 南下潮歌湾" data-badges="⚠" transform="translate(2180,1173)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">南海官道</text>
+<text y="13" text-anchor="middle" class="nsub">望潮崖</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="3" data-name="盐灶滩" data-sub="小节一 · 南下潮歌湾" data-badges="⚠ 🏕 💾 👤" transform="translate(2352,1491)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">盐灶滩</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 🏕 💾 👤</text>
+</g>
+<g class="node" data-ch="3" data-name="老船坞" data-sub="小节一 · 南下潮歌湾" data-badges="👤" transform="translate(2352,1597)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">老船坞</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="3" data-name="海母祠" data-sub="小节一 · 南下潮歌湾" data-badges="🏕 👤" transform="translate(2524,1597)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">海母祠</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕 👤</text>
+</g>
+<g class="node" data-ch="3" data-name="潮歌灯塔" data-sub="小节二 · 灯塔与礁滩" data-badges="💾 👤" transform="translate(2868,1385)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">潮歌灯塔</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">💾 👤</text>
+</g>
+<g class="node" data-ch="3" data-name="退潮礁滩" data-sub="小节二 · 灯塔与礁滩" data-badges="⚠" transform="translate(2868,1491)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">退潮礁滩</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="3" data-name="沉船湾" data-sub="小节二 · 灯塔与礁滩" data-badges="❖" transform="translate(3040,1491)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">沉船湾</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">❖</text>
+</g>
+<g class="node" data-ch="3" data-name="潮汐洞窟" data-sub="小节二 · 灯塔与礁滩" data-badges="" transform="translate(2696,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">潮汐洞窟</text>
+</g>
+<g class="node" data-ch="3" data-name="海雾栈道" data-sub="小节二 · 灯塔与礁滩" data-badges="⚠" transform="translate(2696,1597)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">海雾栈道</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="3" data-name="鲸骨滩" data-sub="小节二 · 灯塔与礁滩" data-badges="⚠ 💾 ❖" transform="translate(3212,1491)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">鲸骨滩</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 💾 ❖</text>
+</g>
+<g class="node" data-ch="3" data-name="孤礁钓台" data-sub="小节二 · 灯塔与礁滩" data-badges="🏕" transform="translate(3212,1597)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">孤礁钓台</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕</text>
+</g>
+<g class="node" data-ch="3" data-name="淹水坳" data-sub="小节二 · 灯塔与礁滩" data-badges="⚠ 👤" transform="translate(2524,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">淹水坳</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 👤</text>
+</g>
+<g class="node" data-ch="3" data-name="海底神殿 · 前殿" data-sub="小节三 · 大退潮之夜" data-badges="🏕 💾" transform="translate(2868,1597)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">海底神殿</text>
+<text y="13" text-anchor="middle" class="nsub">前殿</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">🏕 💾</text>
+</g>
+<g class="node" data-ch="3" data-name="海底神殿 · 咏泉回廊" data-sub="小节三 · 大退潮之夜" data-badges="" transform="translate(2524,1703)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">海底神殿</text>
+<text y="13" text-anchor="middle" class="nsub">咏泉回廊</text>
+</g>
+<g class="node" data-ch="3" data-name="海底神殿 · 潮路石阶" data-sub="小节三 · 大退潮之夜" data-badges="" transform="translate(3040,1597)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">海底神殿</text>
+<text y="13" text-anchor="middle" class="nsub">潮路石阶</text>
+</g>
+<g class="node" data-ch="3" data-name="海底圣所 · 潮汐祭坛" data-sub="小节三 · 大退潮之夜" data-badges="" transform="translate(2868,1703)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">海底圣所</text>
+<text y="13" text-anchor="middle" class="nsub">潮汐祭坛</text>
+</g>
+<g class="node" data-ch="4" data-name="金穗官道 · 麦浪原" data-sub="小节一 · 金穗平原" data-badges="⚠ 💾" transform="translate(2868,1279)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">金穗官道</text>
+<text y="13" text-anchor="middle" class="nsub">麦浪原</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠ 💾</text>
+</g>
+<g class="node" data-ch="4" data-name="穗安村" data-sub="小节一 · 金穗平原" data-badges="🏕 💾 👤" transform="translate(3728,1491)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">穗安村</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕 💾 👤</text>
+</g>
+<g class="node" data-ch="4" data-name="村口鸽楼" data-sub="小节一 · 金穗平原" data-badges="👤" transform="translate(3900,1385)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">村口鸽楼</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="4" data-name="蝗灾的田垄" data-sub="小节一 · 金穗平原" data-badges="⚠" transform="translate(3384,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">蝗灾的田垄</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="4" data-name="老磨坊" data-sub="小节二 · 磨坊与守穗人" data-badges="" transform="translate(4072,1491)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">老磨坊</text>
+</g>
+<g class="node" data-ch="4" data-name="守穗人树林" data-sub="小节二 · 磨坊与守穗人" data-badges="💾 👤" transform="translate(3728,1385)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">守穗人树林</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">💾 👤</text>
+</g>
+<g class="node" data-ch="4" data-name="丰年祭坛" data-sub="小节三 · 丰年祭" data-badges="" transform="translate(3728,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">丰年祭坛</text>
+</g>
+<g class="node" data-ch="4" data-name="打谷场" data-sub="小节一 · 金穗平原" data-badges="🏕 👤" transform="translate(3040,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">打谷场</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕 👤</text>
+</g>
+<g class="node" data-ch="4" data-name="田头谷神庙" data-sub="小节一 · 金穗平原" data-badges="" transform="translate(3040,855)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">田头谷神庙</text>
+</g>
+<g class="node" data-ch="4" data-name="引水的渠口" data-sub="小节一 · 金穗平原" data-badges="⚠" transform="translate(3212,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">引水的渠口</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="4" data-name="麦垛迷宫" data-sub="小节一 · 金穗平原" data-badges="" transform="translate(3040,1067)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">麦垛迷宫</text>
+</g>
+<g class="node" data-ch="4" data-name="拾穗人的窝棚" data-sub="小节一 · 金穗平原" data-badges="🏕 👤" transform="translate(3212,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">拾穗人的窝棚</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕 👤</text>
+</g>
+<g class="node" data-ch="4" data-name="稻草人小径" data-sub="小节一 · 金穗平原" data-badges="⚠" transform="translate(3040,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">稻草人小径</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="4" data-name="丰年前集" data-sub="小节一 · 金穗平原" data-badges="👤" transform="translate(3728,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">丰年前集</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="4" data-name="谷仓后巷" data-sub="小节一 · 金穗平原" data-badges="❖" transform="translate(3556,1385)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">谷仓后巷</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">❖</text>
+</g>
+<g class="node" data-ch="4" data-name="磨坊阁楼" data-sub="小节二 · 磨坊与守穗人" data-badges="" transform="translate(4072,1385)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">磨坊阁楼</text>
+</g>
+<g class="node" data-ch="4" data-name="守穗人旧哨" data-sub="小节二 · 磨坊与守穗人" data-badges="⚠" transform="translate(3556,1279)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">守穗人旧哨</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="5" data-name="战痕古道 · 界碑" data-sub="小节一 · 北望古战场" data-badges="⚠ 🏕 💾 👤" transform="translate(2868,961)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">战痕古道</text>
+<text y="13" text-anchor="middle" class="nsub">界碑</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠ 🏕 💾 👤</text>
+</g>
+<g class="node" data-ch="5" data-name="铁锈荒原" data-sub="小节二 · 荒原与碑林" data-badges="⚠ 💾 👤" transform="translate(3728,1067)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">铁锈荒原</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 💾 👤</text>
+</g>
+<g class="node" data-ch="5" data-name="拾荒窝棚" data-sub="小节二 · 荒原与碑林" data-badges="👤" transform="translate(3556,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">拾荒窝棚</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="5" data-name="亡者碑林" data-sub="小节二 · 荒原与碑林" data-badges="💾 👤" transform="translate(3556,1067)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">亡者碑林</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">💾 👤</text>
+</g>
+<g class="node" data-ch="5" data-name="折戟丘" data-sub="小节二 · 荒原与碑林" data-badges="⚠" transform="translate(4072,1067)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">折戟丘</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="5" data-name="白骨哨塔" data-sub="小节二 · 荒原与碑林" data-badges="" transform="translate(4072,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">白骨哨塔</text>
+</g>
+<g class="node" data-ch="5" data-name="影蚀辎重营" data-sub="小节二 · 荒原与碑林" data-badges="" transform="translate(3728,855)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">影蚀辎重营</text>
+</g>
+<g class="node" data-ch="5" data-name="战旗高台" data-sub="小节三 · 战旗高台" data-badges="" transform="translate(3728,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">战旗高台</text>
+</g>
+<g class="node" data-ch="5" data-name="老兵的酒摊" data-sub="小节一 · 北望古战场" data-badges="👤" transform="translate(2868,643)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">老兵的酒摊</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="5" data-name="无名什长墓" data-sub="小节一 · 北望古战场" data-badges="" transform="translate(2868,431)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">无名什长墓</text>
+</g>
+<g class="node" data-ch="5" data-name="逃兵的地窖" data-sub="小节一 · 北望古战场" data-badges="👤" transform="translate(3040,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">逃兵的地窖</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="5" data-name="演武场旧址" data-sub="小节二 · 荒原与碑林" data-badges="⚠" transform="translate(3556,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">演武场旧址</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="5" data-name="随军医旧帐" data-sub="小节二 · 荒原与碑林" data-badges="👤" transform="translate(3384,1067)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">随军医旧帐</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="5" data-name="亡者的篝火" data-sub="小节二 · 荒原与碑林" data-badges="🏕" transform="translate(3212,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">亡者的篝火</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕</text>
+</g>
+<g class="node" data-ch="5" data-name="烽燧残台" data-sub="小节二 · 荒原与碑林" data-badges="⚠" transform="translate(4416,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">烽燧残台</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="5" data-name="缴械坑" data-sub="小节二 · 荒原与碑林" data-badges="⚠ ❖" transform="translate(4072,1173)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">缴械坑</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ ❖</text>
+</g>
+<g class="node" data-ch="5" data-name="影蚀石料场" data-sub="小节二 · 荒原与碑林" data-badges="⚠" transform="translate(3900,855)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">影蚀石料场</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="6" data-name="暮色山道" data-sub="小节一 · 暮色山道" data-badges="⚠ 💾" transform="translate(2524,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">暮色山道</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 💾</text>
+</g>
+<g class="node" data-ch="6" data-name="道旁香客祠" data-sub="小节一 · 暮色山道" data-badges="👤" transform="translate(2696,749)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">道旁香客祠</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="6" data-name="废弃的铸钟坊" data-sub="小节一 · 暮色山道" data-badges="🏕 👤" transform="translate(2524,1067)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">废弃的铸钟坊</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕 👤</text>
+</g>
+<g class="node" data-ch="6" data-name="暮色修道院 · 山门" data-sub="小节一 · 暮色山道" data-badges="💾" transform="translate(3212,855)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">暮色修道院</text>
+<text y="13" text-anchor="middle" class="nsub">山门</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">💾</text>
+</g>
+<g class="node" data-ch="6" data-name="修道院 · 晚课堂" data-sub="小节二 · 晚课与静室" data-badges="👤" transform="translate(3040,749)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">修道院</text>
+<text y="13" text-anchor="middle" class="nsub">晚课堂</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="6" data-name="修道院 · 静室" data-sub="小节二 · 晚课与静室" data-badges="🏕" transform="translate(2868,855)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">修道院</text>
+<text y="13" text-anchor="middle" class="nsub">静室</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">🏕</text>
+</g>
+<g class="node" data-ch="6" data-name="钟楼 · 下层" data-sub="小节三 · 钟楼之夜" data-badges="💾" transform="translate(3040,643)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">钟楼</text>
+<text y="13" text-anchor="middle" class="nsub">下层</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">💾</text>
+</g>
+<g class="node" data-ch="6" data-name="钟楼 · 顶层" data-sub="小节三 · 钟楼之夜" data-badges="" transform="translate(3040,431)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">钟楼</text>
+<text y="13" text-anchor="middle" class="nsub">顶层</text>
+</g>
+<g class="node" data-ch="6" data-name="守夜人小径" data-sub="小节一 · 暮色山道" data-badges="⚠ 👤" transform="translate(2008,749)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">守夜人小径</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠ 👤</text>
+</g>
+<g class="node" data-ch="6" data-name="隐修的洞窟" data-sub="小节一 · 暮色山道" data-badges="🏕" transform="translate(1492,749)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">隐修的洞窟</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">🏕</text>
+</g>
+<g class="node" data-ch="6" data-name="修道院墓园" data-sub="小节一 · 暮色山道" data-badges="⚠" transform="translate(2696,961)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">修道院墓园</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="6" data-name="圣物龛室" data-sub="小节一 · 暮色山道" data-badges="❖" transform="translate(2524,749)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">圣物龛室</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">❖</text>
+</g>
+<g class="node" data-ch="6" data-name="缄默回廊" data-sub="小节一 · 暮色山道" data-badges="👤" transform="translate(3384,855)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">缄默回廊</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="6" data-name="修道院缮写室" data-sub="小节二 · 晚课与静室" data-badges="" transform="translate(3384,749)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">修道院缮写室</text>
+</g>
+<g class="node" data-ch="6" data-name="修道院斋堂" data-sub="小节二 · 晚课与静室" data-badges="" transform="translate(3384,537)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">修道院斋堂</text>
+</g>
+<g class="node" data-ch="6" data-name="药草园" data-sub="小节二 · 晚课与静室" data-badges="👤" transform="translate(2696,855)">
+<rect x="-74" y="-23" width="148" height="46" rx="8" class="nbox"/>
+<text y="5" text-anchor="middle" class="nname">药草园</text>
+<text x="67" y="-9" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="7" data-name="影渊 · 谷口" data-sub="终章前夜 · 影渊谷口" data-badges="🏕 💾 👤" transform="translate(3212,537)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">影渊</text>
+<text y="13" text-anchor="middle" class="nsub">谷口</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">🏕 💾 👤</text>
+</g>
+<g class="node" data-ch="7" data-name="谷口 · 最后一户" data-sub="终章前夜 · 影渊谷口" data-badges="👤" transform="translate(2868,749)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">谷口</text>
+<text y="13" text-anchor="middle" class="nsub">最后一户</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="7" data-name="影渊 · 独石桥" data-sub="终章前夜 · 影渊谷口" data-badges="" transform="translate(3212,431)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">影渊</text>
+<text y="13" text-anchor="middle" class="nsub">独石桥</text>
+</g>
+<g class="node" data-ch="7" data-name="影渊 · 崖壁暗渠" data-sub="终章前夜 · 影渊谷口" data-badges="" transform="translate(3040,537)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">影渊</text>
+<text y="13" text-anchor="middle" class="nsub">崖壁暗渠</text>
+</g>
+<g class="node" data-ch="7" data-name="影渊要塞 · 内庭" data-sub="终章前夜 · 影渊谷口" data-badges="🏕 💾 👤" transform="translate(3212,325)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">影渊要塞</text>
+<text y="13" text-anchor="middle" class="nsub">内庭</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">🏕 💾 👤</text>
+</g>
+<g class="node" data-ch="7" data-name="影渊 · 王座大厅" data-sub="终章 · 王座与黎明" data-badges="" transform="translate(3212,219)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">影渊</text>
+<text y="13" text-anchor="middle" class="nsub">王座大厅</text>
+</g>
+<g class="node" data-ch="7" data-name="影渊 · 谷口旧货栈" data-sub="终章前夜 · 影渊谷口" data-badges="" transform="translate(3556,537)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">影渊</text>
+<text y="13" text-anchor="middle" class="nsub">谷口旧货栈</text>
+</g>
+<g class="node" data-ch="7" data-name="影渊 · 黎明回望台" data-sub="终章前夜 · 影渊谷口" data-badges="" transform="translate(3384,643)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">影渊</text>
+<text y="13" text-anchor="middle" class="nsub">黎明回望台</text>
+</g>
+<g class="node" data-ch="7" data-name="影渊 · 折旗坡" data-sub="终章前夜 · 影渊谷口" data-badges="⚠" transform="translate(3040,325)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">影渊</text>
+<text y="13" text-anchor="middle" class="nsub">折旗坡</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">⚠</text>
+</g>
+<g class="node" data-ch="7" data-name="影渊 · 地牢" data-sub="终章前夜 · 影渊谷口" data-badges="👤" transform="translate(2868,537)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">影渊</text>
+<text y="13" text-anchor="middle" class="nsub">地牢</text>
+<text x="67" y="-17" text-anchor="end" class="nbadge">👤</text>
+</g>
+<g class="node" data-ch="7" data-name="影渊 · 无光前厅" data-sub="终章 · 王座与黎明" data-badges="" transform="translate(3384,325)">
+<rect x="-74" y="-31" width="148" height="62" rx="8" class="nbox"/>
+<text y="-4" text-anchor="middle" class="nname">影渊</text>
+<text y="13" text-anchor="middle" class="nsub">无光前厅</text>
+</g></g></svg>
+  </div>
+  <div class="hint">滚轮缩放 · 拖拽平移 · 悬停查看地点详情 · 点击流程卡或章节筛选可点亮对应区域　　徽标：<em>⚠ 野外遭遇　🏕 可休息　💾 存档点　👤 有 NPC　❖ 藏宝图埋宝处</em>　　实线=罗盘通路　虚线=上/下楼　点线=「回」折返捷径</div>
+</div>
+<div id="tip"></div>
+<script>
+(function(){
+  var svg=document.getElementById('map');
+  var wrap=document.getElementById('mapbox');
+  var tip=document.getElementById('tip');
+  var vb={x:0,y:0,w:svg.viewBox.baseVal.width,h:svg.viewBox.baseVal.height};
+  function apply(){svg.setAttribute('viewBox',vb.x+' '+vb.y+' '+vb.w+' '+vb.h);}
+  /* 滚轮缩放（以指针为中心） */
+  wrap.addEventListener('wheel',function(e){
+    e.preventDefault();
+    var k=e.deltaY<0?0.86:1/0.86;
+    var r=wrap.getBoundingClientRect();
+    var mx=vb.x+(e.clientX-r.left)/r.width*vb.w;
+    var my=vb.y+(e.clientY-r.top)/r.height*vb.h;
+    var nw=Math.min(vb.w*k,svg.viewBox.baseVal.width*1.6),nh=nw*vb.h/vb.w;
+    nw=Math.max(nw,420);
+    vb.x=mx-(mx-vb.x)*(nw/vb.w);vb.y=my-(my-vb.y)*(nh/vb.h);
+    vb.w=nw;vb.h=nw*svg.viewBox.baseVal.height/svg.viewBox.baseVal.width;apply();
+  },{passive:false});
+  /* 拖拽平移 */
+  var drag=null;
+  wrap.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY,vx:vb.x,vy:vb.y};svg.classList.add('grabbing');wrap.setPointerCapture(e.pointerId);});
+  wrap.addEventListener('pointermove',function(e){
+    if(drag){
+      var r=wrap.getBoundingClientRect();
+      vb.x=drag.vx-(e.clientX-drag.x)/r.width*vb.w;
+      vb.y=drag.vy-(e.clientY-drag.y)/r.height*vb.h;apply();
+    }
+  });
+  wrap.addEventListener('pointerup',function(){drag=null;svg.classList.remove('grabbing');});
+  wrap.addEventListener('pointercancel',function(){drag=null;svg.classList.remove('grabbing');});
+  /* 节点 tooltip */
+  var fig=document.getElementById('fig');
+  fig.addEventListener('pointermove',function(e){
+    var n=e.target.closest('.node');
+    if(n){
+      tip.innerHTML='<div class="t1">'+n.dataset.name+'</div><div class="t2">'+n.dataset.sub+'</div>'+(n.dataset.badges?'<div class="t3">'+n.dataset.badges+'</div>':'');
+      tip.style.opacity=1;
+      var px=e.clientX+14,py=e.clientY+14;
+      if(px+270>innerWidth)px=e.clientX-274;
+      tip.style.left=px+'px';tip.style.top=py+'px';
+    }else{tip.style.opacity=0;}
+  });
+  fig.addEventListener('pointerleave',function(){tip.style.opacity=0;});
+  /* 章节高亮 */
+  var flow=document.getElementById('flow');
+  var chips=document.getElementById('chips');
+  function setFilter(ci){
+    var allbtn=document.querySelector('.chip.allbtn');
+    document.querySelectorAll('.chip:not(.allbtn)').forEach(function(c){c.classList.toggle('active',+c.dataset.ch===ci);});
+    if(allbtn)allbtn.classList.toggle('active',ci<0);
+    flow.classList.toggle('muted',ci>=0);
+    document.querySelectorAll('.fcard').forEach(function(c){c.classList.toggle('active',+c.dataset.ch===ci);});
+    if(ci<0){svg.classList.remove('filtered');}
+    else{
+      svg.classList.add('filtered');
+      svg.querySelectorAll('.node').forEach(function(n){n.classList.toggle('on',+n.dataset.ch===ci);});
+      svg.querySelectorAll('.edge').forEach(function(ed){
+        var c=+ed.dataset.ch;ed.classList.toggle('on',c===ci);
+      });
+    }
+  }
+  document.querySelectorAll('.fcard').forEach(function(c){c.addEventListener('click',function(){
+    setFilter(+c.dataset.ch===getCurrent()?-1:+c.dataset.ch);});
+  });
+  function getCurrent(){
+    var a=document.querySelector('.chip.active:not(.allbtn)');
+    return a?+a.dataset.ch:-1;
+  }
+  document.querySelectorAll('.chip').forEach(function(c){c.addEventListener('click',function(){
+    setFilter(+c.dataset.ch);
+  });});
+})();
+</script>
+</body></html>

@@ -304,7 +304,8 @@ for (const cfg of PARTS) {
 </style></head><body>
 <svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" font-family="'Microsoft YaHei','PingFang SC',sans-serif">${svg.join('\n')}</svg>
 </body></html>`;
-  const out = path.join(__dirname, '..', cfg.out);
+  /* 输出文件名来自本文件内的固定配置：取 basename 消毒，杜绝任何路径拼接 */
+  const out = path.join(__dirname, '..', path.basename(cfg.out));
   fs.writeFileSync(out, html);
   console.log(`输出：${out}  （画布 ${W}×${H}）`);
 }
