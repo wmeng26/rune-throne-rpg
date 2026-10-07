@@ -32,7 +32,7 @@ const rnd = n => Math.floor(Math.random() * n);
 const sleepMs = ms => new Promise(r => { if (FAST || document.hidden) r(); else setTimeout(r, ms); });
 
 /* 可饮用的回复品：id → 回复量（战斗/行囊通用） */
-const HEALS = { potion: 10, potion_big: 25, honey: 6, roast_fish: 8, smoked_meat: 9, hot_soup: 7, clam_skewer: 8, fish_soup: 9 };
+const HEALS = { potion: 10, potion_big: 25, honey: 6, roast_fish: 8, smoked_meat: 9, hot_soup: 7, clam_skewer: 8, fish_soup: 9, roast_wheat: 5, malt_candy: 6, roast_mushroom: 6 };
 
 /* ================= 同伴战斗单位 =================
  * 同伴是独立单位：生命/斗气随主角等级成长（上限由等级推导，存档只存当前值）。
@@ -86,6 +86,10 @@ function defaultState() {
     kills: {},                                 // 击杀计数（讨伐委托用）
     bounty: null,                              // 当前接下的委托 { id, base, day }
     doneBounties: [],                          // 已完成的委托（不再刷新）
+    dTask: null,                               // 副本委托：当前接下的掘客告示 { id, dn, base }
+    doneDTasks: [],                            // 已完成的副本委托（不再刷新）
+    dgnRuns: {},                               // 各秘窟下探次数（副本布局种子用）
+    lastRun: null,                             // 最近一次下探结算 { dn, deepest, cleared, boss, day }
   };
 }
 function hasSave() { return !!localStorage.getItem(SAVE_KEY); }
@@ -473,6 +477,15 @@ function updateSidebar() {
     if (b) {
       const prog = Math.max(0, b.type === 'kill' ? (S.kills[b.en] || 0) - (S.bounty.base || 0) : Math.min((S.items[b.item] || 0), b.n));
       $('#quest-box').innerHTML += `<div class="side-quest"><b>◇ 委托·${b.title}</b><small>${b.type === 'kill' ? '猎杀 ' + b.n + ' 拨' : '备齐 ' + b.n + ' 份'}（进度 ${prog}/${b.n}）· 回酒馆领赏</small></div>`;
+    }
+  }
+  // 副本委托进度（秘窟入口的掘客告示）
+  if (S.dTask && typeof DUNGEON_TASKS !== 'undefined') {
+    const t = DUNGEON_TASKS.find(x => x.id === S.dTask.id);
+    if (t) {
+      const kind = t.type === 'boss' ? '讨伐镇守' : t.type === 'relic' ? '备齐残片'
+        : t.type === 'floor' ? '单次下探至第 ' + t.n + ' 层' : '单次清剿 ' + t.n + ' 间窟室';
+      $('#quest-box').innerHTML += `<div class="side-quest"><b>◇ 副本·${t.title}</b><small>${kind}（进度 ${dungeonTaskProg(t)}/${t.n}）· 回入口交割</small></div>`;
     }
   }
   // 队伍
@@ -1338,6 +1351,181 @@ async function deathSeq(en) {
   logLine('—— 你在命运的安排下重新醒来。', 'sys');
   await enterLoc(S.checkpoint || S.loc, { respawn: true, first: false });
   showToast('命运让你重来了');
+}
+
+/* ================= 副本 · 秘窟探索 =================
+ * 一次「下探」：从入口一层层往下清窟室（战斗/宝箱/奇遇/歇脚），
+ * 层间的下行石阶可进可退，最底层讨镇守者。数据与入口见 world.js 的
+ * DUNGEONS / DUNGEON_TASKS / dungeonGateActions。
+ * 窟室布局用「天数 + 下探次数」播种的确定性随机数——同一天重复下探
+ * 同一座秘窟，分布一致；战利品随拿随结，每层落定自动存档。 */
+let DRNG = Math.random;   // 副本内部使用的种子随机数（出副本即还原）
+
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+const dRoll = n => Math.floor(DRNG() * n);
+const dPick = arr => arr[dRoll(arr.length)];
+/* [min,max] 区间取整 */
+const dBetween = r => r[0] + dRoll(r[1] - r[0] + 1);
+
+/* 一层的窟室排布：镇守层 = 一间杂室 + 镇守者；其余层 = N 间杂室（保底一场硬仗）。
+ * 副本若设了 questRoom（掘客据点），该固定层会把据点室排在最前——秘窟支线的信物在此寻获。 */
+function dungeonLayout(dn, f) {
+  if (f === dn.floors) return [{ type: dPick(['battle', 'treasure', 'event']) }, { type: 'boss' }];
+  const bag = ['battle', 'battle', 'battle', 'battle', 'battle', 'treasure', 'treasure', 'event', 'event', 'rest'];
+  const rooms = [];
+  for (let i = 0; i < (dn.roomsPerFloor || 3); i++) rooms.push({ type: bag[dRoll(bag.length)] });
+  if (dn.questRoom && f === dn.questRoom.floor) rooms.unshift({ type: 'quest' });
+  if (!rooms.some(r => r.type === 'battle')) rooms[0] = { type: 'battle' };
+  return rooms;
+}
+
+/* 单间窟室：返回 false 表示本次下探到此为止（战败 / 撤离 / 退回） */
+async function dungeonRoom(dn, run, room, startLoc) {
+  if (room.type === 'battle') {
+    await say([dPick(dn.roomText)]);
+    const i = await choose([{ text: '⚔ 迎上去' }, { text: '↩ 原路退回入口（结束本次下探）' }]);
+    if (i === 1) { await say([dn.leaveText]); return false; }
+    const r = await battle(dPick(dn.pool), { fleeTo: startLoc });
+    if (r !== 'win') return false;   // 撤离已被送回入口 / 战败已被命运送回节点
+    run.cleared++;
+    const rl = dBetween(dn.relic);
+    if (rl > 0) { fx({ item: 'relic_shard:' + rl }); run.relics += rl; }
+    return true;
+  }
+  if (room.type === 'treasure') {
+    await say([dPick(dn.chestText)]);
+    const i = await choose([{ text: '撬开它' }, { text: '不碰，绕开继续走' }]);
+    if (i === 1) return true;
+    if (DRNG() < 0.25) {   // 学人藏东西的东西
+      await say([dn.mimicText]);
+      const r = await battle(dn.mimic, { fleeTo: startLoc });
+      if (r !== 'win') return false;
+      run.cleared++;
+      const g = dBetween(dn.loot.gold);
+      fx({ gold: g, item: 'relic_shard:1' });
+      run.relics++;
+      await say([`「箱子」的碎壳里，只剩被磨亮的铜钱和一枚残片。（金币 +${g}，渊纹残片 +1）`]);
+      return true;
+    }
+    const g = dBetween(dn.loot.gold);
+    fx({ gold: g, item: 'relic_shard:1' });
+    run.relics++;
+    await say([dn.chestWinText(g)]);
+    return true;
+  }
+  if (room.type === 'event') {
+    const e = dPick(dn.events);
+    await say([e.intro]);
+    const i = await choose(e.opts);
+    const o = e.opts[i];
+    if (o && o.run) await o.run();
+    return true;
+  }
+  if (room.type === 'rest') {
+    await say([dn.restText]);
+    const i = await choose([{ text: '歇一口气' }, { text: '不停，继续走' }]);
+    if (i === 1) return true;
+    S.hp = Math.min(S.maxHp, S.hp + Math.ceil(S.maxHp * 0.3));
+    S.sp = Math.min(S.spMax, S.sp + Math.ceil(S.spMax * 0.3));
+    ensureTeam();
+    for (const id of Object.keys(S.team)) {
+      const t = S.team[id];
+      if (t.hp > 0) {
+        t.hp = Math.min(allyMaxHp(id), t.hp + Math.ceil(allyMaxHp(id) * 0.3));
+        t.sp = Math.min(allySpMax(id), t.sp + 2);
+      }
+    }
+    logLine('原地休整：全队恢复了约三成。', 'sys');
+    updateHUD(); updateSidebar();
+    return true;
+  }
+  if (room.type === 'quest') {
+    const qr = dn.questRoom;
+    await say([qr.intro]);
+    if (!S.flags[qr.flag]) {
+      setFlag(qr.flag);
+      fx({ gold: qr.gold, item: 'relic_shard:1' });
+      run.relics++;
+      await say([qr.firstText]);
+    }
+    if (qr.item && S.sideQuests[qr.side] === 'active' && !S.flags[qr.itemFlag]) {
+      setFlag(qr.itemFlag);
+      give(qr.item);
+      await say([qr.foundText]);
+      logLine('【据点】入口的掘客在等这件信物——下探结束后回去交割。', 'sys');
+    } else if (S.flags[qr.flag]) {
+      await say(['据点还是老样子。灶膛的灰，又凉了些。']);
+    }
+    return true;
+  }
+  if (room.type === 'boss') {
+    await say(dn.bossIntro);
+    const r = await battle(dn.boss, { fleeTo: startLoc });
+    if (r !== 'win') return false;
+    run.cleared++; run.boss = true;
+    fx({ item: 'relic_shard:2' });
+    run.relics += 2;
+    await say(dn.bossOutro);
+    return true;
+  }
+  return true;
+}
+
+/* 下探结算：登记次数与最近一程，首通发重赏 */
+function dungeonSettle(dn, run, attempt) {
+  S.dgnRuns[dn.id] = attempt;
+  S.lastRun = { dn: dn.id, deepest: run.deepest, cleared: run.cleared, boss: run.boss, day: timeDay() };
+  if (run.boss && !S.flags['dgn_' + dn.id]) {
+    setFlag('dgn_' + dn.id);
+    fx(dn.firstClear);
+    logLine('✦ 首次踏平「' + dn.name + '」——' + (dn.firstClearNote || ''), 'sys');
+  }
+  showToast('下探结算：最深处第 ' + run.deepest + ' 层' + (run.boss ? ' · 已讨镇守' : ''));
+  updateHUD(); updateSidebar();
+}
+
+async function dungeonRun(dnId) {
+  const dn = DUNGEONS[dnId];
+  if (!dn || !dn.gate(S)) return;
+  logLine('—— 副本 · ' + dn.name + ' ——', 'divider');
+  await say(dn.intro);
+  S.dgnRuns = S.dgnRuns || {};
+  const attempt = (S.dgnRuns[dnId] || 0) + 1;
+  DRNG = mulberry32(((timeDay() * 1000 + attempt * 37 + dnId.length * 7) >>> 0) || 1);
+  const run = { floor: 0, deepest: 0, cleared: 0, relics: 0, boss: false };
+  const startLoc = S.loc;
+  try {
+    for (let f = 1; f <= dn.floors; f++) {
+      run.floor = f; run.deepest = f;
+      logLine('◈ 第 ' + f + ' 层 · ' + (dn.floorNames[f - 1] || ''), 'subdivider');
+      await say([dn.floorText(f)]);
+      for (const room of dungeonLayout(dn, f)) {
+        if (!await dungeonRoom(dn, run, room, startLoc)) {
+          dungeonSettle(dn, run, attempt);
+          return;
+        }
+      }
+      saveGame();   // 每层落定即存档：中途合上页面，已到手的收获不丢
+      if (f < dn.floors) {
+        const i = await choose([
+          { text: '▼ 下行石阶：往更深处去' },
+          { text: '▲ 带着收获回入口（结束本次下探）' },
+        ]);
+        if (i === 1) { await say([dn.leaveText]); dungeonSettle(dn, run, attempt); return; }
+      }
+    }
+    await say(dn.clearText);
+    dungeonSettle(dn, run, attempt);
+  } finally {
+    DRNG = Math.random;
+  }
 }
 
 /* ================= 结局 ================= */

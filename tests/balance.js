@@ -104,6 +104,15 @@ const SCENARIOS = [
     setup: s => { s.level = 12; s.maxHp = 100; s.hp = 100; s.sp = 36; s.spMax = 36; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
   { key: '王座·莫格拉斯(满编)', en: 'mograth', n: 400,
     setup: s => { s.level = 13; s.maxHp = 106; s.hp = 106; s.sp = 40; s.spMax = 40; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 3; s.items.potion_big = 3; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
+  /* ---- 副本镇守者（各秘窟最底层；按该副本解锁期的典型练度建模） ---- */
+  { key: '副本·井底吞噬者(独行)', en: 'well_devourer', n: 400,
+    setup: s => { s.level = 2; s.maxHp = 27; s.hp = 27; s.sp = 12; s.spMax = 12; s.items.potion = 2; } },
+  { key: '副本·星髓之眼(双人)', en: 'vein_watcher', n: 400,
+    setup: s => { s.level = 7; s.maxHp = 68; s.hp = 68; s.sp = 24; s.spMax = 24; s.flags.aria = true; s.flags.thorne = true; s.items.potion = 2; s.items.potion_big = 1; s.equip.weapon = 'bandit_blade'; s.equip.armor = 'guard_mail'; s.equip.accessory = 'star_pendant'; } },
+  { key: '副本·陷阵的亡帅(满编)', en: 'fallen_marshall', n: 400,
+    setup: s => { s.level = 11; s.maxHp = 94; s.hp = 94; s.sp = 32; s.spMax = 32; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'vine_mail'; s.equip.accessory = 'tide_pearl'; } },
+  { key: '副本·无光典狱长(满编)', en: 'dungeon_lord', n: 400,
+    setup: s => { s.level = 13; s.maxHp = 106; s.hp = 106; s.sp = 40; s.spMax = 40; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 3; s.items.potion_big = 3; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
 ];
 
 (async () => {
