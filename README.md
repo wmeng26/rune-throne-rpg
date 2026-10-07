@@ -352,6 +352,7 @@
 ├── tools/
 │   ├── gen_part1_map.js # 第一部地图生成器：从出口数据推导布局，输出 map_part1.html/.png 与 assets/map_part1.svg
 │   ├── gen_part23_map.js # 第二/三部地图生成器：全境布局取种 + 分部方向保真抛光，输出 map_part2/3.html/.png
+│   ├── gen_part456_map.js # 第四/五/六部+终部地图生成器：全境布局取种 + 分部方向保真抛光，输出 map_part4/5/6.html 与 map_final.html/.png
 │   └── gen_world_map.js # 全境行记图生成器：BFS 自动播种（区域锚点）+ 方向保真抛光，输出 map_world.html/.png
 ├── map_part1.html      # 第一部地图（SVG 总览，双击打开）
 ├── map_part1.png       # 第一部地图预览图
@@ -359,6 +360,14 @@
 ├── map_part2.png       # 第二部地图预览图
 ├── map_part3.html      # 第三部地图（小节配色详图，双击打开）
 ├── map_part3.png       # 第三部地图预览图
+├── map_part4.html      # 第四部地图（金穗平原小节详图，双击打开）
+├── map_part4.png       # 第四部地图预览图
+├── map_part5.html      # 第五部地图（战痕古战场小节详图，双击打开）
+├── map_part5.png       # 第五部地图预览图
+├── map_part6.html      # 第六部地图（暮色修道院小节详图，双击打开）
+├── map_part6.png       # 第六部地图预览图
+├── map_final.html      # 终部地图（影渊要塞小节详图，双击打开）
+├── map_final.png       # 终部地图预览图
 ├── map_world.html      # 全境行记图（109 处地点总览，按章节配色，双击打开）
 ├── map_world.png       # 全境行记图预览图
 └── README.md           # 本设计文档
@@ -366,7 +375,7 @@
 
 **运行**：直接双击 `index.html`；或在目录下执行 `python -m http.server 8000` 后访问 `http://localhost:8000`。
 **测试**：`node tests/smoke.js`（无需浏览器，自动跑通序章至终部的全部主线、支线与新地点流程，含战斗 v2、章节收尾与五终局流程断言，339 项）；`node tests/validate_world.js`（世界一致性：出口/方位/敌人/物品引用完整）；`node tests/balance.js`（战斗平衡模拟：各章节关键战斗 ×400 场自动对局，输出胜率/耗药/收官血量，调数值后请重跑）。
-**地图**：`node tools/gen_part1_map.js` 从 world.js 的出口数据重新生成第一部总览图（手工种子 + 方向保真抛光，固定种子可复现），同时刷新道具「迷雾古图」翻阅用的 `assets/map_part1.svg`；`node tools/gen_part23_map.js` 生成**第二/三部小节配色详图**（先算全境布局取种子，再对分部子图抛光）；`node tools/gen_world_map.js` 生成**全境行记图**（109 处地点按章节配色总览，八个区域枢纽锚点 + BFS 自动播种 + 方向保真抛光）；地图改动后重跑即可。
+**地图**：`node tools/gen_part1_map.js` 从 world.js 的出口数据重新生成第一部总览图（手工种子 + 方向保真抛光，固定种子可复现），同时刷新道具「迷雾古图」翻阅用的 `assets/map_part1.svg`；`node tools/gen_part23_map.js` 生成**第二/三部小节配色详图**、`node tools/gen_part456_map.js` 生成**第四/五/六部与终部小节配色详图**（两者均先算全境布局取种子，再对分部子图抛光，画布最小宽 1150 防图例裁切）；`node tools/gen_world_map.js` 生成**全境行记图**（109 处地点按章节配色总览，八个区域枢纽锚点 + BFS 自动播种 + 方向保真抛光）；地图改动后重跑即可，PNG 预览用 headless Edge 截图刷新。
 
 **移动端**：≤900px 视口自动切换为聊天式布局——顶栏压成「HUD 两行 + 图标按钮」，日志弹性占满中部、指令栏贴底（≥44px 触控区，动作多时栏内滚动），状态侧栏收进右侧抽屉（顶栏 📊 唤出）。适配 `100dvh` 与刘海屏安全区（`viewport-fit=cover`），禁用了双击缩放与长按选中（`touch-action` / `user-select`）。手机游玩建议用本地服务器方式（同一 Wi-Fi 下访问 `http://<电脑IP>:8000`），存档存于浏览器 localStorage。
 
