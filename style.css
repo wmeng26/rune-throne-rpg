@@ -298,3 +298,28 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation;-webkit-user
 .map-loc{font-size:13px;color:var(--ink);background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.35);border-radius:3px;padding:3px 9px;letter-spacing:1px;}
 .map-loc.unknown{color:#565a72;border-color:#2b2c40;background:rgba(255,255,255,.02);filter:blur(.4px);}
 .map-loc.current{color:var(--gold-bright);border-color:var(--gold-bright);box-shadow:0 0 10px rgba(240,201,74,.35);}
+.map-loc.link{cursor:pointer;transition:border-color .15s,color .15s,box-shadow .15s;}
+.map-loc.link:hover{color:var(--gold-bright);border-color:var(--gold-bright);box-shadow:0 0 8px rgba(240,201,74,.25);}
+.map-loc.on-route{color:var(--gold-bright);border-color:var(--gold-bright);background:rgba(240,201,74,.16);box-shadow:0 0 8px rgba(240,201,74,.3);}
+/* 路线面板：作为列表末项 + sticky bottom，吸附在地图弹层可视底部，滚动地名时始终可见。
+ * bottom 负值抵消 #modal-box 的底部内边距，让面板贴到边框（Chromium 的 sticky 锚点是内容盒）。 */
+.map-route{position:sticky;bottom:-26px;z-index:2;margin:14px -30px -26px;padding:10px 16px 12px;background:var(--panel2);border-top:1px solid rgba(201,162,39,.4);box-shadow:0 -8px 18px rgba(0,0,0,.45);max-height:46vh;display:flex;flex-direction:column;}
+.map-route-head{flex:0 0 auto;color:var(--ink-dim);letter-spacing:1px;padding-bottom:6px;}
+.map-route-head b{color:var(--gold-bright);letter-spacing:2px;}
+.map-route-head small{margin-left:10px;font-size:12px;opacity:.85;}
+.map-route-none{color:var(--ink);font-size:14px;line-height:1.8;}
+.map-nears{display:flex;flex-wrap:wrap;gap:6px;overflow-y:auto;min-height:0;}
+.map-near{font-size:13px;color:var(--ink);border:1px solid rgba(201,162,39,.3);border-radius:3px;padding:2px 8px;background:rgba(201,162,39,.06);}
+.map-near.locked{color:#6a6e8a;border-color:#2b2c40;}
+.map-route-steps{margin:0;padding:0 4px 0 2px;list-style:none;overflow-y:auto;min-height:0;}
+.map-route-step{display:flex;align-items:baseline;gap:9px;padding:3.5px 0;font-size:14px;line-height:1.65;color:var(--ink);border-bottom:1px dashed rgba(58,59,82,.5);}
+.map-route-step:last-child{border-bottom:none;}
+.map-route-step .no{flex:0 0 auto;width:20px;height:20px;line-height:19px;text-align:center;border:1px solid var(--gold);border-radius:50%;font-size:12px;color:var(--gold);}
+.map-route-step .way{flex:1 1 auto;}
+.map-route-step .way small{display:inline-block;margin-left:8px;font-size:12px;color:#b08a3e;}
+.map-route-step.locked{opacity:.7;}
+/* 手机（≤900px）：#modal-box 内边距收窄为 18px 16px，吸附参数同步调整。
+ * 注意必须放在桌面规则之后，否则同优先级会被覆盖。 */
+@media (max-width:900px){
+  .map-route{margin:12px -16px -18px;padding:9px 12px 10px;max-height:42vh;bottom:-18px;}
+}

@@ -64,6 +64,8 @@ function ensureTeam() {
     } else delete S.team[id];
   }
 }
+/* 当前在队的同伴 id（文案与界面按此分叉：孤身时不出现同伴字样） */
+function partyMembers() { ensureTeam(); return PARTY_IDS.filter(id => S.flags[id] && S.team[id]); }
 
 /* ================= 存档 ================= */
 function defaultState() {
@@ -342,10 +344,11 @@ async function gainExp(n) {
     S.spMax += 1; S.sp = Math.min(S.spMax, S.sp + 1);
     ensureTeam();
     for (const id of Object.keys(S.team)) S.team[id].hp = Math.min(allyMaxHp(id), S.team[id].hp + 3);
-    logLine(`✦ 等级提升！Lv.${S.level}（生命上限 +5，斗气上限 +1，同伴同步成长）`, 'sys');
+    logLine(`✦ 等级提升！Lv.${S.level}（生命上限 +5，斗气上限 +1${partyMembers().length ? '，同伴同步成长' : ''}）`, 'sys');
     showToast(`等级提升！Lv.${S.level}`);
-    const i = await choose(BOONS.map(b => ({ text: `${b.icon} ${b.text}`, run: async () => {} })));
-    applyBoon(BOONS[i] ? BOONS[i].id : 'vit');
+    const pool = BOONS.filter(b => b.id !== 'party' || partyMembers().length > 0);
+    const i = await choose(pool.map(b => ({ text: `${b.icon} ${b.text}`, run: async () => {} })));
+    applyBoon(pool[i] ? pool[i].id : 'vit');
   }
   updateHUD(); updateSidebar();
 }
@@ -655,7 +658,9 @@ function renderExplore() {
       S.hp = S.maxHp; S.sp = S.spMax;
       ensureTeam();
       for (const id of Object.keys(S.team)) { S.team[id].hp = allyMaxHp(id); S.team[id].sp = allySpMax(id); }
-      await say(['你阖眼休息。炉火与远处的风声此起彼伏——醒来时，伤痛已被驱散，同伴们的气色也好了许多。（全队生命与斗气全满）']);
+      await say([partyMembers().length
+        ? '你阖眼休息。炉火与远处的风声此起彼伏——醒来时，伤痛已被驱散，同伴们的气色也好了许多。（全队生命与斗气全满）'
+        : '你阖眼休息。炉火与远处的风声此起彼伏——醒来时，伤痛已被驱散，明天又要赶路了。（生命与斗气全满）']);
       sleepToDawn();
       updateHUD(); updateSidebar();
     });
@@ -996,7 +1001,7 @@ async function playerPhase() {
       } });
     }
     if (!C.en.noFlee) acts.push({ text: '🏃 逃离战斗', run: () => doFlee() });
-    acts.push({ text: `⚖ 同伴态势：${STANCE[S.stance || 'balanced']}（切换，不耗回合）`, stance: true, run: async () => {} });
+    if (partyMembers().length) acts.push({ text: `⚖ 同伴态势：${STANCE[S.stance || 'balanced']}（切换，不耗回合）`, stance: true, run: async () => {} });
 
     const pick = await choose(acts);
     const a = acts[pick];
@@ -1330,7 +1335,9 @@ function renderCombat() {
     allies += `<span class="ally-chip${t.hp <= 0 ? ' ko' : ''}">${ALLY_DEF[id].short} ${t.hp <= 0 ? '💤 昏厥' : `❤${t.hp}/${allyMaxHp(id)} ✦${t.sp}/${allySpMax(id)}`}</span>`;
   }
   $('#ally-strip').innerHTML = allies;
-  $('#enemy-intent').textContent = `⚖ 同伴态势：${STANCE[S.stance || 'balanced']}（指令栏可切换）`;
+  $('#enemy-intent').textContent = partyMembers().length
+    ? `⚖ 同伴态势：${STANCE[S.stance || 'balanced']}（指令栏可切换）`
+    : '孤身作战——只信你手里的剑。';
   const st = [];
   if (C.enemyWeak) st.push(`敌胆寒↓2（${C.enemyWeak}）`);
   if (C.atkUp) st.push(`我方士气↑2（${C.atkUp}）`);
@@ -1613,7 +1620,88 @@ function openLore() {
 }
 
 /* ================= 世界地图总览 =================
- * 按章节/小节列出全部地点：去过的点亮，没去的以雾（？？？）遮蔽。 */
+ * 按章节/小节列出全部地点：去过的点亮（可点选），没去的以雾（？？？）遮蔽。
+ * 点选任一去过的地点，沿出口图 BFS 画出「从脚下到那里」的逐步路线；
+ * 未点选时，面板常显脚下的周边去路。 */
+function mapRouteSteps(fromId, toId) {
+  if (!WORLD[fromId] || !WORLD[toId]) return null;
+  if (fromId === toId) return [];
+  const prev = new Map([[fromId, null]]);
+  const queue = [fromId];
+  while (queue.length) {
+    const cur = queue.shift();
+    for (const [d, ex] of exitsOf(WORLD[cur])) {
+      if (!WORLD[ex.to] || prev.has(ex.to)) continue;
+      prev.set(ex.to, { from: cur, dir: d, label: ex.label, to: ex.to });
+      if (ex.to === toId) {
+        const steps = [];
+        for (let s = toId; prev.get(s); s = prev.get(s).from) steps.unshift(prev.get(s));
+        return steps;
+      }
+      queue.push(ex.to);
+    }
+  }
+  return null;
+}
+
+function clearRouteMarks() {
+  document.querySelectorAll('#modal-content .map-loc.on-route').forEach(el => el.classList.remove('on-route'));
+}
+
+/* 出口 label 与目的地名常互为简写（如「黑鸦旅店」→「黑鸦旅店·大堂」），去重免得连读拗口 */
+const _flatName = t => String(t).replace(/[·\s]/g, '');
+const _dupName = (a, b) => a && b && (_flatName(a).includes(_flatName(b)) || _flatName(b).includes(_flatName(a)));
+/* label 自带方位前缀（如「北 · 官道」）时不再叠加 DIRS 箭头，免得「↑ 北 北 · 官道」 */
+const _dirText = (d, label) => {
+  const dir = DIRS[d] || '▸';
+  const word = dir.split(' ')[1];
+  return word && _flatName(label).startsWith(word) ? label : dir + ' ' + label;
+};
+
+function showMapNearby() {
+  const box = $('#map-route');
+  if (!box) return;
+  clearRouteMarks();
+  const loc = WORLD[S.loc];
+  if (!loc) return;
+  const nears = exitsOf(loc).map(([d, ex]) => {
+    const ok = !ex.req || ex.req(S);
+    const dest = WORLD[ex.to];
+    const txt = dest && _dupName(ex.label, dest.name) ? dest.name : ex.label + (dest ? ' · ' + dest.name : '');
+    return `<span class="map-near${ok ? '' : ' locked'}">${_dirText(d, txt)}${ok ? '' : ' 🔒'}</span>`;
+  }).join('');
+  box.innerHTML = `<div class="map-route-head">📍 此处 · <b>${loc.name}</b><small>点任一去过的地名，图上替你画路</small></div>`
+    + `<div class="map-nears">${nears || '<span class="map-near locked">四下无路——跟着剧情走吧</span>'}</div>`;
+}
+
+function showMapRoute(targetId) {
+  const box = $('#map-route');
+  if (!box || !WORLD[targetId]) return;
+  clearRouteMarks();
+  const steps = mapRouteSteps(S.loc, targetId);
+  if (!steps) {
+    box.innerHTML = `<div class="map-route-head">🧭 前往 <b>${WORLD[targetId].name}</b></div>`
+      + '<div class="map-route-none">图上没有连着的路——那里要随剧情与脚力自己走到。</div>';
+    return;
+  }
+  const chips = {};
+  document.querySelectorAll('#modal-content .map-loc[data-loc]').forEach(el => { chips[el.dataset.loc] = el; });
+  let html = `<div class="map-route-head">🧭 前往 <b>${WORLD[targetId].name}</b> · 全程约 ${steps.length} 程</div><ol class="map-route-steps">`;
+  steps.forEach((st, i) => {
+    const ex = (WORLD[st.from].exits || {})[st.dir];
+    const locked = ex && ex.req && !ex.req(S);
+    const seenName = (S.visits[st.to] || 0) > 0 ? WORLD[st.to].name : '？？？';
+    const via = seenName === '？？？' || !_dupName(st.label, seenName)
+      ? st.label + ' → ' + seenName
+      : seenName;
+    html += `<li class="map-route-step${locked ? ' locked' : ''}"><span class="no">${i + 1}</span>`
+      + `<span class="way">${_dirText(st.dir, via)}`
+      + (locked ? '<small>🔒 此刻未通 · 先推进剧情</small>' : '') + '</span></li>';
+    if (chips[st.to]) chips[st.to].classList.add('on-route');
+  });
+  box.innerHTML = html + '</ol>';
+}
+
 function openMap() {
   if (!S) return;
   const chapters = [];
@@ -1635,13 +1723,18 @@ function openMap() {
         total++;
         const seen = (S.visits[l.id] || 0) > 0;
         if (seen) visited++;
-        html += `<span class="map-loc${seen ? '' : ' unknown'}${l.id === S.loc ? ' current' : ''}">${seen ? l.name : '？？？'}</span>`;
+        html += seen
+          ? `<span class="map-loc link${l.id === S.loc ? ' current' : ''}" data-loc="${l.id}">${l.id === S.loc ? '📍 ' : ''}${l.name}</span>`
+          : '<span class="map-loc unknown">？？？</span>';
       }
       html += '</div>';
     }
   }
   html += `<p class="panel-note">已踏足 ${visited} / ${total} 处。地图只点亮你走过的路——离群的村道、塌檐的地窖、雾里的旧祠，总有你没去过的角落。</p>`;
+  // 路线面板置于内容末尾：配合 sticky bottom 吸附在弹层可视底部，滚动地名列表时也始终可见
+  html += '<div id="map-route" class="map-route"></div>';
   openModal(html, [{ text: '合上地图', primary: true }]);
+  showMapNearby();
 }
 
 /* ================= 提示 ================= */
@@ -1704,6 +1797,13 @@ function init() {
   $('#btn-side-close').addEventListener('click', () => sideToggle(false));
   $('#side-mask').addEventListener('click', () => sideToggle(false));
   $('#modal-root').addEventListener('click', e => { if (e.target.id === 'modal-root') closeModal(); });
+  // 地图点选：去过的地点 chip → 画出脚下到那儿的路线（再点脚下一处还原周边去路）
+  $('#modal-content').addEventListener('click', e => {
+    const chip = e.target.closest('.map-loc[data-loc]');
+    if (!chip || !S) return;
+    if (chip.dataset.loc === S.loc) showMapNearby();
+    else showMapRoute(chip.dataset.loc);
+  });
 
   // 快捷键：B 背包 / K 技能 / C 角色 / M 地图 / Esc 关闭 / 空格跳过打字
   window.addEventListener('keydown', e => {
