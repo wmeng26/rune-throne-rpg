@@ -26,7 +26,7 @@ let typing = false;
 let typeSkip = false;
 
 const FAST = /[?&]fast=1/.test(location.search);   // ?fast=1：确定性/调试模式——跳过打字等待与随机旅途、游荡遭遇
-const DIRS = { n: '↑ 北', s: '↓ 南', w: '← 西', e: '→ 东', up: '↥ 上', down: '↧ 下', se: '↘ 东北', nw: '↖ 西北', sw: '↙ 西南', ne: '↗ 东北', enter: '▸ 进入' };
+const DIRS = { n: '↑ 北', s: '↓ 南', w: '← 西', e: '→ 东', up: '↥ 上', down: '↧ 下', se: '↘ 东南', nw: '↖ 西北', sw: '↙ 西南', ne: '↗ 东北', enter: '▸ 进入' };
 
 const rnd = n => Math.floor(Math.random() * n);
 const sleepMs = ms => new Promise(r => { if (FAST || document.hidden) r(); else setTimeout(r, ms); });

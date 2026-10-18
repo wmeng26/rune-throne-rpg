@@ -7588,6 +7588,7 @@ const WORLD = {
       '往年这时节，这里该是全村最吵的地方。如今垛缝里只挂着蛛网。',
     ],
     brief: '麦垛垒成的孩子迷宫。垛壁的粉笔字写着「左直左就到心儿里」。',
+    onEnter: async () => { setFlag('mazeHint'); },   // 首见墙字（desc）后记住提示，迷宫内提示分支才生效
     exits: {
       n: { to: 'thresh_floor', label: '回打谷场', flavor: '你从麦垛间钻出来。打谷场的火光就在垛顶那头。' },
       s: { to: 'gleaner_camp', label: '南 · 拾穗人的窝棚', flavor: '你穿过迷宫南口。几座草棚的炊烟细细地立着。' },
