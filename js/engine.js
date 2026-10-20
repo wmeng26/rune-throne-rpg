@@ -1363,7 +1363,9 @@ async function deathSeq(en) {
 /* ================= 副本 · 秘窟探索 =================
  * 一次「下探」：从入口一层层往下清窟室（战斗/宝箱/奇遇/歇脚），
  * 层间的下行石阶可进可退，最底层讨镇守者。数据与入口见 world.js 的
- * DUNGEONS / DUNGEON_TASKS / dungeonGateActions。
+ * DUNGEONS / DUNGEON_TASKS / dungeonGateActions；副本分两级——大副本
+ * （3-5 层，带掘客板摊与支线）与小副本（size:'small'，1-2 层速探，
+ * 无板摊）。
  * 窟室布局用「天数 + 下探次数」播种的确定性随机数——同一天重复下探
  * 同一座秘窟，分布一致；战利品随拿随结，每层落定自动存档。 */
 let DRNG = Math.random;   // 副本内部使用的种子随机数（出副本即还原）
@@ -1477,8 +1479,9 @@ async function dungeonRoom(dn, run, room, startLoc) {
     const r = await battle(dn.boss, { fleeTo: startLoc });
     if (r !== 'win') return false;
     run.cleared++; run.boss = true;
-    fx({ item: 'relic_shard:2' });
-    run.relics += 2;
+    const bs = dn.size === 'small' ? 1 : 2;   // 小副本的镇守者是野窟头目，落残片也薄
+    fx({ item: 'relic_shard:' + bs });
+    run.relics += bs;
     await say(dn.bossOutro);
     return true;
   }
@@ -1492,7 +1495,7 @@ function dungeonSettle(dn, run, attempt) {
   if (run.boss && !S.flags['dgn_' + dn.id]) {
     setFlag('dgn_' + dn.id);
     fx(dn.firstClear);
-    logLine('✦ 首次踏平「' + dn.name + '」——' + (dn.firstClearNote || ''), 'sys');
+    logLine('✦ 首次' + (dn.size === 'small' ? '探明' : '踏平') + '「' + dn.name + '」——' + (dn.firstClearNote || ''), 'sys');
   }
   showToast('下探结算：最深处第 ' + run.deepest + ' 层' + (run.boss ? ' · 已讨镇守' : ''));
   updateHUD(); updateSidebar();
@@ -1501,7 +1504,7 @@ function dungeonSettle(dn, run, attempt) {
 async function dungeonRun(dnId) {
   const dn = DUNGEONS[dnId];
   if (!dn || !dn.gate(S)) return;
-  logLine('—— 副本 · ' + dn.name + ' ——', 'divider');
+  logLine('—— ' + (dn.size === 'small' ? '小副本' : '副本') + ' · ' + dn.name + ' ——', 'divider');
   await say(dn.intro);
   S.dgnRuns = S.dgnRuns || {};
   const attempt = (S.dgnRuns[dnId] || 0) + 1;

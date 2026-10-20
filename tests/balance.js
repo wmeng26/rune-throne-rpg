@@ -113,6 +113,23 @@ const SCENARIOS = [
     setup: s => { s.level = 11; s.maxHp = 94; s.hp = 94; s.sp = 32; s.spMax = 32; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'vine_mail'; s.equip.accessory = 'tide_pearl'; } },
   { key: '副本·无光典狱长(满编)', en: 'dungeon_lord', n: 400,
     setup: s => { s.level = 13; s.maxHp = 106; s.hp = 106; s.sp = 40; s.spMax = 40; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 3; s.items.potion_big = 3; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
+  /* ---- 小副本镇守者（8 座野窟的浅窟头目；按各窟可及期的典型练度建模） ---- */
+  { key: '小副本·烟皮狼王(独行)', en: 'kiln_wolf', n: 400,
+    setup: s => { s.level = 2; s.maxHp = 27; s.hp = 27; s.sp = 12; s.spMax = 12; s.items.potion = 1; } },
+  { key: '小副本·无面石胎(独行)', en: 'quarry_effigy', n: 400,
+    setup: s => { s.level = 3; s.maxHp = 33; s.hp = 33; s.sp = 14; s.spMax = 14; s.items.potion = 1; } },
+  { key: '小副本·暗渠收人差(带艾莉娅)', en: 'channel_bailiff', n: 400,
+    setup: s => { s.level = 6; s.maxHp = 61; s.hp = 61; s.sp = 22; s.spMax = 22; s.flags.aria = true; s.items.potion = 2; s.equip.weapon = 'iron_sword'; s.equip.armor = 'leather_armor'; } },
+  { key: '小副本·负缆的溺夫(满编)', en: 'tow_wraith', n: 400,
+    setup: s => { s.level = 8; s.maxHp = 74; s.hp = 74; s.sp = 26; s.spMax = 26; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.equip.weapon = 'rite_blade'; s.equip.armor = 'guard_mail'; s.equip.accessory = 'star_pendant'; } },
+  { key: '小副本·地窖囤主(满编)', en: 'cellar_hoarder', n: 400,
+    setup: s => { s.level = 10; s.maxHp = 88; s.hp = 88; s.sp = 30; s.spMax = 30; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 1; s.equip.weapon = 'whale_lance'; s.equip.armor = 'vine_mail'; s.equip.accessory = 'tide_pearl'; } },
+  { key: '小副本·值烽的哨长(满编)', en: 'beacon_sergeant', n: 400,
+    setup: s => { s.level = 11; s.maxHp = 94; s.hp = 94; s.sp = 32; s.spMax = 32; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'vine_mail'; s.equip.accessory = 'tide_pearl'; } },
+  { key: '小副本·守骨的司库(满编)', en: 'ossuary_keeper', n: 400,
+    setup: s => { s.level = 12; s.maxHp = 100; s.hp = 100; s.sp = 36; s.spMax = 36; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
+  { key: '小副本·无名的护旗甲(满编)', en: 'last_banner', n: 400,
+    setup: s => { s.level = 13; s.maxHp = 106; s.hp = 106; s.sp = 40; s.spMax = 40; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 3; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
 ];
 
 (async () => {

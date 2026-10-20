@@ -42,18 +42,20 @@ else for (const t of TRAVEL_EVENTS) if (typeof t.run !== 'function' || !t.intro)
 /* 副本：敌人 / 奖励物品 / 入口注入 / 委托与兑换引用 */
 if (!DUNGEONS || !Object.keys(DUNGEONS).length) errs.push('DUNGEONS 为空或缺失');
 else for (const [id, dn] of Object.entries(DUNGEONS)) {
+  const small = dn.size === 'small';   // 小副本（野窟）：无板摊、无掘客；大副本三件套齐全
+  if (!['large', 'small'].includes(dn.size)) errs.push(`副本未标 size: ${id}`);
   for (const en of [].concat(dn.pool, dn.mimic, dn.boss)) if (!ENEMIES[en]) errs.push(`副本敌人缺失: ${id} -> ${en}`);
   if (!dn.boss) errs.push(`副本缺镇守者: ${id}`);
-  if (!dn.gateText || !dn.boardText || !dn.exchangeText) errs.push(`副本入口动作文案不全: ${id}`);
+  if (!dn.gateText || (!small && (!dn.boardText || !dn.exchangeText))) errs.push(`副本入口动作文案不全: ${id}`);
   if (!WORLD[dn.at]) errs.push(`副本入口地点缺失: ${id} -> ${dn.at}`);
   else {
     const acts = WORLD[dn.at].actions || [];
-    for (const txt of [dn.gateText, dn.boardText, dn.exchangeText])
+    for (const txt of [dn.gateText, dn.boardText, dn.exchangeText].filter(Boolean))
       if (!acts.some(a => a.text === txt && typeof a.when === 'function' && typeof a.run === 'function'))
         errs.push(`副本入口动作未注入: ${id} -> ${txt}`);
   }
-  if (!dn.exchange || !ITEMS[dn.exchange.item]) errs.push(`副本兑换物品缺失: ${id}`);
-  if (!(WORLD[dn.at].npcs || {}).digger || typeof WORLD[dn.at].npcs.digger.talk !== 'function') errs.push(`副本入口缺掘客 NPC: ${id}`);
+  if (!small && (!dn.exchange || !ITEMS[dn.exchange.item])) errs.push(`副本兑换物品缺失: ${id}`);
+  if (!small && (!(WORLD[dn.at].npcs || {}).digger || typeof WORLD[dn.at].npcs.digger.talk !== 'function')) errs.push(`副本入口缺掘客 NPC: ${id}`);
   const qr = dn.questRoom;
   if (qr) {
     if (!(qr.floor < dn.floors)) errs.push(`副本据点层超出层数: ${id}`);
@@ -88,4 +90,6 @@ for (const [id, it] of Object.entries(ITEMS)) {
 }
 
 if (errs.length) { console.error('✗ 世界一致性校验失败：\n' + errs.join('\n')); process.exit(1); }
-console.log(`✓ 全图一致性校验通过：${Object.keys(WORLD).length} 处地点，${Object.keys(DUNGEONS).length} 座副本（${DUNGEON_TASKS.length} 式委托），${TRAVEL_EVENTS.length} 条旅途事件，出口/方位/敌人/物品/副本引用完整`);
+const nLarge = Object.values(DUNGEONS).filter(d => d.size !== 'small').length;
+const nSmall = Object.keys(DUNGEONS).length - nLarge;
+console.log(`✓ 全图一致性校验通过：${Object.keys(WORLD).length} 处地点，${nLarge} 大 + ${nSmall} 小共 ${Object.keys(DUNGEONS).length} 座副本（${DUNGEON_TASKS.length} 式委托），${TRAVEL_EVENTS.length} 条旅途事件，出口/方位/敌人/物品/副本引用完整`);

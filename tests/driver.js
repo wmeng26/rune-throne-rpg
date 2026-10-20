@@ -1158,7 +1158,14 @@ globalThis.topUp = function () {
     assert(S.flags.tidePath && S.flags.dockLedger, '第三部暗线加深：卡雅家传潮路图（石阶拓印）· 渡鸦三十年老主顾（船坞货单）');
     assert(WORLD.forest_deep.roam.byTime && WORLD.forest_deep.roam.byTime.night.en === 'wraith' && WORLD.south_road.roam.byTime.night.en === 'wraith' && WORLD.crow_ridge.roam.byTime.night.chance < WORLD.crow_ridge.roam.chance, '时间制游荡：夜晚野外换「没脸的」上场（白天是狼群/雾鸦，鸦眠坡入夜反而安静）');
     assert(Array.isArray(TAVERN_RUMORS) && TAVERN_RUMORS.length >= 40 && Array.isArray(BOUNTIES) && BOUNTIES.length >= 27, '酒馆系统：传闻池 40+ 条（天数/剧情解锁，含横向扩写的说书人/当票/信鸽/铸钟坊），委托池 27 式（讨伐/采办 + 5 式秘窟差事，按天轮换）');
-    assert(Object.keys(DUNGEONS).length === 4 && DUNGEON_TASKS.length === 16, '副本系统：4 座秘窟（井底·无回廊/星髓深巷/覆阵窟/无光地牢）+ 16 式掘客委托（深入/清剿/讨伐/寻物）');
+    assert(Object.keys(DUNGEONS).length === 12 && DUNGEON_TASKS.length === 16, '副本系统：4 座大秘窟（井底·无回廊/星髓深巷/覆阵窟/无光地牢，掘客板摊齐全）+ 8 座小副本 + 16 式掘客委托（深入/清剿/讨伐/寻物）');
+    assert(['kiln_den', 'quarry_seam', 'westwell_channel', 'slipway_tow', 'granary_cellar', 'beacon_stoke', 'bone_vault', 'banner_cache'].every(id => {
+      const dn = DUNGEONS[id];
+      if (!dn || dn.size !== 'small' || dn.floors > 2 || !dn.boss) return false;
+      const acts = WORLD[dn.at].actions || [];
+      return acts.some(a => a.text === dn.gateText) && !acts.some(a => a.text === dn.boardText);
+    }) && ['kiln_wolf', 'quarry_effigy', 'channel_bailiff', 'tow_wraith', 'cellar_hoarder', 'beacon_sergeant', 'ossuary_keeper', 'last_banner'].every(en => !!ENEMIES[en]), '小副本体系：8 座野窟浅窟融入各部既有地点（塌窑/石龛/暗渠/缆道/地窖/火房/骨库/旗窖），1-2 层速探、入口只挂下探一口，各有小镇守者坐底');
+    assert(TAVERN_RUMORS.some(r => r.id === 'shallow_holes'), '酒馆传闻：掘客的「野窟」行话入池（提示小副本玩法）');
     assert(SIDE_QUESTS.duglamp && SIDE_QUESTS.vetag && SIDE_QUESTS.warroll && SIDE_QUESTS.namepage, '秘窟支线：井下的行灯/深巷的工牌/坑底的名册/缴名巷的名字（入口掘客承接，第 2 层据点寻获信物）');
     assert(BOUNTIES.some(b => b.type === 'kill' && b.en === 'well_husk') && BOUNTIES.some(b => b.type === 'fetch' && b.item === 'relic_shard'), '随机委托进副本：酒馆委托板可刷出井祟讨伐/残片收购等秘窟差事');
     assert(!!ENEMIES.well_devourer && !!ENEMIES.vein_watcher && !!ENEMIES.fallen_marshall && !!ENEMIES.dungeon_lord, '副本镇守者：井底吞噬者 / 星髓之眼 / 陷阵的亡帅 / 无光典狱长');
