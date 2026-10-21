@@ -130,6 +130,15 @@ const SCENARIOS = [
     setup: s => { s.level = 12; s.maxHp = 100; s.hp = 100; s.sp = 36; s.spMax = 36; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
   { key: '小副本·无名的护旗甲(满编)', en: 'last_banner', n: 400,
     setup: s => { s.level = 13; s.maxHp = 106; s.hp = 106; s.sp = 40; s.spMax = 40; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 3; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
+  /* ---- 狂化镇守者（首通后的余威：生命×1.4、伤害+2、残片翻倍）——同练度复刷应仍可胜 ---- */
+  { key: '狂化·井底吞噬者(独行)', en: 'well_devourer', n: 200, opts: { elite: true },
+    setup: s => { s.level = 2; s.maxHp = 27; s.hp = 27; s.sp = 12; s.spMax = 12; s.items.potion = 2; } },
+  { key: '狂化·星髓之眼(双人)', en: 'vein_watcher', n: 200, opts: { elite: true },
+    setup: s => { s.level = 7; s.maxHp = 68; s.hp = 68; s.sp = 24; s.spMax = 24; s.flags.aria = true; s.flags.thorne = true; s.items.potion = 2; s.items.potion_big = 1; s.equip.weapon = 'bandit_blade'; s.equip.armor = 'guard_mail'; s.equip.accessory = 'star_pendant'; } },
+  { key: '狂化·陷阵的亡帅(满编)', en: 'fallen_marshall', n: 200, opts: { elite: true },
+    setup: s => { s.level = 11; s.maxHp = 94; s.hp = 94; s.sp = 32; s.spMax = 32; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 2; s.items.potion_big = 2; s.equip.weapon = 'war_glaive'; s.equip.armor = 'vine_mail'; s.equip.accessory = 'tide_pearl'; } },
+  { key: '狂化·无光典狱长(满编)', en: 'dungeon_lord', n: 200, opts: { elite: true },
+    setup: s => { s.level = 13; s.maxHp = 106; s.hp = 106; s.sp = 40; s.spMax = 40; s.flags.aria = true; s.flags.thorne = true; s.flags.kaya = true; s.items.potion = 3; s.items.potion_big = 3; s.equip.weapon = 'war_glaive'; s.equip.armor = 'war_mail'; s.equip.accessory = 'jade_chime'; } },
 ];
 
 (async () => {
@@ -151,7 +160,7 @@ const SCENARIOS = [
         ensureTeam();
         for (const id of Object.keys(S.team)) { S.team[id].hp = allyMaxHp(id); S.team[id].sp = allySpMax(id); }
         const potBefore = (S.items.potion || 0) + (S.items.potion_big || 0);
-        const r = await battle(sc.en, {});
+        const r = await battle(sc.en, sc.opts || {});
         if (r === 'win') win++;
         else if (r === 'dead') dead++;
         else flee++;

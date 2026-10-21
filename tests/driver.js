@@ -458,26 +458,43 @@ globalThis.topUp = function () {
     assert(S.flags.dgn_well_depths && S.gold > gDgn0, '首通结算：掘客板刻下「到底」并获重赏（金币入账）');
     assert(S.flags.dgnw_camp && S.items.old_lantern === 1, '支线兑现：第 2 层掘客营地起获甃老三的行灯（营地首访另有赏格）');
     assert((S.items.relic_shard || 0) >= 5 && S.kills.well_devourer === 1, '副本产出：渊纹残片 ≥5 枚（战斗/宝箱/据点/镇守），击杀计数入册');
+    assert(S.dgnBest && S.dgnBest.well_depths && S.dgnBest.well_depths.deepest === 3 && S.dgnBest.well_depths.boss, '本窟战绩：最好成绩入册（最深第 3 层 · 镇守已讨），下探开场即展示');
     // 行灯交还甃叔，支线完结
     const pbLamp = S.items.potion_big || 0, gLamp = S.gold, rLamp = S.rep;
     await digger.talk();
     assert(S.sideQuests.duglamp === 'done' && S.gold === gLamp + 12 && S.rep === rLamp + 2 && S.items.potion_big === pbLamp + 1, '支线【井下的行灯】完成：行灯交还甃叔（+12金币，大药水×1，声望+2）');
-    // 副本委托：板上只留讨伐单可接 → 复刷一趟再讨镇守 → 回板交割
+    // 狂化镇守者：首通之后再讨，余威狂化（生命×1.4、伤害+2、名号缀「·狂」），胜后残片翻倍
+    const eliteU = buildUnits(ENEMIES.well_devourer, { hpMult: 1.4, dmgAdd: 2, suffix: '·狂' })[0];
+    assert(eliteU.name === '井底吞噬者·狂' && eliteU.hp === Math.round(ENEMIES.well_devourer.hp * 1.4) && eliteU.dmg[0] === ENEMIES.well_devourer.dmg[0] + 2, '狂化镇守者：余威狂化立绘成军（生命×1.4、伤害+2、名号缀「·狂」），胜后残片翻倍');
+    // 副本委托：板上只留讨伐单可接 → 复刷一趟再讨镇守（此趟镇守者已是狂化之姿）→ 回板交割
     S.doneDTasks = DUNGEON_TASKS.filter(t => t.dn === 'well_depths' && t.type !== 'boss').map(t => t.id);
     await WORLD.grayridge_well.actions.find(a => a.text.includes('委托板')).run();
     assert(S.dTask && S.dTask.id === 'dgnw_boss', '副本委托：掘客板上揭下「磨牙声的源头」（讨伐单记入侧栏）');
     await dgnWell.run();
     await WORLD.grayridge_well.actions.find(a => a.text.includes('委托板')).run();
-    assert(!S.dTask && S.doneDTasks.includes('dgnw_boss') && S.kills.well_devourer === 2 && S.rep === repDgn0 + 5, '副本委托交割：复刷讨镇守达成，声望入账（首通2+支线2+交割1）');
+    assert(!S.dTask && S.doneDTasks.includes('dgnw_boss') && S.kills.well_devourer === 2 && S.rep === repDgn0 + 5, '副本委托交割：复刷讨镇守（狂化）达成，声望入账（首通2+支线2+交割1）');
     // 残片兑换：掘客旧物
     S.items.relic_shard = (S.items.relic_shard || 0) + 6;
     const shardEx = S.items.relic_shard;
     await WORLD.grayridge_well.actions.find(a => a.text.includes('残片换')).run();
     assert(S.items.well_bell === 1 && S.items.relic_shard === shardEx - 4, '残片兑换：4 枚渊纹残片换「守井人的铜铃」（斗气上限+3）');
-    // 中途撤离：石阶处带收获回撤，不判首通、不重复发赏
+    // 残片货架：旧物到手后，摊子改出散货——药水 / 折现，残片永远有去处
+    S.items.relic_shard = 5;
+    const pbShelf = S.items.potion_big || 0;
+    setChoices('大药水', '先不换');
+    await WORLD.grayridge_well.actions.find(a => a.text.includes('残片换')).run();
+    assert(S.items.potion_big === pbShelf + 1 && S.items.relic_shard === 3, '残片货架：旧物换完后掘客摆出散货摊（2 枚残片换大药水，循环可购）');
+    // 中途撤离：石阶处带收获回撤，不判首通、不重复发赏；历史战绩不回退
     setChoices(o => String(o.text).includes('▲'));
     await dgnWell.run();
     assert(S.lastRun && S.lastRun.dn === 'well_depths' && S.lastRun.deepest === 1 && !S.lastRun.boss, '中途撤离：第一层石阶处带收获回撤（最深处记第 1 层，无镇守战绩）');
+    assert(S.dgnBest.well_depths.deepest === 3 && S.dgnBest.well_depths.boss, '本窟战绩取历史最优：撤离一趟不冲掉旧纪录');
+    // 野窟差事：正窟差事办完一轮后，掘客板改挂野窟单（行会雇散客代办），回任意正窟交割
+    S.doneDTasks = DUNGEON_TASKS.filter(t => DUNGEONS[t.dn] && DUNGEONS[t.dn].size !== 'small').map(t => t.id);
+    S.dTask = null;
+    await WORLD.grayridge_well.actions.find(a => a.text.includes('委托板')).run();
+    assert(S.dTask && DUNGEONS[S.dTask.dn] && DUNGEONS[S.dTask.dn].size === 'small', '野窟差事：正窟差事办完后，掘客板改挂野窟单（8 座小副本轮换，行会雇散客代办）');
+    S.dTask = null;   // 撕掉野窟单，不影响后续流程断言
     setChoices();
     await move('grayridge_street');
 
@@ -1158,7 +1175,7 @@ globalThis.topUp = function () {
     assert(S.flags.tidePath && S.flags.dockLedger, '第三部暗线加深：卡雅家传潮路图（石阶拓印）· 渡鸦三十年老主顾（船坞货单）');
     assert(WORLD.forest_deep.roam.byTime && WORLD.forest_deep.roam.byTime.night.en === 'wraith' && WORLD.south_road.roam.byTime.night.en === 'wraith' && WORLD.crow_ridge.roam.byTime.night.chance < WORLD.crow_ridge.roam.chance, '时间制游荡：夜晚野外换「没脸的」上场（白天是狼群/雾鸦，鸦眠坡入夜反而安静）');
     assert(Array.isArray(TAVERN_RUMORS) && TAVERN_RUMORS.length >= 40 && Array.isArray(BOUNTIES) && BOUNTIES.length >= 27, '酒馆系统：传闻池 40+ 条（天数/剧情解锁，含横向扩写的说书人/当票/信鸽/铸钟坊），委托池 27 式（讨伐/采办 + 5 式秘窟差事，按天轮换）');
-    assert(Object.keys(DUNGEONS).length === 12 && DUNGEON_TASKS.length === 16, '副本系统：4 座大秘窟（井底·无回廊/星髓深巷/覆阵窟/无光地牢，掘客板摊齐全）+ 8 座小副本 + 16 式掘客委托（深入/清剿/讨伐/寻物）');
+    assert(Object.keys(DUNGEONS).length === 12 && DUNGEON_TASKS.length === 24, '副本系统：4 座大秘窟（井底·无回廊/星髓深巷/覆阵窟/无光地牢，掘客板摊齐全）+ 8 座小副本 + 24 式掘客委托（深入/清剿/讨伐/寻物，含 8 式野窟差事）');
     assert(['kiln_den', 'quarry_seam', 'westwell_channel', 'slipway_tow', 'granary_cellar', 'beacon_stoke', 'bone_vault', 'banner_cache'].every(id => {
       const dn = DUNGEONS[id];
       if (!dn || dn.size !== 'small' || dn.floors > 2 || !dn.boss) return false;

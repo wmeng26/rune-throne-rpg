@@ -488,7 +488,8 @@ function updateSidebar() {
     if (t) {
       const kind = t.type === 'boss' ? '讨伐镇守' : t.type === 'relic' ? '备齐残片'
         : t.type === 'floor' ? '单次下探至第 ' + t.n + ' 层' : '单次清剿 ' + t.n + ' 间窟室';
-      $('#quest-box').innerHTML += `<div class="side-quest"><b>◇ 副本·${t.title}</b><small>${kind}（进度 ${dungeonTaskProg(t)}/${t.n}）· 回入口交割</small></div>`;
+      const wild = DUNGEONS[t.dn] && DUNGEONS[t.dn].size === 'small';   // 野窟差事：回任意正窟的板交割
+      $('#quest-box').innerHTML += `<div class="side-quest"><b>◇ 副本·${t.title}</b><small>${kind}（进度 ${dungeonTaskProg(t)}/${t.n}）· ${wild ? '回任意正窟交割' : '回入口交割'}</small></div>`;
     }
   }
   // 队伍
@@ -824,7 +825,7 @@ function openChar() {
  * opts.bonus 为「先手」：首回合敌人措手不及（跳过敌方行动）。 */
 const MOVE_HINT = { heavy: '高伤害！', poison: '淬毒！', shield: '凝聚护盾', stun: '试图锁住你的行动', buff: '鼓舞敌众', drain: '汲取生命', evade: '雾化回避' };
 
-function buildUnits(en) {
+function buildUnits(en, mod) {
   const defs = en.units || [{
     name: en.name, hp: en.hp, dmg: en.dmg, def: en.def || 0,
     moves: en.moves, rageAt: en.rageAt, rageText: en.rageText, die: en.die,
@@ -832,9 +833,12 @@ function buildUnits(en) {
   const seen = {};
   return defs.map(d => {
     seen[d.name] = (seen[d.name] || 0) + 1;
-    const name = seen[d.name] > 1 ? `${d.name}·${'乙丙丁'[seen[d.name] - 2]}` : d.name;
+    const name = (seen[d.name] > 1 ? `${d.name}·${'乙丙丁'[seen[d.name] - 2]}` : d.name) + (mod && mod.suffix || '');
     return {
-      name, char: d.char || en.char, hp: d.hp, max: d.hp, dmg: d.dmg, def: d.def || 0,
+      name, char: d.char || en.char,
+      hp: Math.round(d.hp * (mod && mod.hpMult || 1)), max: Math.round(d.hp * (mod && mod.hpMult || 1)),
+      dmg: mod && mod.dmgAdd ? [d.dmg[0] + mod.dmgAdd, d.dmg[1] + mod.dmgAdd] : d.dmg,
+      def: d.def || 0,
       moves: d.moves, rageAt: d.rageAt, rageText: d.rageText, die: d.die,
       shield: 0, evade: false, raged: false, cd: {}, next: null,
     };
@@ -1164,8 +1168,11 @@ async function battle(enId, opts = {}) {
   const en = ENEMIES[enId];
   if (!en) { console.error('[缺失敌人]', enId); return 'win'; }
   ensureTeam();
+  /* 狂化（副本镇守者的余威）：首通之后再讨，镇守者更凶，胜后残片翻倍（结算见 dungeonRoom） */
+  const eliteMod = opts.elite ? { hpMult: 1.4, dmgAdd: 2, suffix: '·狂' } : null;
   C = {
-    en, units: buildUnits(en),
+    en, units: buildUnits(en, eliteMod),
+    elite: !!opts.elite,
     guard: false, enemyWeak: 0, atkUp: 0, enemyBuff: 0,
     poison: null, playerStun: false,
     ambush: !!opts.bonus, ended: null,
@@ -1176,6 +1183,7 @@ async function battle(enId, opts = {}) {
   $('#cmd-actions').innerHTML = '';
   renderCombat();
   logLine('⚔ 遭遇 —— ' + C.units.map(u => u.name).join('、'), 'evil');
+  if (C.elite) logLine('☠ 镇守者的余威不散——它带着「狂」劲重新立起来了（更凶悍，胜后残片翻倍）。', 'sys');
   if (en.intro) logLine(en.intro, 'evil');
   if (S.corruption > 0) {
     const d = Math.min(S.corruption, S.hp - 1);
@@ -1475,11 +1483,13 @@ async function dungeonRoom(dn, run, room, startLoc) {
     return true;
   }
   if (room.type === 'boss') {
+    /* 首通之后再讨镇守，镇守者的余威狂化（更强，残片翻倍）——复刷 farm 的难度阶梯 */
+    const elite = !!S.flags['dgn_' + dn.id];
     await say(dn.bossIntro);
-    const r = await battle(dn.boss, { fleeTo: startLoc });
+    const r = await battle(dn.boss, { fleeTo: startLoc, elite });
     if (r !== 'win') return false;
-    run.cleared++; run.boss = true;
-    const bs = dn.size === 'small' ? 1 : 2;   // 小副本的镇守者是野窟头目，落残片也薄
+    run.cleared++; run.boss = true; run.eliteBoss = elite;
+    const bs = (dn.size === 'small' ? 1 : 2) * (elite ? 2 : 1);   // 野窟头目落得薄；狂化镇守双份再翻倍
     fx({ item: 'relic_shard:' + bs });
     run.relics += bs;
     await say(dn.bossOutro);
@@ -1488,16 +1498,24 @@ async function dungeonRoom(dn, run, room, startLoc) {
   return true;
 }
 
-/* 下探结算：登记次数与最近一程，首通发重赏 */
+/* 下探结算：登记次数与最近一程，首通发重赏；本窟最好战绩取各维度历史最优 */
 function dungeonSettle(dn, run, attempt) {
   S.dgnRuns[dn.id] = attempt;
   S.lastRun = { dn: dn.id, deepest: run.deepest, cleared: run.cleared, boss: run.boss, day: timeDay() };
+  const best = (S.dgnBest = S.dgnBest || {})[dn.id] || { deepest: 0, cleared: 0, boss: false };
+  const record = run.deepest > best.deepest || run.cleared > best.cleared || (run.boss && !best.boss);
+  S.dgnBest[dn.id] = {
+    deepest: Math.max(best.deepest, run.deepest),
+    cleared: Math.max(best.cleared, run.cleared),
+    boss: best.boss || run.boss,
+  };
   if (run.boss && !S.flags['dgn_' + dn.id]) {
     setFlag('dgn_' + dn.id);
     fx(dn.firstClear);
     logLine('✦ 首次' + (dn.size === 'small' ? '探明' : '踏平') + '「' + dn.name + '」——' + (dn.firstClearNote || ''), 'sys');
   }
-  showToast('下探结算：最深处第 ' + run.deepest + ' 层' + (run.boss ? ' · 已讨镇守' : ''));
+  showToast('下探结算：最深处第 ' + run.deepest + ' 层' + (run.boss ? ' · 已讨镇守' : '') + (record ? '（新纪录）' : ''));
+  if (record) logLine('✦ 本窟战绩更新：最深第 ' + S.dgnBest[dn.id].deepest + ' 层 · 单趟清剿 ' + S.dgnBest[dn.id].cleared + ' 室' + (S.dgnBest[dn.id].boss ? ' · 镇守已讨' : ''), 'sys');
   updateHUD(); updateSidebar();
 }
 
@@ -1507,6 +1525,8 @@ async function dungeonRun(dnId) {
   logLine('—— ' + (dn.size === 'small' ? '小副本' : '副本') + ' · ' + dn.name + ' ——', 'divider');
   await say(dn.intro);
   S.dgnRuns = S.dgnRuns || {};
+  const best = (S.dgnBest || {})[dn.id];
+  if (best) logLine('📌 本窟战绩：最深第 ' + best.deepest + ' 层 · 单趟清剿 ' + best.cleared + ' 室' + (best.boss ? ' · 镇守已讨（再讨便是狂化之姿，残片翻倍）' : ''), 'sys');
   const attempt = (S.dgnRuns[dnId] || 0) + 1;
   DRNG = mulberry32(((timeDay() * 1000 + attempt * 37 + dnId.length * 7) >>> 0) || 1);
   const run = { floor: 0, deepest: 0, cleared: 0, relics: 0, boss: false };

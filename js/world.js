@@ -2564,6 +2564,24 @@ const DUNGEON_TASKS = [
     title: '换典狱', text: '『无光地牢总得有个「到底」。把那位典狱的名册收了——狱里太挤，该换茬了。』——掘客行会（胆大者）' },
   { id: 'dgna_relic', dn: 'abyss_depths', type: 'relic', item: 'relic_shard', n: 5, gold: 28,
     title: '收残片', text: '『渊底的残片是行会的命根子。收五枚，价钱好商量。』——掘客行会' },
+
+  /* ---- 野窟差事（行会没在野窟设点，雇散客代办；差事挂在各正窟的委托板上，办完回任意正窟交割） ---- */
+  { id: 'dgnS_kiln_boss', dn: 'kiln_den', type: 'boss', en: 'kiln_wolf', n: 1, gold: 14,
+    title: '塌窑的头狼', text: '『南下古道塌窑底下的狼群夜夜下山叼羊。窑棚老人托行会代雇：把窑底那头狼王办了。』——掘客行会（代雇）' },
+  { id: 'dgnS_quarry_clear', dn: 'quarry_seam', type: 'clear', n: 3, gold: 12,
+    title: '清龛', text: '『断层老龛里的石东西醒了，采石人不敢下錾。一趟里清掉三间窟室，凭粉笔记数。』——掘客行会（代料场问）' },
+  { id: 'dgnS_channel_boss', dn: 'westwell_channel', type: 'boss', en: 'channel_bailiff', n: 1, gold: 18,
+    title: '收名的渠差', text: '『白石城西巷的老井底下，有个「收名」的差役。探明、办结——行会照野窟的价付。』——掘客行会（胆大者）' },
+  { id: 'dgnS_slip_floor', dn: 'slipway_tow', type: 'floor', n: 2, gold: 20,
+    title: '坞底探缆', text: '『潮记船坞的坞底有东西还在拖缆。下到缆道最底，探明它拖的是什么。』——掘客行会（代潮记船坞问）' },
+  { id: 'dgnS_granary_boss', dn: 'granary_cellar', type: 'boss', en: 'cellar_hoarder', n: 1, gold: 22,
+    title: '封仓的囤主', text: '『穗安村的封仓地窖里，囤着个「空肚」的东西。开窖，清囤——村里人只问一句：粮还在不在。』——掘客行会（代穗安村问）' },
+  { id: 'dgnS_beacon_clear', dn: 'beacon_stoke', type: 'clear', n: 4, gold: 26,
+    title: '清岗', text: '『烽燧火房里的空甲还在站三十年前的岗。一趟里清掉四间窟室——轻些下手，他们只是没等到换防。』——掘客行会（胆大者）' },
+  { id: 'dgnS_bone_floor', dn: 'bone_vault', type: 'floor', n: 2, gold: 30,
+    title: '库底问名', text: '『墓园骨库深处的守龛人还抱着名录。下到龛堂，探明他守的名录还剩几页。』——掘客行会（胆大者）' },
+  { id: 'dgnS_banner_boss', dn: 'banner_cache', type: 'boss', en: 'last_banner', n: 1, gold: 34,
+    title: '护旗的空甲', text: '『折旗坡的旗窖里，一副拼补的空甲护着一面磨平了纹样的旗。去问一问：旗下埋的，是哪支军。』——掘客行会（胆大者）' },
 ];
 /* 副本委托进度（侧栏与交割共用） */
 function dungeonTaskProg(t) {
@@ -2574,14 +2592,17 @@ function dungeonTaskProg(t) {
   if (t.type === 'clear') return (S.lastRun && S.lastRun.dn === t.dn) ? Math.min(S.lastRun.cleared, t.n) : 0;
   return 0;
 }
-/* 掘客委托板：接 / 交 / 撕，与酒馆委托木板同款玩法 */
+/* 掘客委托板：接 / 交 / 撕，与酒馆委托木板同款玩法。
+ * 正窟差事与野窟差事混编：本窟差事优先上板，办完一轮后改挂野窟差事
+ * （行会没在野窟设点，雇散客代办）——野窟差事回任意正窟的板交割。 */
 async function dungeonBoard(dnId) {
   const dn = DUNGEONS[dnId];
   await say([dn.boardIntro]);
   if (S.dTask) {
     const t = DUNGEON_TASKS.find(x => x.id === S.dTask.id);
     if (!t) { S.dTask = null; return; }
-    if (t.dn !== dnId) { await say(['（你手上还压着别处秘窟的委托——掘客的规矩：一手交一件。先去把那件办完。）']); return; }
+    const heldWild = DUNGEONS[t.dn] && DUNGEONS[t.dn].size === 'small';
+    if (!heldWild && t.dn !== dnId) { await say(['（你手上还压着别处秘窟的委托——掘客的规矩：一手交一件。先去把那件办完。）']); return; }
     const prog = dungeonTaskProg(t);
     if (prog >= t.n) {
       await say([`委托【${t.title}】办妥了！`]);
@@ -2598,22 +2619,28 @@ async function dungeonBoard(dnId) {
     if (i === 1) { S.dTask = null; await say(['你把委托纸撕了下来。掘客撇撇嘴：「秘窟的差事，果然不是谁都接得住。」']); }
     return;
   }
-  const pool = DUNGEON_TASKS.filter(t => t.dn === dnId && !(S.doneDTasks || []).includes(t.id));
-  if (!pool.length) { await say(['板上空空。掘客两手一摊：「这儿的差事都办完了？——那你比行会里所有人都敢走。」']); return; }
-  const t = pool[timeDay() % pool.length];   // 按天轮换：每天来看，纸上都不一样
+  const done = S.doneDTasks || [];
+  const own = DUNGEON_TASKS.filter(t => t.dn === dnId && !done.includes(t.id));
+  const wild = DUNGEON_TASKS.filter(t => DUNGEONS[t.dn] && DUNGEONS[t.dn].size === 'small' && !done.includes(t.id));
+  const src = own.length ? own : wild;
+  if (!src.length) { await say(['板上空空。掘客两手一摊：「正窟野窟的差事都办完了？——那你比行会里所有人都敢走。」']); return; }
+  const t = src[timeDay() % src.length];   // 按天轮换：每天来看，纸上都不一样
+  if (t.dn !== dnId) await say(['（这回是野窟的差事——那几处窟行会没设点，雇散客代办，办妥了回任意正窟交割。）']);
   await say([`今日委托【${t.title}】：`, t.text, `（报酬：${t.gold} 金币）`]);
   const i = await choose([{ text: '揭下告示，接下委托' }, { text: '先不下手' }]);
   if (i !== 0) { await say(['你把告示端详了两眼，又按了回去。']); return; }
-  S.dTask = { id: t.id, dn: dnId, base: t.type === 'boss' ? (S.kills[t.en] || 0) : 0 };
+  S.dTask = { id: t.id, dn: t.dn, base: t.type === 'boss' ? (S.kills[t.en] || 0) : 0 };
   await say(['你揭下告示。掘客在本子上记了一笔：「办妥了回来交割。」（委托已记入侧栏）']);
 }
-/* 残片兑换：掘客旧物一件一件换，已持有（或已装备）的不再上架 */
+/* 残片兑换：掘客旧物一件一件换，已持有（或已装备）的不再上架；
+ * 旧物到手后，摊子改出「消耗品货架」——残片换药水，或按行会价折现，
+ * 让攒下的残片永远有去处。 */
 async function dungeonExchange(dnId) {
   const dn = DUNGEONS[dnId];
   const ex = dn.exchange;
   await say([dn.exchangeIntro]);
   const owned = (S.items[ex.item] || 0) > 0 || (S.equip && Object.values(S.equip).includes(ex.item));
-  if (owned) { await say(['「那件旧物已经在你身上了。」掘客摆摆手，「一件残片一件货——行会的规矩。」']); return; }
+  if (owned) return dungeonShelf();
   const have = S.items.relic_shard || 0;
   await say([`「渊纹残片 ${ex.cost} 枚，换一件。」`, `（你手上有 ${have} 枚）`]);
   const i = await choose([
@@ -2624,6 +2651,30 @@ async function dungeonExchange(dnId) {
   take('relic_shard', ex.cost);
   give(ex.item);
   await say([ex.line]);
+}
+/* 消耗品货架：掘客的散货摊，换到旧物后也一直开着 */
+async function dungeonShelf() {
+  await say(['「旧物让你买走了？行会还有散货。」掘客把摊布掀开另一角，「残片换药水，或者干脆折成现钱——客官随意。」']);
+  while (true) {
+    const i = await choose([
+      { text: '换「大药水」×1（2 枚）', req: () => (S.items.relic_shard || 0) >= 2, lock: '残片不足' },
+      { text: '换「药水」×1（1 枚）', req: () => (S.items.relic_shard || 0) >= 1, lock: '残片不足' },
+      { text: '折现 3 枚（+12 金币）', req: () => (S.items.relic_shard || 0) >= 3, lock: '残片不足' },
+      { text: '先不换' },
+    ]);
+    if (i !== 0 && i !== 1 && i !== 2) { await say(['你从摊前走开。掘客冲你扬扬下巴：「秘窟天天开门——常来。」']); return; }
+    if (i === 0) {
+      take('relic_shard', 2); give('potion_big');
+      await say(['掘客从摊底摸出一瓶封蜡的大药水：「秘窟里灌出来的力气，比城里药铺的实在。」（获得：大药水 ×1）']);
+    } else if (i === 1) {
+      take('relic_shard', 1); give('potion');
+      await say(['掘客递来一瓶药水：「下回多带几枚残片上来，货管够。」（获得：药水 ×1）']);
+    } else {
+      take('relic_shard', 3); fx({ gold: 12 });
+      await say(['掘客把三枚残片收进铁盒：「行会收货价，公道。」（金币 +12）']);
+    }
+    await say(['「还要点什么？」掘客把摊布抹了抹。']);
+  }
 }
 /* 生成某座秘窟的「入口」动作组（在入口地点的 actions 里引入 dungeonGateActions(id)）。
  * 大副本带「下探 / 委托板 / 残片兑换」三件套；小副本只有下探一口——没板、没摊。 */
