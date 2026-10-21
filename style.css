@@ -102,6 +102,7 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation;-webkit-user
 #log .ln.good{color:#a8e6a1;}
 #log .ln.evil{color:#cfa2ff;}
 #log .ln.sys{color:var(--gold-bright);font-size:15px;}
+#log .ln.dmap{color:#9fc3e8;font-size:13px;letter-spacing:.5px;margin-bottom:2px;opacity:.92;}
 #log .ln.deathline{color:#d98a8a;}
 #log .ln.endbanner{text-align:center;color:var(--gold-bright);font-size:22px;letter-spacing:6px;margin:18px 0;
   font-family:"KaiTi","STKaiti",serif;text-shadow:0 0 24px rgba(201,162,39,.4);}

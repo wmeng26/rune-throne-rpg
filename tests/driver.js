@@ -459,6 +459,10 @@ globalThis.topUp = function () {
     assert(S.flags.dgnw_camp && S.items.old_lantern === 1, '支线兑现：第 2 层掘客营地起获甃老三的行灯（营地首访另有赏格）');
     assert((S.items.relic_shard || 0) >= 5 && S.kills.well_devourer === 1, '副本产出：渊纹残片 ≥5 枚（战斗/宝箱/据点/镇守），击杀计数入册');
     assert(S.dgnBest && S.dgnBest.well_depths && S.dgnBest.well_depths.deepest === 3 && S.dgnBest.well_depths.boss, '本窟战绩：最好成绩入册（最深第 3 层 · 镇守已讨），下探开场即展示');
+    // 随行窟图：此行布局逐层入册，结算随身携带；画图函数逐层输出标注
+    const mapText = dungeonMapLines(DUNGEONS.well_depths, S.lastRun.plan, 3).join('\n');
+    assert(S.lastRun.plan && Object.keys(S.lastRun.plan).length === 3 && Object.values(S.lastRun.plan).every(fl => fl.length >= 2), '副本窟图：此行布局逐层入册（三层的窟室齐录，镇守层含镇守位）');
+    assert(mapText.includes('第3层') && mapText.includes('👑镇守已讨') && mapText.includes('🏕据点已访'), '副本窟图：画图逐层标线——镇守随讨伐标「已讨」，掘客据点随首访标「已访」，未走处留「？」');
     // 行灯交还甃叔，支线完结
     const pbLamp = S.items.potion_big || 0, gLamp = S.gold, rLamp = S.rep;
     await digger.talk();
@@ -484,10 +488,11 @@ globalThis.topUp = function () {
     setChoices('大药水', '先不换');
     await WORLD.grayridge_well.actions.find(a => a.text.includes('残片换')).run();
     assert(S.items.potion_big === pbShelf + 1 && S.items.relic_shard === 3, '残片货架：旧物换完后掘客摆出散货摊（2 枚残片换大药水，循环可购）');
-    // 中途撤离：石阶处带收获回撤，不判首通、不重复发赏；历史战绩不回退
-    setChoices(o => String(o.text).includes('▲'));
+    // 中途撤离：石阶处先展开窟图回看，再带收获回撤——窟图只记此行，不判首通、不冲旧纪录
+    setChoices(o => String(o.text).includes('窟图'), o => String(o.text).includes('▲'));
     await dgnWell.run();
-    assert(S.lastRun && S.lastRun.dn === 'well_depths' && S.lastRun.deepest === 1 && !S.lastRun.boss, '中途撤离：第一层石阶处带收获回撤（最深处记第 1 层，无镇守战绩）');
+    assert(S.lastRun && S.lastRun.dn === 'well_depths' && S.lastRun.deepest === 1 && !S.lastRun.boss, '中途撤离：石阶处展开窟图回看后，带收获回撤（最深处记第 1 层，无镇守战绩）');
+    assert(S.lastRun.plan && Object.keys(S.lastRun.plan).length === 1 && S.lastRun.plan['1'].every(r => r.st), '副本窟图：只记到走过的第 1 层，本层窟室随走随标（已清/绕过），未走处留「？」');
     assert(S.dgnBest.well_depths.deepest === 3 && S.dgnBest.well_depths.boss, '本窟战绩取历史最优：撤离一趟不冲掉旧纪录');
     // 野窟差事：正窟差事办完一轮后，掘客板改挂野窟单（行会雇散客代办），回任意正窟交割
     S.doneDTasks = DUNGEON_TASKS.filter(t => DUNGEONS[t.dn] && DUNGEONS[t.dn].size !== 'small').map(t => t.id);

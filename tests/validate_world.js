@@ -70,7 +70,14 @@ else for (const [id, dn] of Object.entries(DUNGEONS)) {
   if (Array.isArray(dn.events)) for (const e of dn.events) {
     const src = (e.opts || []).map(o => o.run ? o.run.toString() : '').join('\n');
     for (const m of src.matchAll(/item: ?'([a-z_]+)(?::(\d+))?'/g)) if (!ITEMS[m[1]]) errs.push(`副本事件物品缺失: ${id} -> ${m[1]}`);
-  }
+    if (!e.intro || !Array.isArray(e.opts) || e.opts.length < 2) errs.push(`副本奇遇字段不全: ${id}`);
+  } else errs.push(`副本缺奇遇池: ${id}`);
+  /* 暗室：darkText 与 darkWinText 成对出现；暗室收获也须是既有物品引用 */
+  if (Array.isArray(dn.darkText)) {
+    if (typeof dn.darkWinText !== 'function') errs.push(`副本暗室缺收获文案: ${id}`);
+    if (!dn.darkText.length) errs.push(`副本暗室文案为空: ${id}`);
+  } else if (typeof dn.darkWinText === 'function') errs.push(`副本暗室收获文案缺引言: ${id}`);
+  if (Array.isArray(dn.floorNames) && dn.floorNames.length !== dn.floors) errs.push(`副本层名数量与层数不符: ${id}`);
 }
 for (const t of (DUNGEON_TASKS || [])) {
   if (!DUNGEONS[t.dn]) errs.push(`副本委托指向缺失副本: ${t.id} -> ${t.dn}`);
@@ -92,4 +99,6 @@ for (const [id, it] of Object.entries(ITEMS)) {
 if (errs.length) { console.error('✗ 世界一致性校验失败：\n' + errs.join('\n')); process.exit(1); }
 const nLarge = Object.values(DUNGEONS).filter(d => d.size !== 'small').length;
 const nSmall = Object.keys(DUNGEONS).length - nLarge;
-console.log(`✓ 全图一致性校验通过：${Object.keys(WORLD).length} 处地点，${nLarge} 大 + ${nSmall} 小共 ${Object.keys(DUNGEONS).length} 座副本（${DUNGEON_TASKS.length} 式委托），${TRAVEL_EVENTS.length} 条旅途事件，出口/方位/敌人/物品/副本引用完整`);
+const nEv = Object.values(DUNGEONS).reduce((n, d) => n + (d.events || []).length, 0);
+const nDark = Object.values(DUNGEONS).filter(d => Array.isArray(d.darkText)).length;
+console.log(`✓ 全图一致性校验通过：${Object.keys(WORLD).length} 处地点，${nLarge} 大 + ${nSmall} 小共 ${Object.keys(DUNGEONS).length} 座副本（${DUNGEON_TASKS.length} 式委托 · ${nEv} 条窟中奇遇 · ${nDark} 窟有暗室），${TRAVEL_EVENTS.length} 条旅途事件，出口/方位/敌人/物品/副本引用完整`);

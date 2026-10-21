@@ -1369,11 +1369,11 @@ async function deathSeq(en) {
 }
 
 /* ================= 副本 · 秘窟探索 =================
- * 一次「下探」：从入口一层层往下清窟室（战斗/宝箱/奇遇/歇脚），
+ * 一次「下探」：从入口一层层往下清窟室（战斗/宝箱/奇遇/暗室/歇脚），
  * 层间的下行石阶可进可退，最底层讨镇守者。数据与入口见 world.js 的
  * DUNGEONS / DUNGEON_TASKS / dungeonGateActions；副本分两级——大副本
  * （3-5 层，带掘客板摊与支线）与小副本（size:'small'，1-2 层速探，
- * 无板摊）。
+ * 无板摊）。此行布局逐层记入「窟图」，石阶处可随时展开回看。
  * 窟室布局用「天数 + 下探次数」播种的确定性随机数——同一天重复下探
  * 同一座秘窟，分布一致；战利品随拿随结，每层落定自动存档。 */
 let DRNG = Math.random;   // 副本内部使用的种子随机数（出副本即还原）
@@ -1392,10 +1392,12 @@ const dPick = arr => arr[dRoll(arr.length)];
 const dBetween = r => r[0] + dRoll(r[1] - r[0] + 1);
 
 /* 一层的窟室排布：镇守层 = 一间杂室 + 镇守者；其余层 = N 间杂室（保底一场硬仗）。
- * 副本若设了 questRoom（掘客据点），该固定层会把据点室排在最前——秘窟支线的信物在此寻获。 */
+ * 副本若设了 questRoom（掘客据点），该固定层会把据点室排在最前——秘窟支线的信物在此寻获。
+ * 配了 darkText 的窟另有「暗室」——光才照得出的窟中黑，火把/风灯/照明术皆可开路。 */
 function dungeonLayout(dn, f) {
-  if (f === dn.floors) return [{ type: dPick(['battle', 'treasure', 'event']) }, { type: 'boss' }];
+  if (f === dn.floors) return [{ type: dPick(dn.darkText ? ['battle', 'treasure', 'event', 'dark'] : ['battle', 'treasure', 'event']) }, { type: 'boss' }];
   const bag = ['battle', 'battle', 'battle', 'battle', 'battle', 'treasure', 'treasure', 'event', 'event', 'rest'];
+  if (dn.darkText && dn.darkWinText) bag.push('dark', 'dark');
   const rooms = [];
   for (let i = 0; i < (dn.roomsPerFloor || 3); i++) rooms.push({ type: bag[dRoll(bag.length)] });
   if (dn.questRoom && f === dn.questRoom.floor) rooms.unshift({ type: 'quest' });
@@ -1403,7 +1405,32 @@ function dungeonLayout(dn, f) {
   return rooms;
 }
 
-/* 单间窟室：返回 false 表示本次下探到此为止（战败 / 撤离 / 退回） */
+/* ================= 副本窟图 =================
+ * 此行的布局逐层入册（run.plan），石阶旁随时可展开回看：走过的标
+ * 「已清 / 绕过」，没走的留「？」。布局随天数与下探次数变——窟图只记
+ * 这一趟，正是掘客的行话：「同一座窟，没有两条一样的路。」 */
+const DG_ROOM_ICON = { battle: '⚔', treasure: '🧰', event: '❖', rest: '⛺', quest: '🏕', dark: '🕯', boss: '👑' };
+
+function dungeonMapLines(dn, plan, cur = 0) {
+  const DONE = { cleared: '已清', passed: '绕过' };
+  return Object.keys(plan || {}).map(Number).sort((a, b) => a - b).map(f => {
+    const cells = (plan[f] || []).map(r => {
+      if (r.type === 'boss') return r.st === 'cleared' ? '👑镇守已讨' : '👑镇守';
+      if (r.type === 'quest') return r.st === 'cleared' ? '🏕据点已访' : '🏕据点';
+      if (!r.st) return '？';
+      return (DG_ROOM_ICON[r.type] || '·') + DONE[r.st];
+    });
+    return (f === cur ? '▸' : '　') + ' 第' + f + '层 ' + (dn.floorNames[f - 1] || '') + '：' + cells.join(' · ');
+  });
+}
+
+function dungeonMapPrint(dn, run) {
+  logLine('🗺 窟图 · ' + dn.name, 'dmap');
+  for (const ln of dungeonMapLines(dn, run.plan, run.floor)) logLine(ln, 'dmap');
+}
+
+/* 单间窟室：返回 false 表示本次下探到此为止（战败 / 撤离 / 退回）。
+ * room.st 记入窟图：cleared 已清 / passed 绕过（战败撤离的止步于「？」） */
 async function dungeonRoom(dn, run, room, startLoc) {
   if (room.type === 'battle') {
     await say([dPick(dn.roomText)]);
@@ -1411,6 +1438,7 @@ async function dungeonRoom(dn, run, room, startLoc) {
     if (i === 1) { await say([dn.leaveText]); return false; }
     const r = await battle(dPick(dn.pool), { fleeTo: startLoc });
     if (r !== 'win') return false;   // 撤离已被送回入口 / 战败已被命运送回节点
+    room.st = 'cleared';
     run.cleared++;
     const rl = dBetween(dn.relic);
     if (rl > 0) { fx({ item: 'relic_shard:' + rl }); run.relics += rl; }
@@ -1419,11 +1447,12 @@ async function dungeonRoom(dn, run, room, startLoc) {
   if (room.type === 'treasure') {
     await say([dPick(dn.chestText)]);
     const i = await choose([{ text: '撬开它' }, { text: '不碰，绕开继续走' }]);
-    if (i === 1) return true;
+    if (i === 1) { room.st = 'passed'; return true; }
     if (DRNG() < 0.25) {   // 学人藏东西的东西
       await say([dn.mimicText]);
       const r = await battle(dn.mimic, { fleeTo: startLoc });
       if (r !== 'win') return false;
+      room.st = 'cleared';
       run.cleared++;
       const g = dBetween(dn.loot.gold);
       fx({ gold: g, item: 'relic_shard:1' });
@@ -1431,10 +1460,26 @@ async function dungeonRoom(dn, run, room, startLoc) {
       await say([`「箱子」的碎壳里，只剩被磨亮的铜钱和一枚残片。（金币 +${g}，渊纹残片 +1）`]);
       return true;
     }
+    room.st = 'cleared';
     const g = dBetween(dn.loot.gold);
     fx({ gold: g, item: 'relic_shard:1' });
     run.relics++;
     await say([dn.chestWinText(g)]);
+    return true;
+  }
+  if (room.type === 'dark') {
+    await say([dPick(dn.darkText)]);
+    const i = await choose([
+      { text: '🕯 燃起光亮，探进那团黑里', req: () => !!lightAvailable(), lock: '黑得化不开——要有光：火把 / 风灯 / 星火引灯' },
+      { text: '不烧这份光，绕开走' },
+    ]);
+    if (i === 1) { room.st = 'passed'; return true; }
+    await payLight();
+    room.st = 'cleared';
+    const g = dBetween(dn.loot.gold);
+    fx({ gold: g, item: 'relic_shard:1' });
+    run.relics++;
+    await say([dn.darkWinText(g)]);
     return true;
   }
   if (room.type === 'event') {
@@ -1443,12 +1488,14 @@ async function dungeonRoom(dn, run, room, startLoc) {
     const i = await choose(e.opts);
     const o = e.opts[i];
     if (o && o.run) await o.run();
+    room.st = 'cleared';
     return true;
   }
   if (room.type === 'rest') {
     await say([dn.restText]);
     const i = await choose([{ text: '歇一口气' }, { text: '不停，继续走' }]);
-    if (i === 1) return true;
+    if (i === 1) { room.st = 'passed'; return true; }
+    room.st = 'cleared';
     S.hp = Math.min(S.maxHp, S.hp + Math.ceil(S.maxHp * 0.3));
     S.sp = Math.min(S.spMax, S.sp + Math.ceil(S.spMax * 0.3));
     ensureTeam();
@@ -1480,6 +1527,7 @@ async function dungeonRoom(dn, run, room, startLoc) {
     } else if (S.flags[qr.flag]) {
       await say(['据点还是老样子。灶膛的灰，又凉了些。']);
     }
+    room.st = 'cleared';
     return true;
   }
   if (room.type === 'boss') {
@@ -1488,6 +1536,7 @@ async function dungeonRoom(dn, run, room, startLoc) {
     await say(dn.bossIntro);
     const r = await battle(dn.boss, { fleeTo: startLoc, elite });
     if (r !== 'win') return false;
+    room.st = 'cleared';
     run.cleared++; run.boss = true; run.eliteBoss = elite;
     const bs = (dn.size === 'small' ? 1 : 2) * (elite ? 2 : 1);   // 野窟头目落得薄；狂化镇守双份再翻倍
     fx({ item: 'relic_shard:' + bs });
@@ -1498,10 +1547,10 @@ async function dungeonRoom(dn, run, room, startLoc) {
   return true;
 }
 
-/* 下探结算：登记次数与最近一程，首通发重赏；本窟最好战绩取各维度历史最优 */
+/* 下探结算：登记次数与最近一程（含此行窟图），首通发重赏；本窟最好战绩取各维度历史最优 */
 function dungeonSettle(dn, run, attempt) {
   S.dgnRuns[dn.id] = attempt;
-  S.lastRun = { dn: dn.id, deepest: run.deepest, cleared: run.cleared, boss: run.boss, day: timeDay() };
+  S.lastRun = { dn: dn.id, deepest: run.deepest, cleared: run.cleared, boss: run.boss, day: timeDay(), plan: run.plan };
   const best = (S.dgnBest = S.dgnBest || {})[dn.id] || { deepest: 0, cleared: 0, boss: false };
   const record = run.deepest > best.deepest || run.cleared > best.cleared || (run.boss && !best.boss);
   S.dgnBest[dn.id] = {
@@ -1529,14 +1578,17 @@ async function dungeonRun(dnId) {
   if (best) logLine('📌 本窟战绩：最深第 ' + best.deepest + ' 层 · 单趟清剿 ' + best.cleared + ' 室' + (best.boss ? ' · 镇守已讨（再讨便是狂化之姿，残片翻倍）' : ''), 'sys');
   const attempt = (S.dgnRuns[dnId] || 0) + 1;
   DRNG = mulberry32(((timeDay() * 1000 + attempt * 37 + dnId.length * 7) >>> 0) || 1);
-  const run = { floor: 0, deepest: 0, cleared: 0, relics: 0, boss: false };
+  const run = { floor: 0, deepest: 0, cleared: 0, relics: 0, boss: false, plan: {} };
   const startLoc = S.loc;
   try {
     for (let f = 1; f <= dn.floors; f++) {
       run.floor = f; run.deepest = f;
       logLine('◈ 第 ' + f + ' 层 · ' + (dn.floorNames[f - 1] || ''), 'subdivider');
       await say([dn.floorText(f)]);
-      for (const room of dungeonLayout(dn, f)) {
+      const rooms = dungeonLayout(dn, f);
+      run.plan[f] = rooms;
+      dungeonMapPrint(dn, run);   // 每层开工先摊一面窟图：此行的路，一程一程画上去
+      for (const room of rooms) {
         if (!await dungeonRoom(dn, run, room, startLoc)) {
           dungeonSettle(dn, run, attempt);
           return;
@@ -1544,14 +1596,20 @@ async function dungeonRun(dnId) {
       }
       saveGame();   // 每层落定即存档：中途合上页面，已到手的收获不丢
       if (f < dn.floors) {
-        const i = await choose([
-          { text: '▼ 下行石阶：往更深处去' },
-          { text: '▲ 带着收获回入口（结束本次下探）' },
-        ]);
-        if (i === 1) { await say([dn.leaveText]); dungeonSettle(dn, run, attempt); return; }
+        while (true) {
+          const i = await choose([
+            { text: '▼ 下行石阶：往更深处去' },
+            { text: '▲ 带着收获回入口（结束本次下探）' },
+            { text: '🗺 展开窟图，回看此行' },
+          ]);
+          if (i === 2) { dungeonMapPrint(dn, run); continue; }
+          if (i === 1) { await say([dn.leaveText]); dungeonSettle(dn, run, attempt); return; }
+          break;
+        }
       }
     }
     await say(dn.clearText);
+    dungeonMapPrint(dn, run);
     dungeonSettle(dn, run, attempt);
   } finally {
     DRNG = Math.random;
